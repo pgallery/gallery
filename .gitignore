@@ -10,8 +10,6 @@ Homestead.json
 Homestead.yaml
 .env
 package.json
-phpunit.xml
-server.php
 webpack.mix.js
 yarn.lock
 composer.lock

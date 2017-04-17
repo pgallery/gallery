@@ -3,6 +3,9 @@
 ```
 git clone https://github.com/Dasvasas/gallery.git
 composer install
+composer update
+cp .env.example .env
+php artisan key:generate
 ```
 
 ### crontab
