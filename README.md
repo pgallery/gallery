@@ -1,5 +1,12 @@
 # gallery
 
 ```
-* * * * * /usr/bin/php /var/www/devgl/data/www/gallery/artisan schedule:run >/dev/null 2>&1
+git clone https://github.com/Dasvasas/gallery.git
+composer install
+```
+
+### crontab
+
+```
+* * * * * /usr/bin/php PATH/TO/artisan schedule:run >/dev/null 2>&1
 ```

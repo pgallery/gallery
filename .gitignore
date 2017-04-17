@@ -12,7 +12,6 @@
 Homestead.json
 Homestead.yaml
 .env
-artisan
 package.json
 phpunit.xml
 server.php
