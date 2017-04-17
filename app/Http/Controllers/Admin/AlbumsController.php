@@ -85,12 +85,13 @@ class AlbumsController extends Controller
         
         $album = Albums::find($router->input('id'));
         
-        if($image->size != NULL)
-            $file_size = round($image->size / 1024) . " Kb";
-        else
-            $file_size = "0 Kb";
-        
         foreach ($album->images as $image){
+            
+            if($image->size != NULL)
+                $file_size = round($image->size / 1024) . " Kb";
+            else
+                $file_size = "0 Kb";        
+            
             $images[] = [
                 'id'            => $image->id,
                 'name'          => $image->name,
