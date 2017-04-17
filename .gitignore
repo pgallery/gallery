@@ -4,9 +4,6 @@
 /public/storage
 /storage/*.key
 /vendor
-/bootstrap
-/tests
-/storage
 /.idea
 /.vagrant
 Homestead.json
