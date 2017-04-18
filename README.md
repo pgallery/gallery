@@ -2,6 +2,8 @@
 
 Laravel 5 and Bootstrap 3
 
+### install
+
 ```
 git clone https://github.com/Dasvasas/gallery.git
 composer install

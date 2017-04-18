@@ -42,6 +42,16 @@ Auth::routes();
 // Маршруты авторизованных пользователей
 Route::group(['middleware' => 'auth'], function () {
     
+    // Работа с личным профилеме
+    Route::get('/profile/', [
+        'as'            => 'edit-profile', 
+        'uses'          => 'User\ProfileController@getProfile',
+    ]);
+    Route::post('/save/profile/', [
+        'as'            => 'save-profile', 
+        'uses'          => 'User\ProfileController@putProfile',
+    ]);
+    
     // Админский интерфейс
     Route::group([
         'prefix'    => 'admin', 

@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\Hash;
+
 use App\User;
 use App\Models\Roles;
 //use Hash;
@@ -35,12 +37,12 @@ class users extends Seeder
         User::create([
             'name'      => 'Admin',
             'email'     => 'admin@example.com',
-            'password'  => bcrypt('admin'),
+            'password'  => Hash::make('admin'),
         ]);
         User::create([
             'name'      => 'Moder',
             'email'     => 'moder@example.com',
-            'password'  => bcrypt('moder'),
+            'password'  => Hash::make('moder'),
         ]);
 
         $user = User::find(1);

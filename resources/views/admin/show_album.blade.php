@@ -54,7 +54,7 @@
                         @endif
                 </td>
                 <td><a href="{{ $image['image_url'] }}" target="_blank">{{ $image['name'] }}</a>
-                    <br><a href="{{ $image['thumbs_url'] }}" target="_blank">Миниатюра</a> <a href="{{ $image['mobile_url'] }}" target="_blank">Мобильная</a> </td>
+                    <br><a href="{{ $image['thumbs_url'] }}" target="_blank">Миниатюра</a> | <a href="{{ $image['mobile_url'] }}" target="_blank">Мобильная</a> </td>
                 <td>{{ $image['size'] }}</td>
                 <td>{{ $image['owner'] }}</td>
                 
