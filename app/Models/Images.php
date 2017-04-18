@@ -13,7 +13,7 @@ class Images extends Model
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
-        'name', 'size', 'albums_id', 'users_id', 'is_thumbs', 'is_modile'
+        'name', 'size', 'albums_id', 'users_id', 'is_rebuild', 'is_thumbs', 'is_modile'
     ];
     
     public function album()

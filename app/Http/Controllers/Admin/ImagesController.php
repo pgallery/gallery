@@ -15,6 +15,7 @@ use Auth;
 use Helper;
 use Setting;
 use Cache;
+use BuildImage;
 
 class ImagesController extends Controller
 {
@@ -44,9 +45,10 @@ class ImagesController extends Controller
                     Image::make($f)->save($upload_path . "/" . $upload_file_name);
 
                     Images::create([
-                        'name'      => $f->getClientOriginalName(),
-                        'albums_id' => $request->album_id,
-                        'users_id'  => Auth::user()->id,
+                        'name'          => $f->getClientOriginalName(),
+                        'albums_id'     => $request->album_id,
+                        'users_id'      => Auth::user()->id,
+                        'is_rebuild'    => 1,
                     ]);
                 }
             }
@@ -64,6 +66,35 @@ class ImagesController extends Controller
         return redirect()->route('create');
         
     }    
+    
+    public function getRebuild(Router $router) {
+        
+        BuildImage::run($router->input('id'));
+        
+        return back()->withInput();
+        
+    }
+    
+    public function getRotate(Router $router) {
+        
+        $file = Helper::getFullPathImage($router->input('id'));
+        
+        if($router->input('option') == 'left')
+            $rotate = 90;
+        elseif($router->input('option') == 'top')
+            $rotate = 180;
+        else
+            $rotate = -90;
+        
+        Image::make($file)
+            ->rotate($rotate)
+            ->save($file);
+        
+        BuildImage::run($router->input('id'));
+        
+        return back()->withInput();
+        
+    }
     
     public function deleteImage(Router $router) {
         

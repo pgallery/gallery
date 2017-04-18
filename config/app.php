@@ -249,6 +249,7 @@ return [
         'Helper' => App\Helpers\Helper::class,
         'Setting' => App\Helpers\Setting::class,
         'Viewer' => App\Helpers\Viewer::class,
+        'BuildImage' => App\Helpers\BuildImage::class,
         
 //        'Helper' => App\Providers\HelperServiceProvider::class,
     ],

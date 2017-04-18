@@ -97,10 +97,12 @@
                       </button>
                       <ul class="dropdown-menu">
                         <li><a href="{{ route('edit-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
-                        <li><a href="{{ route('show-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-open" aria-hidden="true"></span> Просмотреть фотографии</a></li>
+                        @if($album['count'] != 0)
+                            <li><a href="{{ route('show-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-open" aria-hidden="true"></span> Просмотреть фотографии</a></li>
+                            <li><a href="{{ route('rebuild-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать все миниатюры</a></li>
+                        @endif
                         <li><a href="{{ route('uploads-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-paste" aria-hidden="true"></span> Загрузить фотографии</a></li>
                         <li><a href="{{ route('sync-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Синхронизировать из директории</a></li>
-                        <li><a href="/"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать все миниатюры</a></li>
                         
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('delete-album', ['id' => $album['id']]) }}" data-toggle="confirmation" data-title="Удалить альбом и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>

@@ -85,23 +85,30 @@ class AlbumsController extends Controller
         
         $album = Albums::find($router->input('id'));
         
-        foreach ($album->images as $image){
-            
-            if($image->size != NULL)
-                $file_size = round($image->size / 1024) . " Kb";
-            else
-                $file_size = "0 Kb";        
-            
-            $images[] = [
-                'id'            => $image->id,
-                'name'          => $image->name,
-                'size'          => $file_size,
-                'owner'         => User::find($image->users_id)->name,
-                'thumbs_url'    => Helper::getFullPathThumbImage($image->id, 'url'),
-                'image_url'     => Helper::getFullPathImage($image->id, 'url'),
-                'thumbs_width'  => Setting::get('thumbs_width'),
-                'thumbs_height' => Setting::get('thumbs_height'),
-            ];
+        if($album->imagesCount() == 0)
+        {
+            $images=[];
+        }
+        else
+        {
+            foreach ($album->images as $image){
+
+                if($image->size > 0)
+                    $file_size = round($image->size / 1024) . " Kb";
+                else
+                    $file_size = "0 Kb";        
+
+                $images[] = [
+                    'id'            => $image->id,
+                    'name'          => $image->name,
+                    'size'          => $file_size,
+                    'owner'         => User::find($image->users_id)->name,
+                    'thumbs_url'    => Helper::getFullPathThumbImage($image->id, 'url'),
+                    'image_url'     => Helper::getFullPathImage($image->id, 'url'),
+                    'thumbs_width'  => Setting::get('thumbs_width'),
+                    'thumbs_height' => Setting::get('thumbs_height'),
+                ];
+            }
         }
         
         return Viewer::get('admin.show_album', [
@@ -164,6 +171,17 @@ class AlbumsController extends Controller
             Albums::find($album->id)->update(['images_id' => $Images->id]);
             
         }
+        
+        return redirect()->route('admin');
+    }
+    
+    public function getRebuild(Router $router) {
+        
+//        $album = Albums::find($router->input('id'));
+        
+        Images::where('albums_id', $router->input('id'))->update([
+            'is_rebuild'    => 1,
+        ]);
         
         return redirect()->route('admin');
     }

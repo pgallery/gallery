@@ -158,6 +158,11 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'AlbumsController@getSync',
             'middleware'    => 'role:admin|moderator'
         ])->where(['id' => '[0-9]+']);
+        Route::get('/album/rebuild/{id}', [
+            'as'            => 'rebuild-album',
+            'uses'          => 'AlbumsController@getRebuild',
+            'middleware'    => 'role:admin|moderator'
+        ])->where(['id' => '[0-9]+']);
         Route::get('/album/uploads/{id}', [
             'as'            => 'uploads-album',
             'uses'          => 'AlbumsController@getUploads',
@@ -180,6 +185,18 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'ImagesController@putInstallImage',
             'middleware'    => 'role:admin|moderator'
         ])->where(['id' => '[0-9]+']);
+        Route::get('/image/rebuild/{id}', [
+            'as'            => 'rebuild-image',
+            'uses'          => 'ImagesController@getRebuild',
+            'middleware'    => 'role:admin|moderator'
+        ])->where(['id' => '[0-9]+']);
+        Route::get('/image/rotate/{option}/{id}', [
+            'as'            => 'rotate-image',
+            'uses'          => 'ImagesController@getRotate',
+            'middleware'    => 'role:admin|moderator'
+        ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);       
+        
+        
         Route::post('/image/uploads/', [
             'as'            => 'uploads', 
             'uses'          => 'ImagesController@postCreateImage',
