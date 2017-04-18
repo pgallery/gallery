@@ -2,19 +2,10 @@
 
 namespace App\Console;
 
-//use DB;
-//use Image;
-//use File;
-
-//use App\Models\Settings;
 use App\Models\Images;
-//use App\Models\Albums;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
-//use Helper;
-//use Setting;
 
 use BuildImage;
 

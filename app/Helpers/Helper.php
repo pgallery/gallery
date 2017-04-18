@@ -62,7 +62,6 @@ class Helper
     // $album_id - id альбома по таблице `albums`    
     public static function getFullPathThumbImage($image_id, $type = false){
         
-//        $image = Images::find($image_id);
         $image = Images::withTrashed()->where('id', $image_id)->first();
         
         $path = Setting::get('thumbs_dir') . "/" .  $image->album->directory . "/" . $image['name'];
@@ -86,12 +85,16 @@ class Helper
     
     // Полный путь к мобильной версии файла
     // $album_id - id альбома по таблице `albums`    
-    public static function getFullPathMobileImage($image_id){
+    public static function getFullPathMobileImage($image_id, $type = false){
         
-//        $image = Images::find($image_id);
         $image = Images::withTrashed()->where('id', $image_id)->first();
         
-        return public_path() . "/" . Setting::get('mobile_upload_dir') . "/" .  $image->album->directory . "/" . $image['name'];
+        $path = Setting::get('mobile_upload_dir') . "/" .  $image->album->directory . "/" . $image['name'];
+        
+        if($type == 'url')
+            return env('APP_URL') . "/" . $path;
+        else
+            return public_path() . "/" . $path;          
         
     }
     

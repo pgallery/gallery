@@ -91,20 +91,22 @@ class AlbumsController extends Controller
         }
         else
         {
-            foreach ($album->images as $image){
+            $listImages = $album->images()->paginate(10);
+            foreach ($listImages as $image){
 
                 if($image->size > 0)
                     $file_size = round($image->size / 1024) . " Kb";
                 else
-                    $file_size = "0 Kb";        
+                    $file_size = "0 Kb";
 
                 $images[] = [
                     'id'            => $image->id,
                     'name'          => $image->name,
                     'size'          => $file_size,
                     'owner'         => User::find($image->users_id)->name,
-                    'thumbs_url'    => Helper::getFullPathThumbImage($image->id, 'url'),
                     'image_url'     => Helper::getFullPathImage($image->id, 'url'),
+                    'thumbs_url'    => Helper::getFullPathThumbImage($image->id, 'url'),
+                    'mobile_url'    => Helper::getFullPathMobileImage($image->id, 'url'),
                     'thumbs_width'  => Setting::get('thumbs_width'),
                     'thumbs_height' => Setting::get('thumbs_height'),
                 ];
@@ -115,6 +117,7 @@ class AlbumsController extends Controller
             'album_name'    => $album->name,
             'album_preview' => $album->images_id,
             'images'        => $images, 
+            'album_images'  => $listImages,
         ]);
         
     }

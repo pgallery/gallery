@@ -3,9 +3,11 @@
 @section('content')
 
 <h3>{{ $album_name }} > Фотографии</h3>
-<table id="album-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+{{ $album_images->links() }}
+<table class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
+                <th>id</th>
                 <th>Миниатюра</th>
                 <th>Имя</th>
                 <th>Объем</th>
@@ -14,6 +16,7 @@
         </thead>
         <tfoot>
             <tr>
+                <th>id</th>
                 <th>Миниатюра</th>
                 <th>Имя файла</th>
                 <th>Объем</th>
@@ -26,6 +29,7 @@
     @foreach($images as $image)
         
             <tr>
+                <td>{{ $image['id'] }}</td>
                 <td> 
                     <!-- Single button -->
                     <div class="btn-group">
@@ -49,7 +53,8 @@
                             Миниатюра альбома 
                         @endif
                 </td>
-                <td>{{ $image['name'] }}</td>
+                <td><a href="{{ $image['image_url'] }}" target="_blank">{{ $image['name'] }}</a>
+                    <br><a href="{{ $image['thumbs_url'] }}" target="_blank">Миниатюра</a> <a href="{{ $image['mobile_url'] }}" target="_blank">Мобильная</a> </td>
                 <td>{{ $image['size'] }}</td>
                 <td>{{ $image['owner'] }}</td>
                 
@@ -61,7 +66,7 @@
     </table>
 
 
-
+{{ $album_images->links() }}
 
 
 @endsection

@@ -194,9 +194,7 @@ Route::group(['middleware' => 'auth'], function () {
             'as'            => 'rotate-image',
             'uses'          => 'ImagesController@getRotate',
             'middleware'    => 'role:admin|moderator'
-        ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);       
-        
-        
+        ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
         Route::post('/image/uploads/', [
             'as'            => 'uploads', 
             'uses'          => 'ImagesController@postCreateImage',
