@@ -5,6 +5,7 @@
 <table id="group-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
+                <th>id</th>
                 <th>Название</th>
                 <th>Всего альбомов</th>
                 <th>Публичных альбомов</th>
@@ -13,6 +14,7 @@
         </thead>
         <tfoot>
             <tr>
+                <th>id</th>
                 <th>Название</th>
                 <th>Всего альбомов</th>
                 <th>Публичных альбомов</th>
@@ -24,6 +26,7 @@
     @foreach($groups as $group)
         
             <tr>
+                <td>{{ $group['id'] }}</td>
                 <td> 
                     @if(Helper::isAdmin(Auth::user()->id))
                     <!-- Single button -->
@@ -56,6 +59,7 @@
 <table id="album-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
+                <th>id</th>
                 <th>Название</th>
                 <th>URL</th>
                 <th>Миниатюра</th>
@@ -69,6 +73,7 @@
         </thead>
         <tfoot>
             <tr>
+                <th>id</th>
                 <th>Название</th>
                 <th>URL</th>
                 <th>Миниатюра</th>
@@ -89,6 +94,7 @@
                  class="danger"
             @endif
             >
+                <td>{{ $album['id'] }}</td>
                 <td> 
                     <!-- Single button -->
                     <div class="btn-group">

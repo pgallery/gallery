@@ -63,7 +63,8 @@ class ImagesController extends Controller
             
         }
         
-        return redirect()->route('create');
+//        return redirect()->route('create');
+        return back()->withInput();
         
     }    
     

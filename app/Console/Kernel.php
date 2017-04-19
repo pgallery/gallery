@@ -36,12 +36,14 @@ class Kernel extends ConsoleKernel
                 {
                     foreach ($images as $image)
                     {
+                        echo "ID: " . $image['id'];
                         BuildImage::run($image['id']);
                     }
                 });
            
         })->everyMinute();        
-                
+        
+        
     }
 
     /**

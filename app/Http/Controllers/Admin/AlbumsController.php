@@ -154,14 +154,40 @@ class AlbumsController extends Controller
         $files = File::allFiles(Helper::getUploadPath($router->input('id')));
         foreach ($files as $file)
         {
+            
+//    // Build the input for validation
+//    $fileArray = array('image' => $file);
+//
+//    // Tell the validator that this file should be an image
+//    $rules = array(
+//      'image' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
+//    );
+//
+//    // Now pass the input and rules into the validator
+//    $validator = Validator::make($fileArray, $rules);
+//
+//    // Check to see if validation fails or passes
+//    if ($validator->fails())
+//    {
+//          // Redirect or return json to frontend with a helpful message to inform the user 
+//          // that the provided file was not an adequate type
+//          return response()->json(['error' => $validator->errors()->getMessages()], 400);
+//    } else
+//    {
+//        // Store the File Now
+//        // read image from temporary file
+//        Image::make($file)->resize(300, 200)->save('foo.jpg');
+//    };            
+            
             $base_filename = basename($file);
             
             if(Images::where('name', $base_filename)->where('albums_id', $router->input('id'))->count() == 0)
             {
                     Images::create([
-                        'name'      => $base_filename,
-                        'albums_id' => $router->input('id'),
-                        'users_id'  => Auth::user()->id,
+                        'name'       => $base_filename,
+                        'albums_id'  => $router->input('id'),
+                        'users_id'   => Auth::user()->id,
+                        'is_rebuild' => 1,
                     ]);
             }
         }

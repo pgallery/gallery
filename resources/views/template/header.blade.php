@@ -99,6 +99,8 @@
         $(document).ready(function() { 
           $("a.fancyimage").fancybox(); 
           
+          @yield('js')
+          
           @if (Auth::check())
               
           $('#album-table').DataTable();

@@ -6,16 +6,35 @@
   <small>{{ $album_desc }}</small>
 </div>
 
-<div class="row"> 
-<p>
-    @foreach($images as $image)
-        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 thumb">
-            <a href="{{ $image['image_url'] }}" data-fancybox="images"> 
-                <img  src="{{ $image['thumbs_url'] }}" width="{{ $image['thumbs_width']  }}"/> 
-            </a> 
-        </div>
-    @endforeach
-</p>  
+<div class="row" id="main"> 
+    <div id="allImages">
+        
+        
+        @include('pages.images_page')
+        
+
+    </div>
 </div>
+
+
+
+@endsection
+
+@section('js')
+
+        var loadingHeroes = false;
+        
+        $(window).scroll(function(){
+            if ($(this).scrollTop() + $(this).innerHeight() >= $('#main').height()){
+                if (!loadingHeroes) {
+                    loadingHeroes = true;
+                    $.get('/gallery/showHero-{{ $album_url }}?page='+$('#allImages .thumb').last().attr('data-Page'), {}, function(data) {
+                        console.log('GET: /gallery/showHero-{{ $album_url }}?page='+$('#allImages .thumb').last().attr('data-Page'));
+                        $(data).insertAfter("#allImages .thumb:last()");
+                        loadingHeroes = false;
+                    }); 
+                }
+              }
+        });
 
 @endsection
