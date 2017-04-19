@@ -29,7 +29,7 @@ Route::get('/no_access', [
     'as' => '403', 'uses' => 'User\AlbumsController@getNoAccess'
 ]);
 Route::get('/gallery-{url}', 'User\ImagesController@getShow')->where('url', '[А-Яа-яA-Za-z0-9]+');
-Route::get('/gallery/showHero-{url}', 'User\ImagesController@getShowHero')->where('url', '[А-Яа-яA-Za-z0-9]+');
+Route::get('/gallery/show-{url}', 'User\ImagesController@getShowPage')->where('url', '[А-Яа-яA-Za-z0-9]+');
 Route::get('/album/{option}/{id}', 'User\AlbumsController@getShow')->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 
 Route::get('/logout', function () {

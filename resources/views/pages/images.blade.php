@@ -14,8 +14,15 @@
         
 
     </div>
-</div>
+    
+<a id="back-to-top" href="#" 
+       class="btn btn-primary btn-lg back-to-top" 
+       role="button" 
+       title="Нажмите, что бы подняться в верх страницы" 
+       data-toggle="tooltip" 
+       data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
 
+</div>
 
 
 @endsection
@@ -25,16 +32,38 @@
         var loadingHeroes = false;
         
         $(window).scroll(function(){
+        
+            if ($(this).scrollTop() > 50)
+            {
+                $('#back-to-top').fadeIn();
+            }
+            else
+            {
+                $('#back-to-top').fadeOut();
+            }
+            
             if ($(this).scrollTop() + $(this).innerHeight() >= $('#main').height()){
+            
                 if (!loadingHeroes) {
                     loadingHeroes = true;
-                    $.get('/gallery/showHero-{{ $album_url }}?page='+$('#allImages .thumb').last().attr('data-Page'), {}, function(data) {
-                        console.log('GET: /gallery/showHero-{{ $album_url }}?page='+$('#allImages .thumb').last().attr('data-Page'));
+                    $.get('/gallery/show-{{ $album_url }}?page='+$('#allImages .thumb').last().attr('data-Page'), {}, function(data) {
+                        
+                        
                         $(data).insertAfter("#allImages .thumb:last()");
                         loadingHeroes = false;
                     }); 
                 }
-              }
+            }
         });
 
+        $('#back-to-top').click(function () {
+            $('#back-to-top').tooltip('hide');
+            $('body,html').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+        
+        $('#back-to-top').tooltip('show');        
+        
 @endsection

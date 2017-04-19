@@ -65,7 +65,7 @@ class ImagesController extends Controller
 
     }
     
-    public function getShowHero(Router $router) {
+    public function getShowPage(Router $router) {
         
         \Debugbar::disable();
         

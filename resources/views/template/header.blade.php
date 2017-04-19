@@ -53,7 +53,13 @@
         .thumb { 
           padding:5px; 
         } 
-               
+        .back-to-top {
+            cursor: pointer;
+            position: fixed;
+            bottom: 100px;
+            right: 200px;
+            display:none;
+        }               
     </style>     
   </head>
 
