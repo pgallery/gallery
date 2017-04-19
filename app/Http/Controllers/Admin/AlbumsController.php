@@ -91,7 +91,7 @@ class AlbumsController extends Controller
         }
         else
         {
-            $listImages = $album->images()->paginate(10);
+            $listImages = $album->images()->paginate(Setting::get('count_images'));
             foreach ($listImages as $image){
 
                 if($image->size > 0)

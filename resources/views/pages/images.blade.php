@@ -1,9 +1,19 @@
 @extends('template.header')
 
+@section('css')
+        .back-to-top {
+            cursor: pointer;
+            position: fixed;
+            bottom: 100px;
+            right: 200px;
+            display:none;
+        } 
+@endsection
+
 @section('content')
 <div class="page-header">
-  <h2>{{ $album_name }} </h2>
-  <small>{{ $album_desc }}</small>
+  <h2>{{ $thisAlbum->name }} </h2>
+  <small>{{ $thisAlbum->desc }}</small>
 </div>
 
 <div class="row" id="main"> 
@@ -43,15 +53,23 @@
             }
             
             if ($(this).scrollTop() + $(this).innerHeight() >= $('#main').height()){
-            
-                if (!loadingHeroes) {
-                    loadingHeroes = true;
-                    $.get('/gallery/show-{{ $album_url }}?page='+$('#allImages .thumb').last().attr('data-Page'), {}, function(data) {
-                        
-                        
-                        $(data).insertAfter("#allImages .thumb:last()");
-                        loadingHeroes = false;
-                    }); 
+                
+                var nextPage = $('#allImages .thumb').last().attr('data-Page');
+                var lastPage = $('#allImages .thumb').last().attr('data-PageLast');
+                
+                if(parseInt(nextPage) <= parseInt(lastPage))
+                {
+                
+                    if (!loadingHeroes)
+                    {  
+                        loadingHeroes = true;
+                        $.get('/gallery/show-{{ $thisAlbum->url }}?page='+nextPage, {}, function(data) {
+                            console.log(nextPage);
+                            $(data).insertAfter("#allImages .thumb:last()");
+                            loadingHeroes = false;
+                        });
+                    }
+                
                 }
             }
         });

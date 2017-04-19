@@ -2,6 +2,10 @@
 
 @section('content')
       
+<div class="page-header">
+  <h2>Изменение настроек</h2>
+</div>
+
 <form class="form-horizontal" action="{{ route('save-settings') }}" method="POST">
 
     @foreach($settings as $setting)
@@ -15,11 +19,13 @@
         </div>    
 
     @endforeach
-    
+    <hr>
     <button type="submit" class="btn btn-primary">Сохранить изменения</button>
 </form>    
 
-<hr>
+<div class="page-header">
+  <h2>Добавление параметра</h2>
+</div>
 
 <form class="form-horizontal" action="{{ route('create-settings') }}" method="POST">
 
@@ -35,7 +41,7 @@
             Desc:
             <input type="text" class="form-control" name="desc">
         </div>
-        
+
         <button type="submit" class="btn btn-primary">Добавить</button>
     
 </form> 
