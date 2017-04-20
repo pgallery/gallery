@@ -25,7 +25,7 @@ class Viewer
             $CountTrashedImages = Images::onlyTrashed()->count();
 
             $static = [
-                'group_list'        => Groups::all(), 
+                'group_list'        => Groups::orderBy('name')->get(),
                 'year_list'         => Albums::select('year')->where('permission', 'All')->groupBy('year')->get(), 
                 'summary_trashed'   => $CountTrashedGroups + $CountTrashedAlbums + $CountTrashedImages,
                 'groups_trashed'    => $CountTrashedGroups,

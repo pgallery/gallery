@@ -1,4 +1,4 @@
-        <form method="post" action="{{ route('uploads') }}" enctype="multipart/form-data">
+        <form method="post" action="{{ route('uploads') }}" enctype="multipart/form-data" class="form-horizontal">
             {!! csrf_field() !!}
             
             @if(isset($type) && $type == 'thisAlbum')
@@ -6,7 +6,7 @@
             @else
             
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">Группа добавляемого альбома:</label>
+                    <label class="col-sm-4 control-label">Наименование альбома:</label>
                     <div class="col-sm-6">
                         
                         <select class="form-control" name="album_id"

@@ -141,7 +141,7 @@ class ImagesController extends Controller
         
         Cache::flush();
         
-        return redirect()->route('show-album', ['id' => $album_id]);
+        return back()->withInput();
        
     }
     
@@ -150,7 +150,7 @@ class ImagesController extends Controller
         $album_id = Images::find($router->input('id'))->album->id;
         Albums::find($album_id)->update(['images_id' => $router->input('id')]);
         
-        return redirect()->route('show-album', ['id' => $album_id]);
+        return back()->withInput();
         
     }
     

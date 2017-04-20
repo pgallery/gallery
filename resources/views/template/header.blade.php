@@ -105,9 +105,6 @@
         
         
         $(document).ready(function() { 
-            
-          
-         
           $("a.fancyimage").fancybox(); 
           
           @yield('js')

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Albums;
 use App\Models\Images;
 
+use Auth;
 use Agent;
 use Helper;
 use Setting;
@@ -26,11 +27,20 @@ class ImagesController extends Controller
         
         $thisAlbum = Albums::where('url', $router->input('url'))->first();
         
-        if (Agent::isMobile())
-            $CacheKey = sha1($router->input('url') . '.Mobile');
-        else
-            $CacheKey = sha1($router->input('url')); 
+//        if (Agent::isMobile())
+//            $CacheKey = sha1($router->input('url') . '.Mobile');
+//        else
+//            $CacheKey = sha1($router->input('url')); 
 
+        if (Agent::isMobile() and !Auth::check())
+            $CacheKey = sha1($router->input('url') . '.Mobile');
+        elseif(Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+            $CacheKey = sha1($router->input('url') . '.AdminMobile');
+        elseif(!Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+            $CacheKey = sha1($router->input('url') . '.Admin');        
+        else
+            $CacheKey = sha1($router->input('url'));        
+        
         if (Cache::has($CacheKey))
         {
             $resultData = Cache::get($CacheKey);
@@ -41,7 +51,12 @@ class ImagesController extends Controller
             $thumbs_width  = Setting::get('thumbs_width');
             $thumbs_height = Setting::get('thumbs_height');
             $thumbs_dir    = Setting::get('thumbs_dir');
-
+            
+            if(!Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+                $show_admin_panel = 1;
+            else
+                $show_admin_panel = 0;
+            
             if (Agent::isMobile())
                 $upload_dir = Setting::get('mobile_upload_dir');
             else
@@ -56,6 +71,7 @@ class ImagesController extends Controller
                 'thumbs_width',
                 'thumbs_height',
                 'thumbs_dir',
+                'show_admin_panel',
                 'thisAlbum',
                 'listImages'
             );
@@ -76,11 +92,15 @@ class ImagesController extends Controller
         
         $thisAlbum = Albums::where('url', $router->input('url'))->first();        
         
-        if (Agent::isMobile())
+        if (Agent::isMobile() and !Auth::check())
             $CacheKey = sha1($router->input('url') . '.Mobile' . $request->input('page'));
+        elseif(Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+            $CacheKey = sha1($router->input('url') . '.AdminMobile' . $request->input('page'));
+        elseif(!Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+            $CacheKey = sha1($router->input('url') . '.Admin' . $request->input('page'));        
         else
             $CacheKey = sha1($router->input('url') . $request->input('page'));
-
+        
         if (Cache::has($CacheKey))
         {
             $resultData = Cache::get($CacheKey);
@@ -91,7 +111,12 @@ class ImagesController extends Controller
             $thumbs_width  = Setting::get('thumbs_width');
             $thumbs_height = Setting::get('thumbs_height');
             $thumbs_dir    = Setting::get('thumbs_dir');
-
+            
+            if(!Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+                $show_admin_panel = 1;
+            else
+                $show_admin_panel = 0;             
+            
             if (Agent::isMobile())
                 $upload_dir = Setting::get('mobile_upload_dir');
             else
@@ -106,6 +131,7 @@ class ImagesController extends Controller
                 'thumbs_width',
                 'thumbs_height',
                 'thumbs_dir',
+                'show_admin_panel',
                 'thisAlbum',
                 'listImages'
             );
