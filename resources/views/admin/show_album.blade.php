@@ -38,7 +38,7 @@
                       </button>
                       <ul class="dropdown-menu">
                         <li><a href="{{ route('install-image', ['id' => $image['id']]) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Установить как миниатюру</a></li>
-                        <li><a href="" data-toggle="modal" data-target="#RenameModal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickeable" data-id="{{ $image['id'] }}" data-name="{{ $image['name'] }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
                         <li><a href="{{ route('rebuild-image', ['id' => $image['id']]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать миниатюру</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'left', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Повернуть влево</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'right', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Повернуть вправо</a></li>
@@ -82,21 +82,14 @@
         
       <form action="{{ route('rename-image') }}" method="POST" class="form-horizontal">
         
-        
-      <div class="modal-body">
+          <input type="hidden"  name="id" id="id" value="">
           
-              
-            <div class="form-group">
-                <label class="col-sm-2 control-label">ID:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" name="id" value="">
-                </div>
-            </div>              
-            
+      <div class="modal-body">
+                      
             <div class="form-group">
                 <label class="col-sm-2 control-label">Имя:</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="newName" value="">
+                    <input type="text" class="form-control" name="newName" id="newName" value="">
                 </div>
             </div>              
             
@@ -113,4 +106,16 @@
 </div>
 
 
+@endsection
+
+
+@section('js-top')
+
+$('a.clickeable').click(function(e){
+    $('#id').val(this.getAttribute('data-id'));
+    $('#newName').val(this.getAttribute('data-name'));
+    e.preventDefault();
+});
+
+        
 @endsection

@@ -70,7 +70,26 @@ class ImagesController extends Controller
     
     public function postRename(Request $request) {
         
-        print_r($request->input());
+        $oldName = Images::find($request->input('id'));
+        
+        $mobile_image = Helper::getFullPathMobileImage($request->input('id'));
+        $thumb_image  = Helper::getFullPathThumbImage($request->input('id'));
+        $upload_dir = Helper::getUploadPath($oldName->albums_id);
+        
+        if (File::exists($mobile_image))
+            File::delete($mobile_image);
+        
+        if (File::exists($thumb_image))
+            File::delete($thumb_image);        
+        
+        File::move($upload_dir . "/" . $oldName->name, $upload_dir . "/" . $request->input('newName'));
+        Images::where('id', $request->input('id'))->update([
+            'name'          => $request->input('newName'),
+            'is_rebuild'    => 1,
+        ]);
+        
+        return back()->withInput();
+        
     }
     
     public function getRebuild(Router $router) {

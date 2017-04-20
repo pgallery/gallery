@@ -99,7 +99,13 @@
     @endif
     
     <script type="text/javascript"> 
+        
+        @yield('js-top')
+        
         $(document).ready(function() { 
+            
+          
+            
           $("a.fancyimage").fancybox(); 
           
           @yield('js')

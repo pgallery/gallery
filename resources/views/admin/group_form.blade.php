@@ -6,12 +6,14 @@
 
 @endif
         
-        <div class="row">
-          <div class="col-xs-6">
-            Название группы:
-            <input type="text" class="form-control" name="groupName" @isset($groupName) value="{{ $groupName }}" @endisset>
-          </div>
-        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Название группы:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="groupName" @isset($groupName) value="{{ $groupName }}" @endisset>
+            </div>
+           
+        </div>   
+
         <button type="submit" class="btn btn-primary">Создать</button>
         
     </form> 
