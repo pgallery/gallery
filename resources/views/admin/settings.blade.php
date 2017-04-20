@@ -29,19 +29,20 @@
 
 <form class="form-horizontal" action="{{ route('create-settings') }}" method="POST">
 
-        <div class="col-xs-6">
-            Key:
-            <input type="text" class="form-control" name="key">
+        <div class="form-group">
+            <div class="col-xs-6">
+                Наименование ключа:
+                <input type="text" class="form-control" name="key">
+            </div>
+            <div class="col-xs-6">
+                Значение:
+                <input type="text" class="form-control" name="value">
+            </div>
+            <div class="col-xs-12">
+                Описание:
+                <input type="text" class="form-control" name="desc">
+            </div>
         </div>
-        <div class="col-xs-6">
-            Value:
-            <input type="text" class="form-control" name="value">
-        </div>
-        <div class="col-xs-12">
-            Desc:
-            <input type="text" class="form-control" name="desc">
-        </div>
-
         <button type="submit" class="btn btn-primary">Добавить</button>
     
 </form> 

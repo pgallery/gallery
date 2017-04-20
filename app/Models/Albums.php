@@ -23,7 +23,7 @@ class Albums extends Model
     
     public function images()
     {
-        return $this->hasMany('App\Models\Images');
+        return $this->hasMany('App\Models\Images')->orderBy('name');
     }
     
     public function imagesCount()

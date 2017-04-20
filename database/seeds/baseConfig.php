@@ -58,6 +58,11 @@ class baseConfig extends Seeder
             'set_name' => 'gallery_name', 
             'set_value' => 'TWH.Gallery',
             'set_desc' => 'Название галереи',
+        ]);
+        Settings::create([
+            'set_name' => 'use_ssl', 
+            'set_value' => 'no',
+            'set_desc' => 'Принудительное перенаправление всех запросов на HTTPS',
         ]);        
     }
 }

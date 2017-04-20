@@ -10,6 +10,16 @@ composer install
 composer update
 cp .env.example .env
 php artisan key:generate
+php artisan migrate
+php artisan db:seed
+```
+
+### update
+
+```
+git pull
+php artisan migrate
+php artisan cache:clear
 ```
 
 ### crontab
