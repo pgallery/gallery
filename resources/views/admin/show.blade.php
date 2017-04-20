@@ -98,7 +98,7 @@
                 <td> 
                     <!-- Single button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-primary  btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
@@ -118,7 +118,12 @@
                      {{ $album['name'] }}
                 </td>
                 <td>
-                    <a href="{{ $album['url'] }}" target="_blank">{{ $album['url'] }}</a>
+                    
+                    <a href="{{ $album['url'] }}" class="btn btn-default btn-xs" target="_blank">
+                        <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+                    </a>
+                    
+                    
                 </td>
                 <td>
                     @if(!empty($album['thumbs_url']))

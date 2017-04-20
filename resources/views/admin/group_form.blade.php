@@ -11,9 +11,8 @@
             <div class="col-sm-6">
                 <input type="text" class="form-control" name="groupName" @isset($groupName) value="{{ $groupName }}" @endisset>
             </div>
-           
         </div>   
-
-        <button type="submit" class="btn btn-primary">Создать</button>
-        
+        <center>
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </center>
     </form> 

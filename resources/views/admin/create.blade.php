@@ -6,7 +6,15 @@
     </div>
 
 <dl>
-  <dt>Создание группы</dt>
+    <dt>
+        
+        <div class="panel panel-default">
+          <div class="panel-body">
+            Создание группы
+          </div>
+        </div>        
+        
+    </dt>
   <dd>
       
       @include('admin.group_form')
@@ -14,7 +22,15 @@
     <hr>
   </dd>
 
-  <dt>Создание альбома</dt>
+  <dt>
+      
+        <div class="panel panel-default">
+          <div class="panel-body">
+            Создание альбома
+          </div>
+        </div>              
+      
+      </dt>
   <dd>
       
       @include('admin.album_form')
@@ -22,7 +38,15 @@
     <hr>            
   </dd>
 
-  <dt>Загрузка изображений в альбом</dt>
+  <dt>
+      
+        <div class="panel panel-default">
+          <div class="panel-body">
+            Загрузка изображений в альбом
+          </div>
+        </div>      
+      
+      </dt>
   <dd>
       
       
@@ -33,3 +57,13 @@
 </dd>
 </dl>
 @endsection
+
+
+@section('js-top')
+
+        $(":file").filestyle({
+            input: false,
+            buttonText: 'Выберите файлы'
+        });
+        
+@endsection        

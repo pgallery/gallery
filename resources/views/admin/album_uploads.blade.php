@@ -9,3 +9,12 @@
       @include('admin.uploads_images')
    
 @endsection
+
+@section('js-top')
+
+        $(":file").filestyle({
+            input: false,
+            buttonText: 'Выберите файлы'
+        });
+        
+@endsection   
