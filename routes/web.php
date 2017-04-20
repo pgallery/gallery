@@ -191,6 +191,11 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'ImagesController@deleteImage',
             'middleware'    => 'role:admin|moderator'
         ])->where(['id' => '[0-9]+']);
+        Route::post('/image/rename/', [
+            'as'            => 'rename-image', 
+            'uses'          => 'ImagesController@postRename',
+            'middleware'    => 'role:admin|moderator'
+        ]);
         Route::get('/image/install/{id}', [
             'as'            => 'install-image', 
             'uses'          => 'ImagesController@putInstallImage',

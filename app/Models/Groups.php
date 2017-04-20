@@ -19,7 +19,7 @@ class Groups extends Model
     public function albumCount()
     {
         return $this->hasMany('App\Models\Albums')->count();
-    }      
+    }
     
     public function albumCountPublic()
     {

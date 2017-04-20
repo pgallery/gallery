@@ -38,6 +38,7 @@
                       </button>
                       <ul class="dropdown-menu">
                         <li><a href="{{ route('install-image', ['id' => $image['id']]) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Установить как миниатюру</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#RenameModal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
                         <li><a href="{{ route('rebuild-image', ['id' => $image['id']]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать миниатюру</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'left', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Повернуть влево</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'right', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Повернуть вправо</a></li>
@@ -67,6 +68,49 @@
 
 
 {{ $album_images->links() }}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="RenameModal" tabindex="-1" role="dialog" aria-labelledby="RenameModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="RenameModalLabel">Переименовывание изображения</h4>
+      </div>
+        
+      <form action="{{ route('rename-image') }}" method="POST" class="form-horizontal">
+        
+        
+      <div class="modal-body">
+          
+              
+            <div class="form-group">
+                <label class="col-sm-2 control-label">ID:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="id" value="">
+                </div>
+            </div>              
+            
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Имя:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="newName" value="">
+                </div>
+            </div>              
+            
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+          
+      </form>
+          
+    </div>
+  </div>
+</div>
 
 
 @endsection

@@ -70,7 +70,6 @@ class TrashController extends Controller
             $this->destroyGroup($group->id);
         }        
 
-//        return redirect()->route('admin');
         return back()->withInput();
         
     }

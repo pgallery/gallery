@@ -77,7 +77,7 @@ class AlbumsController extends Controller
         if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->albumDir))
             File::makeDirectory(Setting::get('upload_dir') . "/" . $request->albumDir, 0755, true);
         
-        return redirect()->route('create');
+        return back()->withInput();
         
     }
 

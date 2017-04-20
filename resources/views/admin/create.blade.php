@@ -1,7 +1,9 @@
 @extends('template.header')
 
 @section('content')
-
+    <div class="page-header">
+      <h2>Добавление </h2>
+    </div>
 
 <dl>
   <dt>Создание группы</dt>

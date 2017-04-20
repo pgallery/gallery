@@ -1,7 +1,7 @@
 @extends('template.header')
 
 @section('content')
-<h3>Группы</h3>
+<h3>Группы <small><a href="" data-toggle="modal" data-target="#newGroupModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h3> 
 <table id="group-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -55,7 +55,7 @@
     </table>
 
 
-<h3>Альбомы</h3>
+<h3>Альбомы <small><a href="" data-toggle="modal" data-target="#newAlbumModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h3> 
 <table id="album-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -141,7 +141,44 @@
     </table>
 
 
+<!-- Modal add Group -->
+<div class="modal fade" id="newGroupModal" tabindex="-1" role="dialog" aria-labelledby="newGroupModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="newGroupModalLabel">Добавление группы</h4>
+      </div>
+        
 
+      <div class="modal-body">
+          
+         @include('admin.group_form')
+            
+      </div>
+          
+    </div>
+  </div>
+</div>
 
+<!-- Modal add Group -->
+<div class="modal fade" id="newAlbumModal" tabindex="-1" role="dialog" aria-labelledby="newAlbumModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="newAlbumModalLabel">Добавление альбома</h4>
+      </div>
+        
+
+      <div class="modal-body">
+          
+         @include('admin.album_form')
+            
+      </div>
+          
+    </div>
+  </div>
+</div>
 
 @endsection

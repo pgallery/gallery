@@ -68,6 +68,11 @@ class ImagesController extends Controller
         
     }    
     
+    public function postRename(Request $request) {
+        
+        print_r($request->input());
+    }
+    
     public function getRebuild(Router $router) {
         
         BuildImage::run($router->input('id'));

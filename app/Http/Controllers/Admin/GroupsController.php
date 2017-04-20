@@ -21,7 +21,7 @@ class GroupsController extends Controller
             'name' => $request->groupName,
         ]);
         
-        return redirect()->route('create');
+        return back()->withInput();
         
     }
     

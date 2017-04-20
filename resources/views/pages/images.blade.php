@@ -4,8 +4,8 @@
         .back-to-top {
             cursor: pointer;
             position: fixed;
-            bottom: 100px;
-            right: 200px;
+            bottom: 10px;
+            right: 20px;
             display:none;
         } 
 @endsection
@@ -33,7 +33,6 @@
        data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
 
 </div>
-
 
 @endsection
 

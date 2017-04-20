@@ -9,7 +9,7 @@ class Setting
     
     public static function get($key) {
         
-        $setting = Settings::where('set_name', $key)->first();
+        $setting = Settings::select('set_value')->where('set_name', $key)->first();
         return $setting['set_value'];
         
     }
