@@ -23,12 +23,7 @@ class ImagesController extends Controller
     public function postCreateImage(Request $request) {
         
         $album = Albums::find($request->album_id);
-        
-        $CacheKey = sha1($album->url);
-        
-        if (Cache::has($CacheKey))
-                Cache::forget($CacheKey);
-        
+               
         $upload_path = Helper::getUploadPath($request->album_id);
         
         if(!File::isDirectory($upload_path))
@@ -63,7 +58,8 @@ class ImagesController extends Controller
             
         }
         
-//        return redirect()->route('create');
+        Cache::flush();
+        
         return back()->withInput();
         
     }    
@@ -87,6 +83,8 @@ class ImagesController extends Controller
             'name'          => $request->input('newName'),
             'is_rebuild'    => 1,
         ]);
+    
+        Cache::flush();
         
         return back()->withInput();
         
@@ -124,10 +122,6 @@ class ImagesController extends Controller
     public function deleteImage(Router $router) {
         
         $album_id = Images::find($router->input('id'))->album->id;
-        $CacheKey = sha1(Images::find($router->input('id'))->album->url);
-        
-        if (Cache::has($CacheKey))
-                Cache::forget($CacheKey);
         
         Images::destroy($router->input('id'));
         
@@ -144,6 +138,8 @@ class ImagesController extends Controller
                 Albums::find($album_id)->update(['images_id' => $Images->id]);
             }
         }
+        
+        Cache::flush();
         
         return redirect()->route('show-album', ['id' => $album_id]);
        
