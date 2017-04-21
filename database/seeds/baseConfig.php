@@ -63,6 +63,17 @@ class baseConfig extends Seeder
             'set_name' => 'use_ssl', 
             'set_value' => 'no',
             'set_desc' => 'Принудительное перенаправление всех запросов на HTTPS',
+        ]);
+        Settings::create([
+            'set_name' => 'use_ulogin', 
+            'set_value' => 'no',
+            'set_desc' => 'Использовать авторизацию через социальные сети (uLogin.ru)',
         ]);        
+        Settings::create([
+            'set_name' => 'ulogin_id', 
+            'set_value' => '0000',
+            'set_desc' => 'ID Вашего сайта в системе uLogin.ru (требуется только при включенной авторизации через uLogin.ru)',
+        ]);          
+        
     }
 }

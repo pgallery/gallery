@@ -24,30 +24,16 @@ class AlbumsController extends Controller
         if(Albums::where('permission', 'All')->where('images_id', '!=', '0')->count() == 0)
             return Viewer::get('errors.404'); 
         
-        if($router->input('option') == "byGroup" and is_numeric($router->input('id')))
-        {
-            if(Auth::check() and Helper::isAdmin(Auth::user()->id))
-                $CacheKey = sha1('Admin.Cache.User.AlbumsController' . $router->input('option') . $router->input('id'));
-            else
-                $CacheKey = sha1('Cache.User.AlbumsController' . $router->input('option') . $router->input('id'));  
-            
-        }
-        elseif($router->input('option') == "byYear" and is_numeric($router->input('id')))
-        {
-            
-            if(Auth::check() and Helper::isAdmin(Auth::user()->id))
-                $CacheKey = sha1('Admin.Cache.User.AlbumsController' . $router->input('option') . $router->input('id'));
-            else
-                $CacheKey = sha1('Cache.User.AlbumsController' . $router->input('option') . $router->input('id'));          
-        }
+        if(Auth::check() and Helper::isAdmin(Auth::user()->id))
+            $preCacheKey = 'Admin.';
         else
-        {
-            
-            if(Auth::check() and Helper::isAdmin(Auth::user()->id))
-                $CacheKey = sha1('Admin.Cache.User.AlbumsController');
-            else
-                $CacheKey = sha1('Cache.User.AlbumsController');
-        }
+            $preCacheKey = 'User.';
+        
+        $preCacheKey .= 'Cache.Albums.';
+        $preCacheKey .= (!empty($router->input('option'))) ? $router->input('option') : "Base" ;
+        $preCacheKey .= (is_numeric($router->input('id'))) ? "." . $router->input('id') : ".Null" ;
+
+        $CacheKey = sha1($preCacheKey);
         
         if (Cache::has($CacheKey))
         {
@@ -58,7 +44,7 @@ class AlbumsController extends Controller
         
             $AlbumsQuery = Albums::latest('year');
             
-            if(Auth::check() and !Helper::isAdmin(Auth::user()->id))
+            if(!Auth::check() or !Helper::isAdmin(Auth::user()->id))
                 $AlbumsQuery = $AlbumsQuery->where('permission', 'All');
 
             if($router->input('option') == "byGroup" and is_numeric($router->input('id')))

@@ -78,9 +78,14 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="{{ route('logout') }}">Выход</a></li>
                   </ul>
-                </li>                
+                </li>
                 
                 @else
+                
+                @if( Setting::get('use_ulogin') == 'yes' )
+                    <li><div style="margin-top: 18px" id="uLogin_{{ Setting::get('ulogin_id') }}" data-uloginid="{{ Setting::get('ulogin_id') }}"></div></li>
+                @endif
+                
                 <li><a href="{{ route('login') }}">Вход</a></li>
                 @endif
             @endif

@@ -25,6 +25,8 @@
 
     @endif
     
+    <script src="//ulogin.ru/js/ulogin.js"></script>    
+    
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="/js/ie-emulation-modes-warning.js"></script>

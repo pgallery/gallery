@@ -32,6 +32,8 @@ Route::get('/gallery-{url}', 'User\ImagesController@getShow')->where('url', '[А
 Route::get('/gallery/show-{url}', 'User\ImagesController@getShowPage')->where('url', '[А-Яа-яA-Za-z0-9]+');
 Route::get('/album/{option}/{id}', 'User\AlbumsController@getShow')->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 
+Route::post('/ulogin', 'User\UloginController@login');
+
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/');
