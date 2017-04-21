@@ -32,13 +32,14 @@ class Kernel extends ConsoleKernel
         
         $schedule->call(function () {
            
-                Images::select('id')->where('is_rebuild', 1)->chunk(10, function($images)
+                Images::select('id')->where('is_rebuild', 1)->chunk(50, function($images)
                 {
                     foreach ($images as $image)
                     {
-                        echo "ID: " . $image['id'];
                         BuildImage::run($image['id']);
                     }
+                    
+                    return false;
                 });
            
         })->everyMinute();        
