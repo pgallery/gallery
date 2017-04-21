@@ -17,11 +17,7 @@ use Viewer;
 class InterfaceController extends Controller
 {
     public function getPage(){
-        
-//        echo $RoleGuest = Roles::select('id')->where('name', 'guest')->first();
-//        
-//        exit;
-        
+               
         if(Groups::All()->count() == 0)
             $groups=[];
         else

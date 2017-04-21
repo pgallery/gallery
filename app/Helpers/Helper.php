@@ -14,16 +14,28 @@ class Helper
 {
     // Проверяет, является ли пользователь Администратором
     public static function isAdmin($user){
-        //Auth::user()->id
+
         $userRoles = User::find($user)->roles->pluck('id','name')->toArray();
-//        print_r($userRoles);
+
         if(in_array("admin", array_keys($userRoles)))
             return true;
         else
             return false;
 
     }
-
+    
+    // Проверяет, имеет ли пользователь доступ к меню управления
+    public static function isAdminMenu($user) {
+        
+        $userRoles = User::find($user)->roles->pluck('id', 'topanel')->toArray();
+        
+        if(in_array("Y", array_keys($userRoles)))
+            return true;
+        else
+            return false;
+        
+    }
+    
     // Полный путь к файлу
     // $image_id - id файла по таблице `images`
     public static function getFullPathImage($image_id, $type = false){

@@ -21,34 +21,51 @@ class users extends Seeder
         Roles::create([
             'name'          => 'admin', 
             'display_name'  => 'Administrator',
-            'description'   => 'The God of World',
+            'description'   => 'Администратор галереи',
+            'topanel'       => 'Y',
         ]);
         Roles::create([
             'name'          => 'moderator', 
             'display_name'  => 'Moderator',
-            'description'   => 'The Moderator of World',
+            'description'   => 'Модератор галереи',
+            'topanel'       => 'Y',
+        ]);
+        Roles::create([
+            'name'          => 'operator', 
+            'display_name'  => 'Оperator',
+            'description'   => 'Оператор галереи',
+            'topanel'       => 'Y',
+        ]);
+        Roles::create([
+            'name'          => 'viewer', 
+            'display_name'  => 'Viewer',
+            'description'   => 'Зритель галереи',
+            'topanel'       => 'N',
         ]);
         Roles::create([
             'name'          => 'guest', 
             'display_name'  => 'Guest',
-            'description'   => 'The Guest of World',
+            'description'   => 'Гость галереи',
+            'topanel'       => 'N',
         ]);
 
         User::create([
             'name'      => 'Admin',
             'email'     => 'admin@example.com',
             'password'  => Hash::make('admin'),
+            'method'    => 'thisSite',
         ]);
         User::create([
             'name'      => 'Moder',
             'email'     => 'moder@example.com',
             'password'  => Hash::make('moder'),
+            'method'    => 'thisSite',
         ]);
-
+        
+        $RoleAdmin = Roles::select('id')->where('name', 'admin')->first();
+        
         $user = User::find(1);
-        $user->roles()->attach(1);
+        $user->roles()->attach($RoleAdmin->id);
 
-        $user = User::find(2);
-        $user->roles()->attach(2);
     }
 }

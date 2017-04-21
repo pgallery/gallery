@@ -22,18 +22,27 @@ class ProfileController extends Controller
     
     public function putProfile(Request $request) {
         
-        if(Hash::check($request->input('password'), Auth::user()->password))
+        $user = User::find(Auth::user()->id);
+               
+        if($user->method == 'thisSite' and Hash::check($request->input('password'), Auth::user()->password))
         {
-         
-            User::find(Auth::user()->id)->update([
+        
+            $user->update([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
             ]);
             
             if($request->input('newPassword') && $request->input('newPassword') == $request->input('confirmPassword'))
-                User::find(Auth::user()->id)->update([
+                $user->update([
                     'password' => Hash::make($request->input('newPassword')),
-                ]);            
+                ]);
+            
+        }
+        elseif($user->method != 'thisSite')
+        {
+            $user->update([
+                'name' => $request->input('name'),
+            ]);
         }
         
         return redirect()->route('edit-profile');
