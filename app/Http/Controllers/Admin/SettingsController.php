@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Settings;
 
 use Viewer;
+use Cache;
 
 class SettingsController extends Controller
 {
@@ -34,6 +35,10 @@ class SettingsController extends Controller
         
         foreach ($request->input('newSetting') as $name => $value) {
             Settings::where('set_name', $name)->update(['set_value' => $value]);
+//            $CacheKey = sha1($name);
+//            Cache::forget($CacheKey);
+            Cache::forget(sha1('global.settings'));
+            
         }
         
         return redirect()->route('settings');

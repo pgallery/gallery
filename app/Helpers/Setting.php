@@ -4,13 +4,27 @@ namespace App\Helpers;
 
 use App\Models\Settings;
 
+use Cache;
+
 class Setting
 {
+    // 10080 минут - 1 неделя
+    const SETTING_CACHE_TTL = 10080;
     
-    public static function get($key) {
+    public static function get($key){
         
-        $setting = Settings::select('set_value')->where('set_name', $key)->first();
-        return $setting['set_value'];
+        $settings = Cache::remember(sha1('global.settings'), self::SETTING_CACHE_TTL, function() {
+            
+            $globalSettings = Settings::select('set_name', 'set_value')->get()->toArray();
+            foreach ($globalSettings as $Setting){
+                
+                $result[$Setting['set_name']] = $Setting['set_value'];
+            }
+            
+            return $result;
+        });
+        
+        return $settings[$key];
         
     }
     
