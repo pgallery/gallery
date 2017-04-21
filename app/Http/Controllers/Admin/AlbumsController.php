@@ -103,6 +103,8 @@ class AlbumsController extends Controller
                     'id'            => $image->id,
                     'name'          => $image->name,
                     'size'          => $file_size,
+                    'height'        => $image->height,
+                    'width'         => $image->width,                    
                     'owner'         => User::find($image->users_id)->name,
                     'image_url'     => Helper::getFullPathImage($image->id, 'url'),
                     'thumbs_url'    => Helper::getFullPathThumbImage($image->id, 'url'),

@@ -11,6 +11,7 @@
                 <th>Миниатюра</th>
                 <th>Имя</th>
                 <th>Объем</th>
+                <th>Разрешение</th>
                 <th>Владелец</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <th>Миниатюра</th>
                 <th>Имя файла</th>
                 <th>Объем</th>
+                <th>Разрешение</th>
                 <th>Владелец</th>
             </tr>
 
@@ -57,6 +59,7 @@
                 <td><a href="{{ $image['image_url'] }}" target="_blank">{{ $image['name'] }}</a>
                     <br><a href="{{ $image['thumbs_url'] }}" target="_blank">Миниатюра</a> | <a href="{{ $image['mobile_url'] }}" target="_blank">Мобильная</a> </td>
                 <td>{{ $image['size'] }}</td>
+                <td>{{ $image['width'] }}х{{ $image['height'] }}</td>
                 <td>{{ $image['owner'] }}</td>
                 
             </tr>

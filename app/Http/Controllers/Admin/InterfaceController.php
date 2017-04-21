@@ -13,11 +13,12 @@ use App\Models\Roles;
 use Auth;
 use Helper;
 use Viewer;
+use Image;
 
 class InterfaceController extends Controller
 {
     public function getPage(){
-               
+                
         if(Groups::All()->count() == 0)
             $groups=[];
         else

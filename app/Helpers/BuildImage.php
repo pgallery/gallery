@@ -25,16 +25,18 @@ class BuildImage
         
         if (File::exists($thumbs_file))
             File::delete($thumbs_file);
-
+        
         if (File::exists($modile_file))
             File::delete($modile_file);        
         
         if(!File::isDirectory($thumbs_path))
             File::makeDirectory($thumbs_path, 0755, true);
-
+        
         if(!File::isDirectory($modile_path))
             File::makeDirectory($modile_path, 0755, true);           
-
+        
+        
+        
         // Делаем превью
         Image::make($file_path)
             ->fit(Setting::get('thumbs_width'), Setting::get('thumbs_height'))
@@ -44,14 +46,18 @@ class BuildImage
         Image::make($file_path)
             ->resize(Setting::get('mobile_width'), null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save($modile_file);        
+            })->save($modile_file);          
         
-        $SizeImage = Image::make($file_path)->filesize();
+        $imgSize         = Image::make($file_path)->filesize();
+        $imgHeight       = Image::make($file_path)->height();
+        $imgWidth        = Image::make($file_path)->width();
+        $MobileSizeImage = Image::make($modile_file)->filesize();
         $ThumbsSizeImage = Image::make($thumbs_file)->filesize();
-        $MobileSizeImage = Image::make($modile_file)->filesize();    
-
+        
         Images::where('id', $id)->update([
-            'size'          => $SizeImage,
+            'size'          => $imgSize,
+            'height'        => $imgHeight,
+            'width'         => $imgWidth,
             'thumbs_size'   => $ThumbsSizeImage,
             'modile_size'   => $MobileSizeImage,
             'is_rebuild'    => 0,

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AfterRolesAddTopanel extends Migration
+class AfterImagesAddWidth extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AfterRolesAddTopanel extends Migration
      */
     public function up()
     {
-        Schema::table('roles', function($table) {
-            $table->enum('topanel', array('Y', 'N'))->default('N')->after('description');
+        Schema::table('images', function($table) {
+            $table->integer('height')->default('0')->after('size');
         });
     }
 
