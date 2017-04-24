@@ -63,13 +63,13 @@ class InterfaceController extends Controller
                     $albums[] = [
                         'id'            => $album->id,
                         'name'          => $album->name,
-                        'url'           => env('APP_URL') . "/gallery-" . $album->url,
+                        'url'           => $album->url,
                         'thumbs_url'    => $thumbs_url,
                         'year'          => $album->year,
                         'permission'    => $album->permission,
-                        'owner'         => User::find($album->users_id)->name,
+                        'owner'         => $album->owner()->name,
                         'count'         => $album->imagesCount(),
-                        'summary_size'  => round(($album->imagesSumSize() / 1024 / 1024)) . " Mb",
+                        'summary_size'  => $album->imagesSumSize(),
                         'groups_name'   => $album->group->name,
                     ];
                 }

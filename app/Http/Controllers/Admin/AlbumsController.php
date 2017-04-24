@@ -43,9 +43,7 @@ class AlbumsController extends Controller
     public function getEditAlbum(Router $router) {
         
         $album = Albums::find($router->input('id'));
-        
-//        $groups = Groups::all();
-        
+
         $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
             return Groups::All();
         });        
@@ -93,46 +91,36 @@ class AlbumsController extends Controller
         
     }
 
-    public function getShowAlbum(Router $router) {
+    public function getShowAlbum(Router $router, Request $request) {
+                
+        $thisAlbum = Albums::find($router->input('id'));
         
-        $album = Albums::find($router->input('id'));
-        
-        if($album->imagesCount() == 0)
+        if($thisAlbum->imagesCount() == 0)
         {
             $images=[];
         }
         else
         {
-            $listImages = $album->images()->paginate(Setting::get('count_images'));
-            foreach ($listImages as $image){
-
-//                if($image->size > 0)
-//                    $file_size = round($image->size / 1024) . " Kb";
-//                else
-//                    $file_size = "0 Kb";
-
-                $images[] = [
-                    'id'            => $image->id,
-                    'name'          => $image->name,
-                    'size'          => round($image->size / 1024) . " Kb",
-                    'height'        => $image->height,
-                    'width'         => $image->width,                    
-                    'owner'         => User::find($image->users_id)->name,
-                    'image_url'     => Helper::getFullPathImage($image->id, 'url'),
-                    'thumbs_url'    => Helper::getFullPathThumbImage($image->id, 'url'),
-                    'mobile_url'    => Helper::getFullPathMobileImage($image->id, 'url'),
-                    'thumbs_width'  => Setting::get('thumbs_width'),
-                    'thumbs_height' => Setting::get('thumbs_height'),
-                ];
-            }
+            
+            $thisPage = $request->has('page') ? $request->query('page') : 1;
+            
+            $thumbs_dir = Setting::get('thumbs_dir');
+            $mobile_dir = Setting::get('mobile_upload_dir');
+            $upload_dir = Setting::get('upload_dir'); 
+            
+            $listImages = Cache::remember(sha1('admin.show.albumImages.' . $thisPage), self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {                
+                return $thisAlbum->images()->paginate(Setting::get('count_images'));
+            });
+                        
         }
         
-        return Viewer::get('admin.show_album', [
-            'album_name'    => $album->name,
-            'album_preview' => $album->images_id,
-            'images'        => $images, 
-            'album_images'  => $listImages,
-        ]);
+        return Viewer::get('admin.show_album', compact(
+            'upload_dir',
+            'mobile_dir',
+            'thumbs_dir',
+            'thisAlbum',
+            'listImages'
+        ));
         
     }
     

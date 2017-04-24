@@ -2,8 +2,10 @@
 
 @section('content')
 
-<h3>{{ $album_name }} > Фотографии</h3>
-{{ $album_images->links() }}
+<h3>{{ $thisAlbum->name }} > Фотографии</h3>
+
+{{ $listImages->links() }}
+
 <table class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -28,7 +30,7 @@
         </tfoot>
         <tbody>
 
-    @foreach($images as $image)
+    @foreach($listImages as $image)
         
             <tr>
                 <td>{{ $image['id'] }}</td>
@@ -49,18 +51,20 @@
                         <li><a href="{{ route('delete-image', ['id' => $image['id']]) }}" data-toggle="confirmation" data-title="Удалить фотографию?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
                     </div>
-                    <a href="{{ $image['thumbs_url'] }}" data-fancybox="images"> 
-                        <img  src="{{ $image['thumbs_url'] }}" width="75"/> 
+                    <a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" data-fancybox="images"> 
+                        <img  src="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" width="75"/> 
                     </a>
-                        @if($album_preview == $image['id']) 
+                        @if($thisAlbum->images_id == $image['id']) 
                             Миниатюра альбома 
                         @endif
                 </td>
-                <td><a href="{{ $image['image_url'] }}" target="_blank">{{ $image['name'] }}</a>
-                    <br><a href="{{ $image['thumbs_url'] }}" target="_blank">Миниатюра</a> | <a href="{{ $image['mobile_url'] }}" target="_blank">Мобильная</a> </td>
-                <td>{{ $image['size'] }}</td>
+                <td><a href="/{{ $upload_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" target="_blank">{{ $image['name'] }}</a>
+                    <br><a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" target="_blank">Миниатюра</a> 
+                    | 
+                    <a href="/{{ $mobile_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" target="_blank">Мобильная</a> </td>
+                <td>{{ round($image['size'] / 1024) . " Kb"  }}</td>
                 <td>{{ $image['width'] }}х{{ $image['height'] }}</td>
-                <td>{{ $image['owner'] }}</td>
+                <td>{{ $image->owner()->name }}</td>
                 
             </tr>
 
@@ -70,7 +74,7 @@
     </table>
 
 
-{{ $album_images->links() }}
+{{ $listImages->links() }}
 
 
 

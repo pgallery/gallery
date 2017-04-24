@@ -122,7 +122,7 @@
                 </td>
                 <td>
                     
-                    <a href="{{ $album['url'] }}" class="btn btn-default btn-xs" target="_blank">
+                    <a href="{{ env('APP_URL') }}/gallery-{{ $album['url'] }}" class="btn btn-default btn-xs" target="_blank">
                         <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
                     </a>
                     
@@ -133,10 +133,10 @@
                         <a href="{{ $album['thumbs_url'] }}" data-fancybox="images"> 
                             <img  src="{{ $album['thumbs_url'] }}" width="75"/> 
                         </a>
-                    @endif                    
+                    @endif
                 </td>
                 <td>{{ $album['count'] }}</td>
-                <td>{{ $album['summary_size'] }}</td>
+                <td>{{ round(($album['summary_size'] / 1024 / 1024)) }} Mb</td>
                 <td>{{ $album['groups_name'] }}</td>
                 <td>{{ $album['year'] }}</td>
                 <td>{{ $album['permission'] }}</td>

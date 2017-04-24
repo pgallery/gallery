@@ -10,6 +10,7 @@ use App\User;
 
 use Auth;
 use Viewer;
+use Cache;
 
 class ProfileController extends Controller
 {
@@ -44,6 +45,9 @@ class ProfileController extends Controller
                 'name' => $request->input('name'),
             ]);
         }
+        
+        if (Cache::has(sha1('owner_' . Auth::user()->id . '_cache')))
+            Cache::forget(sha1('owner_' . Auth::user()->id . '_cache'));
         
         return redirect()->route('edit-profile');
         
