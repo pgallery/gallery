@@ -15,24 +15,25 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Имя пользователя:</label>
             <div class="col-sm-4">
-                {!! Form::text('userName', $user->name, array('class' => 'form-control')) !!}
+                {!! Form::text('name', $user->name, array('class' => 'form-control')) !!}
             </div>
             <label class="col-sm-2 control-label">E-Mail:</label>
             <div class="col-sm-4">
-                {!! Form::text('userEMail', $user->email, array('class' => 'form-control')) !!}
+                {!! Form::text('email', $user->email, array('class' => 'form-control')) !!}
             </div>
         </div>
     
         <div class="form-group">
             <label class="col-sm-4 control-label">Права доступа:</label>
             <div class="col-sm-6">
-                {!! Form::select('userRole[]', $roles, $userRole, array('class' => 'form-control','multiple')) !!}
+                {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control','multiple')) !!}
             </div>
         </div>
     <hr>
     <center>
         {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
     </center>
+    
 {!! Form::close() !!}   
 
 @endsection

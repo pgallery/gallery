@@ -25,12 +25,9 @@ class UsersController extends Controller
     public function getEdit(Router $router) {
         
         $user = User::find($router->input('id'));
-//        $roles = Roles::all();
         $roles = Roles::pluck('display_name','id');
         $userRole = $user->roles->pluck('id','id')->toArray();
-//        print_r($roles);
-//        exit;
-        
+
         return Viewer::get('admin.user_edit', compact(
                 'user',
                 'roles',
@@ -40,7 +37,15 @@ class UsersController extends Controller
     
     public function putUser(Router $router, Request $request) {
         
-        print_r($request->all());
+        $user = User::find($router->input('id'));
+        $user->update($request->all());
+        \DB::table('roles_user')->where('user_id', $router->input('id'))->delete();        
+        
+        foreach ($request->input('roles') as $key => $value) {
+            $user->roles()->attach($value);
+        }
+        
+        return redirect()->route('users');
         
     }
 }
