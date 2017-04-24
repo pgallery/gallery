@@ -22,7 +22,6 @@ class TrashController extends Controller
         $images = Images::onlyTrashed()->get();
 
         foreach ($images as $image){
-//            echo $image->id . "<br>";
             
             $full_image = Helper::getFullPathImage($image['id']);
             $mobile_image = Helper::getFullPathMobileImage($image['id']);

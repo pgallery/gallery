@@ -38,8 +38,7 @@ class InterfaceController extends Controller
         }
         else
         {
-//            $AllAlbums = Albums::orderBy('name')->paginate(self::SHOWALBUMS_COUNTER_PAGE);
-            
+
             $CacheKey = sha1('admin.show.albums');        
 
             if (Cache::has($CacheKey))
@@ -79,14 +78,16 @@ class InterfaceController extends Controller
         return Viewer::get('admin.show', [
             'albums'    => $albums, 
             'groups'    => $groups,
-//            'AllAlbums' => $AllAlbums,
         ]);
         
     }
     
     public function getCreateForm(){
         
-        $groups = Groups::all();  
+        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
+            return Groups::All();
+        });
+        
         $albums = Albums::all();  
         
         return Viewer::get('admin.create', [

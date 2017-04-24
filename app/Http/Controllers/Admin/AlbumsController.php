@@ -212,8 +212,6 @@ class AlbumsController extends Controller
     
     public function getRebuild(Router $router) {
         
-//        $album = Albums::find($router->input('id'));
-        
         Images::where('albums_id', $router->input('id'))->update([
             'is_rebuild'    => 1,
         ]);

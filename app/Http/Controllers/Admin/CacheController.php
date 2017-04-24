@@ -10,8 +10,9 @@ use Cache;
 class CacheController extends Controller
 {
     public function flushCache() {
+        
         Cache::flush();
-//        return redirect()->route('admin');
         return back()->withInput();
+        
     }
 }
