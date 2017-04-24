@@ -1,7 +1,7 @@
 @extends('template.header')
 
 @section('content')
-<h3>Группы <small><a href="" data-toggle="modal" data-target="#newGroupModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h3> 
+<h3>Группы <small>@if(Helper::isAdmin(Auth::user()->id))<a href="" data-toggle="modal" data-target="#newGroupModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
 <table id="group-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -149,7 +149,7 @@
     </table>
 
 
-
+@if(Helper::isAdmin(Auth::user()->id))
 <!-- Modal add Group -->
 <div class="modal fade" id="newGroupModal" tabindex="-1" role="dialog" aria-labelledby="newGroupModalLabel">
   <div class="modal-dialog" role="document">
@@ -169,8 +169,9 @@
     </div>
   </div>
 </div>
+@endif
 
-<!-- Modal add Group -->
+<!-- Modal add Album -->
 <div class="modal fade" id="newAlbumModal" tabindex="-1" role="dialog" aria-labelledby="newAlbumModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

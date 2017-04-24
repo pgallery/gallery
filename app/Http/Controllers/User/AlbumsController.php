@@ -52,8 +52,9 @@ class AlbumsController extends Controller
             elseif($router->input('option') == "byYear" and is_numeric($router->input('id')))
                 $AlbumsQuery = $AlbumsQuery->where('year', $router->input('id'));
 
-            $AlbumsQuery = $AlbumsQuery->where('images_id', '!=', '0')
-                ->get();
+            $AlbumsQuery = $AlbumsQuery->where('images_id', '!=', '0');
+            
+            $AlbumsQuery = $AlbumsQuery->get();
 
             foreach ($AlbumsQuery as $album){
                 $albums[] = [

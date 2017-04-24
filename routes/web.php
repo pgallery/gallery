@@ -129,6 +129,16 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'UsersController@getPage',
             'middleware'    => 'role:admin'
         ]);
+        Route::get('/users/delete/{id}', [
+            'as'            => 'delete-user', 
+            'uses'          => 'UsersController@deleteUser',
+            'middleware'    => 'role:admin'
+        ])->where(['id' => '[0-9]+']);
+        Route::get('/users/edit/{id}', [
+            'as'            => 'edit-user', 
+            'uses'          => 'UsersController@getEdit',
+            'middleware'    => 'role:admin'
+        ])->where(['id' => '[0-9]+']);        
         
         // Группы
         Route::get('/group/edit/{id}', [

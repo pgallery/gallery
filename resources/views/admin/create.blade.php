@@ -4,7 +4,7 @@
     <div class="page-header">
       <h2>Добавление </h2>
     </div>
-
+@if(Helper::isAdmin(Auth::user()->id))
 <dl>
     <dt>
         
@@ -21,7 +21,7 @@
            
     <hr>
   </dd>
-
+@endif
   <dt>
       
         <div class="panel panel-default">

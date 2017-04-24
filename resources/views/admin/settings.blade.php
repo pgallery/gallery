@@ -20,7 +20,7 @@
 
     @endforeach
     <hr>
-    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    <center><button type="submit" class="btn btn-primary">Сохранить изменения</button></center>
 </form>    
 
 <div class="page-header">
@@ -43,7 +43,7 @@
                 <input type="text" class="form-control" name="desc">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        <center><button type="submit" class="btn btn-primary">Добавить</button></center>
     
 </form> 
 @endsection

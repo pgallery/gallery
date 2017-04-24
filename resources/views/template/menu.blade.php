@@ -52,7 +52,6 @@
                     <li><a href="{{ route('create') }}">Добавление</a></li>
                     @if(Helper::isAdmin(Auth::user()->id))
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
-                        <li><a href="">Пересоздать все миниатюры</a></li>
                         <li><a href="{{ route('settings') }}">Настройки</a></li>
                     @endif
                     <li role="separator" class="divider"></li>
