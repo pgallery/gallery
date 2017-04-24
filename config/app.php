@@ -186,8 +186,8 @@ return [
         // User-Agent
         Jenssegers\Agent\AgentServiceProvider::class,
         
-        //
-//        App\Providers\HelperServiceProvider::class,
+        // Forms & HTML
+        Collective\Html\HtmlServiceProvider::class,
     ],
 
     /*
@@ -251,7 +251,9 @@ return [
         'Viewer' => App\Helpers\Viewer::class,
         'BuildImage' => App\Helpers\BuildImage::class,
         
-//        'Helper' => App\Providers\HelperServiceProvider::class,
+        // Forms & HTML
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

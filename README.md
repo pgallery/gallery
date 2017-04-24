@@ -40,3 +40,8 @@ php artisan cache:clear
 |**viewer**| **Нет**| Просмотр с отображением скрытых альбомов (не реализовано) |
 |**guest**| **Нет**| Только просмотр (выдается по умолчанию при регистрации) |
 
+### Если стоит ISPmanager 5 lite
+
+```
+/opt/php71/bin/php /usr/local/bin/composer install
+```

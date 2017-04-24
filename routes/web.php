@@ -139,6 +139,11 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'UsersController@getEdit',
             'middleware'    => 'role:admin'
         ])->where(['id' => '[0-9]+']);        
+        Route::post('/users/save/{id}', [
+            'as'            => 'save-user',
+            'uses'          => 'UsersController@putUser',
+            'middleware'    => 'role:admin'
+        ])->where(['id' => '[0-9]+']);        
         
         // Группы
         Route::get('/group/edit/{id}', [

@@ -59,23 +59,24 @@
                         {{ $user['method'] }}
                     @endif
                 </td>
-                <td>
+                <td><h4>
                     @foreach($user->roles as $roles)
-                       <span class="btn 
+                    
+                       <label class="label  
                                @if($roles->name == 'admin') 
-                                    btn-danger
+                                    label-danger
                                @elseif($roles->name == 'moderator') 
-                                    btn-success
+                                    label-success
                                @elseif($roles->name == 'operator') 
-                                    btn-info
+                                    label-info
                                @elseif($roles->name == 'viewer') 
-                                    btn-warning
+                                    label-warning
                                @else
-                                    btn-default
+                                    label-default
                                @endif
-                       ">{{ $roles->display_name }}</span>
+                       ">{{ $roles->display_name }}</label>
                     @endforeach
-                </td>
+                </h4></td>
             </tr>
 
     @endforeach             
