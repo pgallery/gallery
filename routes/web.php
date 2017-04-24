@@ -73,6 +73,11 @@ Route::group(['middleware' => 'auth'], function () {
         ]);
 
         // Корзина мусора
+        Route::get('/users/trash/', [
+            'as'            => 'users-trash', 
+            'uses'          => 'TrashController@getUsers',
+            'middleware'    => 'role:admin'
+        ]);
         Route::get('/groups/trash/', [
             'as'            => 'groups-trash', 
             'uses'          => 'TrashController@getGroups',

@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Models\Roles;
+
 use Viewer;
+use Cache;
 
 class UsersController extends Controller
 {
@@ -45,7 +47,23 @@ class UsersController extends Controller
             $user->roles()->attach($value);
         }
         
+        if (Cache::has(sha1('HelperIsAdmin_' . $router->input('id') . '_cache')))
+            Cache::forget(sha1('HelperIsAdmin_' . $router->input('id') . '_cache'));        
+        
+        if (Cache::has(sha1('HelperIsAdminMenu_' . $router->input('id') . '_cache')))
+            Cache::forget(sha1('HelperIsAdminMenu_' . $router->input('id') . '_cache'));
+
+        if (Cache::has(sha1('Middleware.UsersRoles_' . $router->input('id') . '_cache')))
+            Cache::forget(sha1('Middleware.UsersRoles_' . $router->input('id') . '_cache'));
+
         return redirect()->route('users');
         
+    }
+    
+    public function deleteUser(Router $router) {
+        
+        User::destroy($router->input('id'));
+        
+        return redirect()->route('users');
     }
 }

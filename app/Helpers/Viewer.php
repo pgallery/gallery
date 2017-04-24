@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
@@ -20,6 +21,7 @@ class Viewer
         }
         else
         {
+            $CountTrashedUsers  = User::onlyTrashed()->count();
             $CountTrashedGroups = Groups::onlyTrashed()->count();
             $CountTrashedAlbums = Albums::onlyTrashed()->count();
             $CountTrashedImages = Images::onlyTrashed()->count();
@@ -27,7 +29,8 @@ class Viewer
             $static = [
                 'group_list'        => Groups::orderBy('name')->get(),
                 'year_list'         => Albums::select('year')->where('permission', 'All')->groupBy('year')->get(), 
-                'summary_trashed'   => $CountTrashedGroups + $CountTrashedAlbums + $CountTrashedImages,
+                'summary_trashed'   => $CountTrashedUsers + $CountTrashedGroups + $CountTrashedAlbums + $CountTrashedImages,
+                'users_trashed'    => $CountTrashedUsers,
                 'groups_trashed'    => $CountTrashedGroups,
                 'albums_trashed'    => $CountTrashedAlbums,
                 'images_trashed'    => $CountTrashedImages,

@@ -7,49 +7,58 @@
       <h2>Редактирование профиля </h2>
     </div>
 
-<form class="form-horizontal" action="{{ route('save-profile') }}" method="POST">
-        {!! csrf_field() !!}
+{!! Form::open([
+    'route'     => 'save-profile',
+    'class'     => 'form-horizontal',
+    'method'    => 'POST'
+]) !!}
+
         <div class="form-group">
             <label class="col-sm-4 control-label">Имя:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="name" value="{{ $user->name }}">
+                {!! Form::text('name', $user->name, array('class' => 'form-control')) !!}
             </div>
         </div>    
         <div class="form-group">
             <label class="col-sm-4 control-label">E-Mail:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="email" value="{{ $user->email }}" @if($user->method != 'thisSite') disabled @endif>
+                @if($user->method != 'thisSite')
+                    {!! Form::email('email', $user->email, array_merge(['class' => 'form-control'], ['disabled' => ''])) !!}
+                @else
+                    {!! Form::email('email', $user->email, array('class' => 'form-control')) !!}
+                @endif
             </div>
         </div> 
 
     @if( $user->method == 'thisSite')
-
         <div class="form-group">
             <label class="col-sm-4 control-label">Новый пароль:</label>
             <div class="col-sm-4">
-                <input type="password" class="form-control" name="newPassword" value="">
+                {!! Form::password('newPassword', ['class' => 'form-control']) !!}
             </div>
         </div> 
         <div class="form-group">
             <label class="col-sm-4 control-label">Повторить пароль:</label>
             <div class="col-sm-4">
-                <input type="password" class="form-control" name="confirmPassword" value="">
+                {!! Form::password('confirmPassword', ['class' => 'form-control']) !!}
             </div>
         </div>     
         <hr>
         <div class="form-group">
             <label class="col-sm-4 control-label">Текущий пароль:</label>
             <div class="col-sm-4">
-                <input type="password" class="form-control" name="password" value="">
+                {!! Form::password('password', ['class' => 'form-control']) !!}
             </div>
         </div>       
         <div class="form-group">
             <label class="col-sm-8 control-label">Для сохранения изменений необходимо указать действующий пароль</label>
         </div>        
-        
     @endif        
         
-    <center><button type="submit" class="btn btn-primary">Сохранить изменения</button></center>
-</form>      
+    <center>
+        {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
+    </center>
+    
+{!! Form::close() !!} 
 
 @endsection

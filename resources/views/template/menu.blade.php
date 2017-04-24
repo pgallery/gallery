@@ -63,6 +63,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> ({{ $summary_trashed }}) <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     @if(Helper::isAdmin(Auth::user()->id))
+                        <li><a href="{{ route('users-trash') }}">Пользователи ({{ $users_trashed }})</a></li>
                         <li><a href="{{ route('groups-trash') }}">Группы ({{ $groups_trashed }})</a></li>
                     @endif
                     <li><a href="{{ route('albums-trash') }}">Альбомы ({{ $albums_trashed }})</a></li>

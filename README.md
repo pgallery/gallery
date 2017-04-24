@@ -20,6 +20,7 @@ php artisan db:seed
 
 ```
 git pull
+composer update
 php artisan migrate
 php artisan cache:clear
 ```
