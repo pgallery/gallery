@@ -20,15 +20,21 @@ use Cache;
 
 class AlbumsController extends Controller
 {
+    
+    // 10080 минут - 1 неделя
+    const SHOWADMIN_CACHE_TTL = 10080;    
+    
     public function deleteAlbum(Router $router) {
+        
+        Albums::destroy($router->input('id'));
+        Images::where('albums_id', $router->input('id'))->delete();
         
         $CacheKey = sha1(Albums::find($router->input('id'))->url);
         
         if (Cache::has($CacheKey))
                 Cache::forget($CacheKey);        
         
-        Albums::destroy($router->input('id'));
-        Images::where('albums_id', $router->input('id'))->delete();
+        Cache::forget(sha1('admin.show.albums'));
         
         return redirect()->route('admin');
         
@@ -38,7 +44,11 @@ class AlbumsController extends Controller
         
         $album = Albums::find($router->input('id'));
         
-        $groups = Groups::all();
+//        $groups = Groups::all();
+        
+        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
+            return Groups::All();
+        });        
         
         return Viewer::get('admin.album_edit', [
             'type'              => 'edit',
@@ -77,6 +87,8 @@ class AlbumsController extends Controller
         if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->albumDir))
             File::makeDirectory(Setting::get('upload_dir') . "/" . $request->albumDir, 0755, true);
         
+        Cache::forget(sha1('admin.show.albums'));
+        
         return back()->withInput();
         
     }
@@ -94,15 +106,15 @@ class AlbumsController extends Controller
             $listImages = $album->images()->paginate(Setting::get('count_images'));
             foreach ($listImages as $image){
 
-                if($image->size > 0)
-                    $file_size = round($image->size / 1024) . " Kb";
-                else
-                    $file_size = "0 Kb";
+//                if($image->size > 0)
+//                    $file_size = round($image->size / 1024) . " Kb";
+//                else
+//                    $file_size = "0 Kb";
 
                 $images[] = [
                     'id'            => $image->id,
                     'name'          => $image->name,
-                    'size'          => $file_size,
+                    'size'          => round($image->size / 1024) . " Kb",
                     'height'        => $image->height,
                     'width'         => $image->width,                    
                     'owner'         => User::find($image->users_id)->name,
@@ -139,6 +151,8 @@ class AlbumsController extends Controller
             'year'          => $request->albumYear,
             'permission'    => $request->albumPermission,
         ]);
+        
+        Cache::forget(sha1('admin.show.albums'));
         
         return redirect()->route('admin');
         
@@ -202,6 +216,8 @@ class AlbumsController extends Controller
             Albums::find($album->id)->update(['images_id' => $Images->id]);
             
         }
+        
+        Cache::forget(sha1('admin.show.albums'));
         
         return redirect()->route('admin');
     }

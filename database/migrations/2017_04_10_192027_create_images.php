@@ -16,9 +16,9 @@ class CreateImages extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('size')->default('NULL');
-            $table->string('thumbs_size')->default('NULL');
-            $table->string('modile_size')->default('NULL');
+            $table->bigInteger('size')->default('0');
+            $table->bigInteger('thumbs_size')->default('0');
+            $table->bigInteger('modile_size')->default('0');
             $table->bigInteger('albums_id');
             $table->bigInteger('users_id')->default('1');
             $table->integer('is_rebuild')->default('0');

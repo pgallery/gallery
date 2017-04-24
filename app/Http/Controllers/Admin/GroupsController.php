@@ -21,6 +21,8 @@ class GroupsController extends Controller
             'name' => $request->groupName,
         ]);
         
+        Cache::forget(sha1('admin.show.groups'));
+        
         return back()->withInput();
         
     }
@@ -36,6 +38,8 @@ class GroupsController extends Controller
         }
         
         Groups::destroy($router->input('id'));
+        Cache::forget(sha1('admin.show.groups'));
+        
         return redirect()->route('admin');
         
     }
@@ -58,6 +62,8 @@ class GroupsController extends Controller
             'name'          => $request->groupName,
             'users_id'      => Auth::user()->id,
         ]);        
+        
+        Cache::forget(sha1('admin.show.groups'));
         
         return redirect()->route('admin');
         
