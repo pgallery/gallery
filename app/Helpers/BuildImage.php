@@ -35,25 +35,25 @@ class BuildImage
         if(!File::isDirectory($modile_path))
             File::makeDirectory($modile_path, 0755, true);           
         
+        $OriginalImage = Image::make($file_path);
         
+        $imgSize         = $OriginalImage->filesize();
+        $imgHeight       = $OriginalImage->height();
+        $imgWidth        = $OriginalImage->width();        
+        
+        // Делаем версию изображения для мобильных устройств
+        $OriginalImage->resize(Setting::get('mobile_width'), null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($modile_file);         
+        
+        $MobileSizeImage = $OriginalImage->filesize();    
         
         // Делаем превью
-        Image::make($file_path)
-            ->fit(Setting::get('thumbs_width'), Setting::get('thumbs_height'))
+        $OriginalImage->fit(Setting::get('thumbs_width'), Setting::get('thumbs_height'))
             ->save($thumbs_file);
 
-        // Делаем версию изображения для мобильных устройств
-        Image::make($file_path)
-            ->resize(Setting::get('mobile_width'), null, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($modile_file);          
-        
-        $imgSize         = Image::make($file_path)->filesize();
-        $imgHeight       = Image::make($file_path)->height();
-        $imgWidth        = Image::make($file_path)->width();
-        $MobileSizeImage = Image::make($modile_file)->filesize();
-        $ThumbsSizeImage = Image::make($thumbs_file)->filesize();
-        
+        $ThumbsSizeImage = $OriginalImage->filesize(); 
+
         Images::where('id', $id)->update([
             'size'          => $imgSize,
             'height'        => $imgHeight,

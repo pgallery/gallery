@@ -108,10 +108,10 @@ class AlbumsController extends Controller
             $mobile_dir = Setting::get('mobile_upload_dir');
             $upload_dir = Setting::get('upload_dir'); 
             
-            $listImages = Cache::remember(sha1('admin.show.albumImages.' . $thisPage), self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {                
+            $listImages = Cache::remember(sha1('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage), self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {                
                 return $thisAlbum->images()->paginate(Setting::get('count_images'));
             });
-                        
+            
         }
         
         return Viewer::get('admin.show_album', compact(
