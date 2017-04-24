@@ -123,6 +123,13 @@ Route::group(['middleware' => 'auth'], function () {
             'middleware'    => 'role:admin'
         ]);
         
+        // Управление пользователями
+        Route::get('/users/', [
+            'as'            => 'users', 
+            'uses'          => 'UsersController@getPage',
+            'middleware'    => 'role:admin'
+        ]);
+        
         // Группы
         Route::get('/group/edit/{id}', [
             'as'            => 'edit-group',
