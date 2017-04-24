@@ -22,11 +22,11 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">E-Mail:</label>
             <div class="col-sm-4">
-                @if($user->method != 'thisSite')
-                    {!! Form::email('email', $user->email, array_merge(['class' => 'form-control'], ['disabled' => ''])) !!}
-                @else
-                    {!! Form::email('email', $user->email, array('class' => 'form-control')) !!}
-                @endif
+                {!! Form::email('email', $user->email, 
+                ($user->method != 'thisSite'
+                    ? array_merge(['class' => 'form-control'], ['disabled' => '']) 
+                    : array('class' => 'form-control')
+                )) !!}
             </div>
         </div> 
 

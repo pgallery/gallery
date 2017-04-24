@@ -17,7 +17,6 @@ class Setting
             
             $globalSettings = Settings::select('set_name', 'set_value')->get()->toArray();
             foreach ($globalSettings as $Setting){
-                
                 $result[$Setting['set_name']] = $Setting['set_value'];
             }
             

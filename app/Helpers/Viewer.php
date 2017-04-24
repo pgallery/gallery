@@ -30,11 +30,10 @@ class Viewer
                 'group_list'        => Groups::orderBy('name')->get(),
                 'year_list'         => Albums::select('year')->where('permission', 'All')->groupBy('year')->get(), 
                 'summary_trashed'   => $CountTrashedUsers + $CountTrashedGroups + $CountTrashedAlbums + $CountTrashedImages,
-                'users_trashed'    => $CountTrashedUsers,
+                'users_trashed'     => $CountTrashedUsers,
                 'groups_trashed'    => $CountTrashedGroups,
                 'albums_trashed'    => $CountTrashedAlbums,
                 'images_trashed'    => $CountTrashedImages,
-                
                 'gallery_name'      => Setting::get('gallery_name'),
             ];
             

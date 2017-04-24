@@ -44,9 +44,12 @@ class AlbumsController extends Controller
         
         $album = Albums::find($router->input('id'));
 
-        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
-            return Groups::All();
-        });        
+        $groups = Groups::pluck('name','id');
+        
+        
+//        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
+//            return Groups::All();
+//        });        
         
         return Viewer::get('admin.album_edit', [
             'type'              => 'edit',

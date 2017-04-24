@@ -1,81 +1,84 @@
 @if(isset($type) && $type == 'edit')
-    <form class="form-horizontal" action="{{ route('save-album', ['id' => $albumId]) }}" method="POST">
-        
+    
+    {!! Form::open([
+        'route'     => ['save-album', $albumId],
+        'class'     => 'form-horizontal',
+        'method'    => 'POST'
+    ]) !!}
+    
 @else
-    <form class="form-horizontal" action="{{ route('create-album') }}" method="POST">
 
+    {!! Form::open([
+        'route'     => 'create-album',
+        'class'     => 'form-horizontal',
+        'method'    => 'POST'
+    ]) !!}
+        
 @endif
         
-
         <div class="form-group">
             <label class="col-sm-2 control-label">Название:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="albumName" @isset($albumName) value="{{ $albumName }}" @endisset>
+                {!! Form::text('albumName', (!empty($albumName) ? $albumName : ''), array('class' => 'form-control')) !!}
             </div>
             <label class="col-sm-2 control-label">URL:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="albumUrl" @isset($albumUrl) value="{{ $albumUrl }}" @endisset>     
+                {!! Form::text('albumUrl', (!empty($albumUrl) ? $albumUrl : ''), array('class' => 'form-control')) !!}
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Директория:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="albumDir" @isset($albumDir) value="{{ $albumDir }}" disabled @endisset>   
+                {!! Form::text('albumUrl', (!empty($albumDir) ? $albumDir : ''), 
+                (!empty($albumDir) 
+                    ? array_merge(['class' => 'form-control'], ['disabled' => '']) 
+                    : array('class' => 'form-control')
+                )) !!}
             </div>
             <label class="col-sm-2 control-label">Год:</label>
             <div class="col-sm-4">
-                <select class="form-control" name="albumYear">
-
-                    @for ($i = 2000; $i < 2018; $i++)
-                        <option value="{{ $i }}" @if(isset($albumYear) && $i == $albumYear) selected @endif>{{ $i }}</option>
-                    @endfor
-
-                </select>
+                {!! Form::selectRange('albumYear', 2000, 2017, (!empty($albumYear) ? $albumYear : null), ['class' => 'form-control']) !!}
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Группа:</label>
             <div class="col-sm-4">
-                <select class="form-control" name="albumGroup"
-                    @if (count($groups) == 0)
-                        disabled
-                    @endif>
-                    @foreach($groups as $group)
-                        <option value="{{ $group->id }}" @if(isset($albumPermission) && $group->id == $albumGroup) selected @endif>{{ $group->name }}</option>
-                    @endforeach
-                </select>
+                {!! Form::select('albumGroup', $groups, 
+                (isset($albumGroup)
+                    ? $albumGroup
+                    : null), array('class' => 'form-control')) !!}
             </div>            
             <label class="col-sm-2 control-label">Права:</label>
             <div class="col-sm-4">
-                
-                <select class="form-control" name="albumPermission">
-                    <option value="All" @if(isset($albumPermission) && 'All' == $albumPermission) selected @endif>Всем</option>
-                    <option value="Url" @if(isset($albumPermission) && 'Url' == $albumPermission) selected @endif>По ссылке</option>
-                </select>                
-                
+                {!! Form::select('albumPermission', [
+                    'All'  => 'Всем',
+                    'Url'  => 'По ссылке'
+                ], 
+                (isset($albumPermission)
+                    ? $albumPermission
+                    : null), array('class' => 'form-control')) !!}                
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Описание:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="albumDesc" @isset($albumDesc) value="{{ $albumDesc }}" @endisset>    
+                {!! Form::text('albumDesc', (!empty($albumDesc) ? $albumDesc : ''), array('class' => 'form-control')) !!}
             </div>
         </div>
 
-<center>
-@if(isset($type) && $type == 'edit')
-        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-        
-@else
-        <button type="submit" class="btn btn-primary"
-        @if (count($groups) == 0)
-            disabled
-        @endif>Создать</button>
+    <center>
+    @if(isset($type) && $type == 'edit')
+        {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
+    @else
+        {!! Form::submit('Сохранить изменения', 
+        (count($groups) == 0 
+            ? array_merge(['class' => 'btn btn-primary'], ['disabled' => '']) 
+            : array('class' => 'btn btn-primary')
+        )) !!}
+    @endif
+    </center>
 
-@endif
-</center>
-
-    </form>       
+    {!! Form::close() !!}     

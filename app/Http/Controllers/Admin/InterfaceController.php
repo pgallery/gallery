@@ -84,10 +84,10 @@ class InterfaceController extends Controller
     
     public function getCreateForm(){
         
-        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
-            return Groups::All();
-        });
-        
+//        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
+//            return Groups::All();
+//        });
+        $groups = Groups::pluck('name','id');
         $albums = Albums::all();  
         
         return Viewer::get('admin.create', [

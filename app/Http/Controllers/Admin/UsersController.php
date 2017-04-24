@@ -26,9 +26,9 @@ class UsersController extends Controller
     
     public function getEdit(Router $router) {
         
-        $user = User::find($router->input('id'));
-        $roles = Roles::pluck('display_name','id');
-        $userRole = $user->roles->pluck('id','id')->toArray();
+        $user       = User::find($router->input('id'));
+        $roles      = Roles::pluck('display_name','id');
+        $userRole   = $user->roles->pluck('id','id')->toArray();
 
         return Viewer::get('admin.user_edit', compact(
                 'user',
