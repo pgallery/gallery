@@ -153,7 +153,7 @@ Route::group(['middleware' => 'auth'], function () {
         ])->where(['id' => '[0-9]+']);
         Route::post('/album/edit/{id}', [
             'as'            => 'save-album', 
-            'uses'          => 'AlbumsController@putSaveEditAlbum',
+            'uses'          => 'AlbumsController@putSaveAlbum',
             'middleware'    => 'role:admin|moderator'
         ])->where(['id' => '[0-9]+']);
         Route::get('/album/delete/{id}', [

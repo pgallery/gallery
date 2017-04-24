@@ -65,10 +65,8 @@ class AlbumsController extends Controller
     
     public function postCreateAlbum(Request $request) {
         
-        if(empty($request->albumUrl))
-            $getAlbumUrl = md5($request->albumName);
-        else
-            $getAlbumUrl = $request->albumUrl;
+        $getAlbumUrl = ($request->albumUrl) ? $request->albumUrl : md5($request->albumName) ;
+        $albumDesc = ($request->albumDesc) ? $request->albumDesc : $request->albumName;
         
         Albums::create([
             'name'          => $request->albumName, 
@@ -76,7 +74,7 @@ class AlbumsController extends Controller
             'directory'     => $request->albumDir, 
             'images_id'     => '0', 
             'year'          => $request->albumYear, 
-            'desc'          => $request->albumDesc, 
+            'desc'          => $albumDesc, 
             'permission'    => $request->albumPermission, 
             'groups_id'     => $request->albumGroup, 
             'users_id'      => Auth::user()->id,
@@ -124,21 +122,22 @@ class AlbumsController extends Controller
         
     }
     
-    public function putSaveEditAlbum(Router $router, Request $request) {
+    public function putSaveAlbum(Router $router, Request $request) {
         
-        $CacheKey = sha1(Albums::find($router->input('id'))->url);
-        
-        if (Cache::has($CacheKey))
-                Cache::forget($CacheKey);
+        $getAlbumUrl = ($request->albumUrl) ? $request->albumUrl : md5($request->albumName) ;
+        $albumDesc = ($request->albumDesc) ? $request->albumDesc : $request->albumName;
         
         Albums::where('id', $router->input('id'))->update([
             'name'          => $request->albumName,
-            'url'           => $request->albumUrl,
-            'desc'          => $request->albumDesc,
+            'url'           => $getAlbumUrl,
+            'desc'          => $albumDesc,
             'groups_id'     => $request->albumGroup,
             'year'          => $request->albumYear,
             'permission'    => $request->albumPermission,
         ]);
+        
+        if (Cache::has(Albums::find($router->input('id'))->url))
+                Cache::forget(Albums::find($router->input('id'))->url);        
         
         Cache::forget(sha1('admin.show.albums'));
         
