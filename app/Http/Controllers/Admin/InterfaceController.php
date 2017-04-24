@@ -24,15 +24,13 @@ class InterfaceController extends Controller
     const SHOWALBUMS_COUNTER_PAGE = 10;
 
     public function getPage(){
-                
+        
         if(Groups::All()->count() == 0)
             $groups=[];
         else
             $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
                 return Groups::All();
             });
-            
-//            $groups = ;
         
         if(Albums::All()->count() == 0)
         {

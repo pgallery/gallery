@@ -29,24 +29,18 @@ class User extends Authenticatable
     
     public function roles()
     {
+        
         return $this->belongsToMany('App\Models\Roles', 'roles_user');
+
     }
-    
-//    public function isAdmin($user)
-//    {
-//        $userRoles = $this->find($user)->roles->pluck('id','name')->toArray();
-//        
-//        if(in_array("admin", $userRoles))
-//            return true;
-//        else
-//            return false;
-//        
-//    }    
     
     public function hasRole($roles)
     {
         $user_id = \Illuminate\Support\Facades\Auth::user()->id;
-        $user_roles = $this->find($user_id)->roles;
+        
+        $user_roles = \Cache::remember(sha1('Middleware.UsersRoles_' . $user_id . '_cache'), 100, function() use ($user_id){
+            return $this->find($user_id)->roles;
+        });
         
         if(is_array($roles))
         {
@@ -59,7 +53,7 @@ class User extends Authenticatable
         else
         {    
             foreach($user_roles as $user_role){
-                if($user_role->name == $roles)
+                if($user_role['name'] == $roles)
                     return true;
             }
         }

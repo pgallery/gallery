@@ -18,16 +18,22 @@ class Groups extends Model
     
     public function albumCount()
     {
-        return $this->hasMany('App\Models\Albums')->count();
+        return \Cache::remember(sha1('albumCount_' . $this->id . '_cache'), 100, function(){
+            return $this->hasMany('App\Models\Albums')->count();           
+        });
     }
     
     public function albumCountPublic()
     {
-        return $this->hasMany('App\Models\Albums')->where('albums.permission', 'All')->count();
+        return \Cache::remember(sha1('albumCountPublic_' . $this->id . '_cache'), 100, function(){
+            return $this->hasMany('App\Models\Albums')->where('albums.permission', 'All')->count();           
+        });
     }     
     
     public function albumCountPrivate()
     {
-        return $this->hasMany('App\Models\Albums')->where('albums.permission', '!=', 'All')->count();
+        return \Cache::remember(sha1('albumCountPrivate_' . $this->id . '_cache'), 100, function(){
+            return $this->hasMany('App\Models\Albums')->where('albums.permission', '!=', 'All')->count();           
+        });
     }      
 }

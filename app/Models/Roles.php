@@ -8,6 +8,8 @@ class Roles extends Model
 {
     public function users()
     {
-        return $this->belongsToMany('App\User', 'roles_user');
+        return \Cache::remember(sha1('RolesUsers_' . $this->id . '_cache'), 100, function(){
+            return $this->belongsToMany('App\User', 'roles_user');         
+        });
     } 
 }

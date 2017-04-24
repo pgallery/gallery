@@ -29,7 +29,7 @@ class Albums extends Model
     public function imagesCount()
     {
         return $this->hasMany('App\Models\Images')->count();
-    }    
+    }
     
     public function imagesSumSize()
     {
