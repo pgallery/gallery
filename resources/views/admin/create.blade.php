@@ -4,6 +4,7 @@
     <div class="page-header">
       <h2>Добавление </h2>
     </div>
+
 @if(Helper::isAdmin(Auth::user()->id))
 <dl>
     <dt>

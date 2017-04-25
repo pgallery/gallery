@@ -1,7 +1,7 @@
 @if(isset($type) && $type == 'edit')
 
     {!! Form::model($group, [
-        'method'    => 'PATCH',
+        'method'    => 'POST',
         'route'     => ['save-group', $group->id],
         'class'     => 'form-horizontal',
     ]) !!}    
@@ -23,7 +23,7 @@
             </div>
         </div>
         <center>
-            {!! Form::submit('Сохранить', array('class' => 'btn btn-primary')) !!}
+            {!! Form::submit((isset($type) && $type == 'edit' ? 'Сохранить изменения' : 'Создать группу' ), array('class' => 'btn btn-primary')) !!}       
         </center>
 
     {!! Form::close() !!}

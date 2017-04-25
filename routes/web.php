@@ -156,7 +156,7 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'GroupsController@getEditGroup',
             'middleware'    => 'role:admin'
         ])->where(['id' => '[0-9]+']);
-        Route::patch('/group/save/{id}', [
+        Route::post('/group/save/{id}', [
             'as'            => 'save-group',
             'uses'          => 'GroupsController@putSaveEditGroup',
             'middleware'    => 'role:admin'

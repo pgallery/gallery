@@ -49,12 +49,12 @@ class AlbumsController extends Controller
     public function getEditAlbum(Router $router) {
         
         $album  = Albums::find($router->input('id'));
-        $groups = Groups::pluck('name','id');
+        $groupsArray = Groups::pluck('name','id');
 
         return Viewer::get('admin.album_edit', [
-            'type'   => 'edit',
-            'album'  => $album,
-            'groups' => $groups,
+            'type'          => 'edit',
+            'album'         => $album,
+            'groupsArray'   => $groupsArray,
         ]);
         
     }

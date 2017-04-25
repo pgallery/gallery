@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
+use App\Http\Requests\GroupsRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\Groups;
@@ -16,12 +17,16 @@ use Cache;
 
 class GroupsController extends Controller
 {
+    
     /*
      *  Создание новой группы
      */
-    public function postCreateGroup(Request $request) {
+    public function postCreateGroup(GroupsRequest $request) {
         
-        Groups::create($request->all());
+        $input = $request->all();
+        $input['users_id'] = Auth::user()->id;
+
+        Groups::create($input);
         
         Cache::forget(sha1('admin.show.groups'));
         
@@ -66,17 +71,16 @@ class GroupsController extends Controller
     /*
      * Сохранение изменений группы
      */
-    public function putSaveEditGroup(Router $router, Request $request) {
+    public function putSaveEditGroup(Router $router, GroupsRequest $request) {
         
         Groups::where('id', $router->input('id'))->update([
-            'name'          => $request->input('name'),
-            'users_id'      => Auth::user()->id,
+            'name'          => $request->input('name')
         ]);
         
         Cache::forget(sha1('admin.show.groups'));
         
         return redirect()->route('admin');
         
-    }  
+    }
     
 }

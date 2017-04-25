@@ -29,9 +29,9 @@ class InterfaceController extends Controller
     public function getPage(){
         
         if(Groups::All()->count() == 0){
-            $groups=[];
-            $groupsArray=[];
-        }else{    
+            $groups = [];
+            $groupsArray = [];
+        }else{
             $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
                 return Groups::All();
             });
@@ -52,7 +52,7 @@ class InterfaceController extends Controller
                 $albums = Cache::get($CacheKey);
             }
             else
-            {            
+            {
             
                 $AllAlbums = Albums::all();
 
@@ -96,7 +96,7 @@ class InterfaceController extends Controller
         
         $groupsArray = Groups::pluck('name','id');
         $albums = Albums::pluck('name','id');  
-        
+
         return Viewer::get('admin.create', compact(
             'albums', 
             'groupsArray'
