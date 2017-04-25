@@ -87,8 +87,11 @@
         <h4 class="modal-title" id="RenameModalLabel">Переименовывание изображения</h4>
       </div>
         
-      <form action="{{ route('rename-image') }}" method="POST" class="form-horizontal">
-        
+        {!! Form::open([
+            'route'     => 'rename-image',
+            'class'     => 'form-horizontal',
+            'method'    => 'POST'
+        ]) !!}        
           <input type="hidden"  name="id" id="id" value="">
           
       <div class="modal-body">
@@ -106,7 +109,7 @@
         <button type="submit" class="btn btn-primary">Сохранить</button>
       </div>
           
-      </form>
+      {!! Form::close() !!}
           
     </div>
   </div>

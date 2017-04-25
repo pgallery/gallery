@@ -88,7 +88,7 @@ class InterfaceController extends Controller
 //            return Groups::All();
 //        });
         $groups = Groups::pluck('name','id');
-        $albums = Albums::all();  
+        $albums = Albums::pluck('name','id');  
         
         return Viewer::get('admin.create', [
             'albums'     => $albums, 

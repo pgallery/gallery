@@ -68,12 +68,23 @@ class baseConfig extends Seeder
             'set_name' => 'use_ulogin', 
             'set_value' => 'no',
             'set_desc' => 'Использовать авторизацию через социальные сети (uLogin.ru)',
-        ]);        
+        ]);
         Settings::create([
             'set_name' => 'ulogin_id', 
             'set_value' => '0000',
-            'set_desc' => 'ID Вашего сайта в системе uLogin.ru (требуется только при включенной авторизации через uLogin.ru)',
-        ]);          
+            'set_desc' => 'ID Вашего сайта в системе uLogin.ru (требуется только при use_ulogin == yes)',
+        ]);
+        Settings::create([
+            'set_name' => 'count_images', 
+            'set_value' => '24',
+            'set_desc' => 'Количество изображений на страницу',
+        ]);
+        Settings::create([
+            'set_name' => 'start_year', 
+            'set_value' => '2000',
+            'set_desc' => 'Минимальный год Ваших фотоальбомов',
+        ]);
+        
         
     }
 }

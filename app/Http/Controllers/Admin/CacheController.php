@@ -12,7 +12,7 @@ class CacheController extends Controller
     public function flushCache() {
         
         Cache::flush();
-        return back()->withInput();
+        return back();
         
     }
 }

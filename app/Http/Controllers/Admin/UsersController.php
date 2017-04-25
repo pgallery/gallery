@@ -41,11 +41,12 @@ class UsersController extends Controller
         
         $user = User::find($router->input('id'));
         $user->update($request->all());
-        \DB::table('roles_user')->where('user_id', $router->input('id'))->delete();        
+
+        $user->roles()->sync($request->input('roles'));
         
-        foreach ($request->input('roles') as $key => $value) {
-            $user->roles()->attach($value);
-        }
+//        foreach ($request->input('roles') as $key => $value) {
+//            $user->roles()->attach($value);
+//        }
         
         if (Cache::has(sha1('HelperIsAdmin_' . $router->input('id') . '_cache')))
             Cache::forget(sha1('HelperIsAdmin_' . $router->input('id') . '_cache'));        

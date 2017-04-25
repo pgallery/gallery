@@ -6,45 +6,59 @@
   <h2>Изменение настроек</h2>
 </div>
 
-<form class="form-horizontal" action="{{ route('save-settings') }}" method="POST">
 
+    {!! Form::open([
+        'route'     => 'save-settings',
+        'class'     => 'form-horizontal',
+        'method'    => 'POST'
+    ]) !!}     
+    
     @foreach($settings as $setting)
         
         <div class="form-group">
             <label class="col-sm-2 control-label">{{ $setting['set_name'] }}:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="newSetting[{{ $setting['set_name'] }}]" value="{{ $setting['set_value'] }}">
+                {!! Form::text("newSetting[$setting[set_name]]", $setting['set_value'], array('class' => 'form-control')) !!}
             </div>
             <p class="help-block">{{ $setting['set_desc'] }}</p>
         </div>    
 
     @endforeach
     <hr>
-    <center><button type="submit" class="btn btn-primary">Сохранить изменения</button></center>
-</form>    
+    <center>
+        {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
+    </center>
+    
+    {!! Form::close() !!}   
 
 <div class="page-header">
   <h2>Добавление параметра</h2>
 </div>
 
-<form class="form-horizontal" action="{{ route('create-settings') }}" method="POST">
-
+    {!! Form::open([
+        'route'     => 'create-settings',
+        'class'     => 'form-horizontal',
+        'method'    => 'POST'
+    ]) !!}  
         <div class="form-group">
             <div class="col-xs-6">
                 Наименование ключа:
-                <input type="text" class="form-control" name="key">
+                {!! Form::text('key', null, array('class' => 'form-control')) !!}
             </div>
             <div class="col-xs-6">
                 Значение:
-                <input type="text" class="form-control" name="value">
+                {!! Form::text('value', null, array('class' => 'form-control')) !!}
             </div>
             <div class="col-xs-12">
                 Описание:
-                <input type="text" class="form-control" name="desc">
+                {!! Form::text('desc', null, array('class' => 'form-control')) !!}
             </div>
         </div>
-        <center><button type="submit" class="btn btn-primary">Добавить</button></center>
+        <center>
+            {!! Form::submit('Добавить', array('class' => 'btn btn-primary')) !!}
+        </center>
     
-</form> 
+    {!! Form::close() !!}
+    
 @endsection
     

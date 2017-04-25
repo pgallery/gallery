@@ -1,10 +1,10 @@
 @if(isset($type) && $type == 'edit')
     
-    {!! Form::open([
-        'route'     => ['save-album', $albumId],
+    {!! Form::model($album, [
+        'method'    => 'PATCH',
+        'route'     => ['save-album', $album->id],
         'class'     => 'form-horizontal',
-        'method'    => 'POST'
-    ]) !!}
+    ]) !!}     
     
 @else
 
@@ -19,53 +19,53 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Название:</label>
             <div class="col-sm-4">
-                {!! Form::text('albumName', (!empty($albumName) ? $albumName : ''), array('class' => 'form-control')) !!}
+                {!! Form::text('name', null, array('class' => 'form-control')) !!}
             </div>
             <label class="col-sm-2 control-label">URL:</label>
             <div class="col-sm-4">
-                {!! Form::text('albumUrl', (!empty($albumUrl) ? $albumUrl : ''), array('class' => 'form-control')) !!}
+                {!! Form::text('url', null, array('class' => 'form-control')) !!}
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Директория:</label>
             <div class="col-sm-4">
-                {!! Form::text('albumUrl', (!empty($albumDir) ? $albumDir : ''), 
-                (!empty($albumDir) 
+                {!! Form::text('directory', null, 
+                (!empty($album->directory) 
                     ? array_merge(['class' => 'form-control'], ['disabled' => '']) 
                     : array('class' => 'form-control')
                 )) !!}
             </div>
             <label class="col-sm-2 control-label">Год:</label>
             <div class="col-sm-4">
-                {!! Form::selectRange('albumYear', 2000, 2017, (!empty($albumYear) ? $albumYear : null), ['class' => 'form-control']) !!}
+                {!! Form::selectYear('year', Setting::get('start_year'), date('Y'), null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Группа:</label>
             <div class="col-sm-4">
-                {!! Form::select('albumGroup', $groups, 
-                (isset($albumGroup)
-                    ? $albumGroup
-                    : null), array('class' => 'form-control')) !!}
-            </div>            
+                
+                        {!! Form::select('groups_id', $groups, null,
+                        (count($groups) == 0 
+                            ? array_merge(['placeholder' => 'Отсутствуют группы', 'class' => 'form-control'], ['disabled' => '']) 
+                            : array('class' => 'form-control')
+                        )) !!}                
+                
+            </div>
             <label class="col-sm-2 control-label">Права:</label>
             <div class="col-sm-4">
-                {!! Form::select('albumPermission', [
+                {!! Form::select('permission', [
                     'All'  => 'Всем',
                     'Url'  => 'По ссылке'
-                ], 
-                (isset($albumPermission)
-                    ? $albumPermission
-                    : null), array('class' => 'form-control')) !!}                
+                ], null, array('class' => 'form-control')) !!}                
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">Описание:</label>
             <div class="col-sm-10">
-                {!! Form::text('albumDesc', (!empty($albumDesc) ? $albumDesc : ''), array('class' => 'form-control')) !!}
+                {!! Form::text('desc', null, array('class' => 'form-control')) !!}
             </div>
         </div>
 
@@ -73,7 +73,7 @@
     @if(isset($type) && $type == 'edit')
         {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
     @else
-        {!! Form::submit('Сохранить изменения', 
+        {!! Form::submit('Создать альбом', 
         (count($groups) == 0 
             ? array_merge(['class' => 'btn btn-primary'], ['disabled' => '']) 
             : array('class' => 'btn btn-primary')
@@ -81,4 +81,4 @@
     @endif
     </center>
 
-    {!! Form::close() !!}     
+    {!! Form::close() !!}

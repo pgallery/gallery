@@ -1,18 +1,29 @@
 @if(isset($type) && $type == 'edit')
-    <form class="form-horizontal" action="{{ route('save-group', ['id' => $groupId]) }}" method="POST">
-        
-@else
-    <form class="form-horizontal" action="{{ route('create-group') }}" method="POST">
 
+    {!! Form::model($group, [
+        'method'    => 'PATCH',
+        'route'     => ['save-group', $group->id],
+        'class'     => 'form-horizontal',
+    ]) !!}    
+    
+@else
+
+    {!! Form::open([
+        'route'     => 'create-group',
+        'class'     => 'form-horizontal',
+        'method'    => 'POST'
+    ]) !!}        
+        
 @endif
         
         <div class="form-group">
             <label class="col-sm-4 control-label">Название группы:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="groupName" @isset($groupName) value="{{ $groupName }}" @endisset>
+                {!! Form::text('name', null, array('class' => 'form-control')) !!}
             </div>
-        </div>   
+        </div>
         <center>
-            <button type="submit" class="btn btn-primary">Создать</button>
+            {!! Form::submit('Сохранить', array('class' => 'btn btn-primary')) !!}
         </center>
-    </form> 
+
+    {!! Form::close() !!}

@@ -69,7 +69,7 @@ class TrashController extends Controller
             $this->destroyGroup($group->id);
         }        
 
-        return back()->withInput();
+        return back();
         
     }
     

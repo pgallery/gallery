@@ -49,6 +49,8 @@ class SettingsController extends Controller
             'set_desc'  => $request->input('desc'),
         ]);
         
+        Cache::forget(sha1('global.settings'));
+        
         return redirect()->route('settings');
     }
 }

@@ -1,54 +1,51 @@
-        <form method="post" action="{{ route('uploads') }}" enctype="multipart/form-data" class="form-horizontal">
-            {!! csrf_field() !!}
+            
+    {!! Form::open([
+        'route'     => 'uploads',
+        'class'     => 'form-horizontal',
+        'method'    => 'POST',
+        'files' => true
+    ]) !!}             
             
             @if(isset($type) && $type == 'thisAlbum')
-                <input type="hidden" name="album_id" value="{{ $album_id }}">
+            
+               {!! Form::hidden('album_id', $album_id) !!} 
+               
             @else
             
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Наименование альбома:</label>
                     <div class="col-sm-6">
-                        
-                        <select class="form-control" name="album_id"
-                        @if (count($albums) == 0)
-                                disabled
-                        @endif>
-                            @foreach($albums as $album)
-                                <option value="{{ $album->id }}">{{ $album->name }}</option>
-                            @endforeach
-                        </select>                        
-                        
+                        {!! Form::select('album_id', $albums, null, (empty($type) && count($albums) == 0 
+                            ? array_merge(['placeholder' => 'Отсутствуют альбомы', 'class' => 'form-control'], ['disabled' => '']) 
+                            : array('class' => 'form-control')
+                        )) !!}
                     </div>
-                </div>            
+                </div>
 
             @endif
                 
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Выберите файлы:</label>
                     <div class="col-sm-6">
-                        
-                        <input type="file" multiple name="file[]" class="filestyle" data-input="false">
-                        
+                        {!! Form::file('file[]', array('class' => 'filestyle', 'data-input' => 'false', 'multiple' => true)) !!}
                     </div>
                 </div>            
             
-                
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Заменять существующие файлы:</label>
                     <div class="col-sm-6">
-                        
-                        <input type="checkbox" name="replace"> 
-                        
+                        {!! Form::checkbox('replace', 'yes', false) !!}
                     </div>
                 </div>                 
-                
-                
-          
 
             <center>
-            <button type="submit" class="btn btn-primary"
-            @if (empty($type) && count($albums) == 0)
-                    disabled
-            @endif>Загрузить выбранные файлы</button>
+                
+                {!! Form::submit('Загрузить выбранные файлы', 
+                (empty($type) && count($albums) == 0 
+                    ? array_merge(['class' => 'btn btn-primary'], ['disabled' => '']) 
+                    : array('class' => 'btn btn-primary')
+                )) !!}
+        
             </center>
-        </form>
+
+    {!! Form::close() !!}            

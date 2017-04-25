@@ -60,7 +60,7 @@ class ImagesController extends Controller
         
         Cache::flush();
         
-        return back()->withInput();
+        return back();
         
     }    
     
@@ -86,7 +86,7 @@ class ImagesController extends Controller
     
         Cache::flush();
         
-        return back()->withInput();
+        return back();
         
     }
     
@@ -94,7 +94,7 @@ class ImagesController extends Controller
         
         BuildImage::run($router->input('id'));
         
-        return back()->withInput();
+        return back();
         
     }
     
@@ -115,7 +115,7 @@ class ImagesController extends Controller
         
         BuildImage::run($router->input('id'));
         
-        return back()->withInput();
+        return back();
         
     }
     
@@ -141,7 +141,7 @@ class ImagesController extends Controller
         
         Cache::flush();
         
-        return back()->withInput();
+        return back();
        
     }
     
@@ -150,7 +150,7 @@ class ImagesController extends Controller
         $album_id = Images::find($router->input('id'))->album->id;
         Albums::find($album_id)->update(['images_id' => $router->input('id')]);
         
-        return back()->withInput();
+        return back();
         
     }
     

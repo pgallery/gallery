@@ -156,7 +156,7 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'GroupsController@getEditGroup',
             'middleware'    => 'role:admin'
         ])->where(['id' => '[0-9]+']);
-        Route::post('/group/save/{id}', [
+        Route::patch('/group/save/{id}', [
             'as'            => 'save-group',
             'uses'          => 'GroupsController@putSaveEditGroup',
             'middleware'    => 'role:admin'
@@ -178,7 +178,7 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'AlbumsController@getEditAlbum',
             'middleware'    => 'role:admin|moderator'
         ])->where(['id' => '[0-9]+']);
-        Route::post('/album/edit/{id}', [
+        Route::patch('/album/save/{id}', [
             'as'            => 'save-album', 
             'uses'          => 'AlbumsController@putSaveAlbum',
             'middleware'    => 'role:admin|moderator'

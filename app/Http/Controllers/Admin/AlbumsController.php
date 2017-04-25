@@ -43,43 +43,30 @@ class AlbumsController extends Controller
     public function getEditAlbum(Router $router) {
         
         $album = Albums::find($router->input('id'));
-
         $groups = Groups::pluck('name','id');
-        
-        
-//        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
-//            return Groups::All();
-//        });        
-        
+
         return Viewer::get('admin.album_edit', [
-            'type'              => 'edit',
-            'albumId'           => $album->id,
-            'albumName'         => $album->name,
-            'albumUrl'          => $album->url,
-            'albumDir'          => $album->directory,
-            'albumDesc'         => $album->desc,
-            'albumGroup'        => $album->groups_id,
-            'albumYear'         => $album->year,
-            'albumPermission'   => $album->permission,
-            'groups'            => $groups,
+            'type'   => 'edit',
+            'album'  => $album,
+            'groups' => $groups,
         ]);
         
     }
     
     public function postCreateAlbum(Request $request) {
         
-        $getAlbumUrl = ($request->albumUrl) ? $request->albumUrl : md5($request->albumName) ;
-        $albumDesc = ($request->albumDesc) ? $request->albumDesc : $request->albumName;
+        $getAlbumUrl = ($request->input('url')) ? $request->input('url') : md5($request->input('name')) ;
+        $albumDesc = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
         
         Albums::create([
-            'name'          => $request->albumName, 
+            'name'          => $request->input('name'), 
             'url'           => $getAlbumUrl, 
-            'directory'     => $request->albumDir, 
+            'directory'     => $request->input('directory'), 
             'images_id'     => '0', 
-            'year'          => $request->albumYear, 
+            'year'          => $request->input('year'), 
             'desc'          => $albumDesc, 
-            'permission'    => $request->albumPermission, 
-            'groups_id'     => $request->albumGroup, 
+            'permission'    => $request->input('permission'), 
+            'groups_id'     => $request->input('groups_id'), 
             'users_id'      => Auth::user()->id,
         ]);
         
@@ -88,7 +75,7 @@ class AlbumsController extends Controller
         
         Cache::forget(sha1('admin.show.albums'));
         
-        return back()->withInput();
+        return back();
         
     }
 
@@ -127,16 +114,16 @@ class AlbumsController extends Controller
     
     public function putSaveAlbum(Router $router, Request $request) {
         
-        $getAlbumUrl = ($request->albumUrl) ? $request->albumUrl : md5($request->albumName) ;
-        $albumDesc = ($request->albumDesc) ? $request->albumDesc : $request->albumName;
+        $getAlbumUrl = ($request->input('url')) ? $request->input('url') : md5($request->input('name')) ;
+        $albumDesc = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
         
         Albums::where('id', $router->input('id'))->update([
-            'name'          => $request->albumName,
+            'name'          => $request->input('name'),
             'url'           => $getAlbumUrl,
             'desc'          => $albumDesc,
-            'groups_id'     => $request->albumGroup,
-            'year'          => $request->albumYear,
-            'permission'    => $request->albumPermission,
+            'groups_id'     => $request->input('groups_id'),
+            'year'          => $request->input('year'),
+            'permission'    => $request->input('permission'),
         ]);
         
         if (Cache::has(Albums::find($router->input('id'))->url))
