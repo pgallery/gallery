@@ -1,7 +1,7 @@
 @if(isset($type) && $type == 'edit')
     
     {!! Form::model($album, [
-        'method'    => 'PATCH',
+        'method'    => 'POST',
         'route'     => ['save-album', $album->id],
         'class'     => 'form-horizontal',
     ]) !!}     

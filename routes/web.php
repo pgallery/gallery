@@ -178,7 +178,7 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'AlbumsController@getEditAlbum',
             'middleware'    => 'role:admin|moderator'
         ])->where(['id' => '[0-9]+']);
-        Route::patch('/album/save/{id}', [
+        Route::post('/album/save/{id}', [
             'as'            => 'save-album', 
             'uses'          => 'AlbumsController@putSaveAlbum',
             'middleware'    => 'role:admin|moderator'

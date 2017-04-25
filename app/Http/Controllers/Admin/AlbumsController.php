@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
+use App\Http\Requests\AlbumsRequest;
 use App\Http\Controllers\Controller;
 
 use App\User;
@@ -62,22 +63,14 @@ class AlbumsController extends Controller
     /*
      * Создание нового альбома
      */
-    public function postCreateAlbum(Request $request) {
+    public function postCreateAlbum(AlbumsRequest $request) {
         
-        $getAlbumUrl = ($request->input('url')) ? $request->input('url') : md5($request->input('name')) ;
-        $albumDesc = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
+        $input              = $request->all();
+        $input['url']       = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
+        $input['desc']      = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
+        $input['users_id']  = Auth::user()->id;
         
-        Albums::create([
-            'name'          => $request->input('name'), 
-            'url'           => $getAlbumUrl, 
-            'directory'     => $request->input('directory'), 
-            'images_id'     => '0', 
-            'year'          => $request->input('year'), 
-            'desc'          => $albumDesc, 
-            'permission'    => $request->input('permission'), 
-            'groups_id'     => $request->input('groups_id'), 
-            'users_id'      => Auth::user()->id,
-        ]);
+        Albums::create($input); 
         
         if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->albumDir))
             File::makeDirectory(Setting::get('upload_dir') . "/" . $request->albumDir, 0755, true);
@@ -129,17 +122,11 @@ class AlbumsController extends Controller
      */
     public function putSaveAlbum(Router $router, Request $request) {
         
-        $getAlbumUrl = ($request->input('url')) ? $request->input('url') : md5($request->input('name')) ;
-        $albumDesc = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
-        
-        Albums::where('id', $router->input('id'))->update([
-            'name'          => $request->input('name'),
-            'url'           => $getAlbumUrl,
-            'desc'          => $albumDesc,
-            'groups_id'     => $request->input('groups_id'),
-            'year'          => $request->input('year'),
-            'permission'    => $request->input('permission'),
-        ]);
+        $input              = $request->all();
+        $input['url']       = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
+        $input['desc']      = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
+
+        Albums::find($router->input('id'))->update($input);
         
         if (Cache::has(Albums::find($router->input('id'))->url))
                 Cache::forget(Albums::find($router->input('id'))->url);        

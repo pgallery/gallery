@@ -16,6 +16,9 @@ class Albums extends Model
         'name', 'url', 'directory', 'images_id', 'year', 'desc', 'permission', 'groups_id', 'users_id'
     ];
     
+//    protected $guarded = [];    
+//    protected static $unguarded = true;    
+    
     public function group()
     {
         return $this->hasOne('App\Models\Groups', 'id', 'groups_id');

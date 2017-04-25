@@ -73,9 +73,7 @@ class GroupsController extends Controller
      */
     public function putSaveEditGroup(Router $router, GroupsRequest $request) {
         
-        Groups::where('id', $router->input('id'))->update([
-            'name'          => $request->input('name')
-        ]);
+        Groups::find($router->input('id'))->update($request->all());
         
         Cache::forget(sha1('admin.show.groups'));
         

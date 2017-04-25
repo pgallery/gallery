@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GroupsRequest extends FormRequest
+class AlbumsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,11 @@ class GroupsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string', 
+            'name'          => 'required|string', 
+            'url'           => 'required|string',
+            'directory'     => 'required|alpha_dash|unique:albums',
+            'year'          => 'required|numeric',
+            'groups_id'     => 'required|numeric',
         ];
     }
 }
