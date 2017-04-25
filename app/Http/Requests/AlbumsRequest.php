@@ -25,7 +25,7 @@ class AlbumsRequest extends FormRequest
     {
         return [
             'name'          => 'required|string', 
-            'url'           => 'required|string',
+            'url'           => 'required|alpha|unique:albums',
             'directory'     => 'required|alpha_dash|unique:albums',
             'year'          => 'required|numeric',
             'groups_id'     => 'required|numeric',

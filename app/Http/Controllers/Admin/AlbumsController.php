@@ -72,8 +72,8 @@ class AlbumsController extends Controller
         
         Albums::create($input); 
         
-        if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->albumDir))
-            File::makeDirectory(Setting::get('upload_dir') . "/" . $request->albumDir, 0755, true);
+        if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->input('directory')))
+            File::makeDirectory(Setting::get('upload_dir') . "/" . $request->input('directory'), 0755, true);
         
         Cache::forget(sha1('admin.show.albums'));
         
@@ -199,7 +199,7 @@ class AlbumsController extends Controller
             
         }
         
-        Cache::forget(sha1('admin.show.albums'));
+        Cache::flush();
         
         return redirect()->route('admin');
     }
