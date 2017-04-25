@@ -43,15 +43,15 @@
         <div class="form-group">
             <div class="col-xs-6">
                 Наименование ключа:
-                {!! Form::text('key', null, array('class' => 'form-control')) !!}
+                {!! Form::text('set_name', null, array('class' => 'form-control')) !!}
             </div>
             <div class="col-xs-6">
                 Значение:
-                {!! Form::text('value', null, array('class' => 'form-control')) !!}
+                {!! Form::text('set_value', null, array('class' => 'form-control')) !!}
             </div>
             <div class="col-xs-12">
                 Описание:
-                {!! Form::text('desc', null, array('class' => 'form-control')) !!}
+                {!! Form::text('set_desc', null, array('class' => 'form-control')) !!}
             </div>
         </div>
         <center>

@@ -26,7 +26,7 @@
     @foreach($groups as $group)
         
             <tr>
-                <td>{{ $group['id'] }}</td>
+                <td>{{ $group->id }}</td>
                 <td> 
                     @if(Helper::isAdmin(Auth::user()->id))
                     <!-- Single button -->

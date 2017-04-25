@@ -14,7 +14,9 @@ use Cache;
 
 class UsersController extends Controller
 {
-    
+    /*
+     * Вывод списка пользователей
+     */
     public function getPage() {
         
         $users = User::all();
@@ -24,6 +26,9 @@ class UsersController extends Controller
         ));
     }
     
+    /*
+     * Вывод формы редактирования выбранного пользователя
+     */
     public function getEdit(Router $router) {
         
         $user       = User::find($router->input('id'));
@@ -37,16 +42,14 @@ class UsersController extends Controller
         ));        
     }
     
+    /*
+     * Сохранение изменений выбранного пользователя
+     */    
     public function putUser(Router $router, Request $request) {
         
         $user = User::find($router->input('id'));
         $user->update($request->all());
-
         $user->roles()->sync($request->input('roles'));
-        
-//        foreach ($request->input('roles') as $key => $value) {
-//            $user->roles()->attach($value);
-//        }
         
         if (Cache::has(sha1('HelperIsAdmin_' . $router->input('id') . '_cache')))
             Cache::forget(sha1('HelperIsAdmin_' . $router->input('id') . '_cache'));        
@@ -61,10 +64,14 @@ class UsersController extends Controller
         
     }
     
+    /*
+     * Удаление выбранного пользователя
+     */
     public function deleteUser(Router $router) {
         
         User::destroy($router->input('id'));
         
         return redirect()->route('users');
+        
     }
 }

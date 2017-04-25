@@ -47,7 +47,7 @@ class Helper
         $image = Images::withTrashed()->where('id', $image_id)->first();
         
         $path = $image->album->directory . "/" . $image['name'];
-//        $path = $image['name'];
+
         if($type == 'url')
         {
             

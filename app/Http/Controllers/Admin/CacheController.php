@@ -9,6 +9,9 @@ use Cache;
 
 class CacheController extends Controller
 {
+    /*
+     * Очистка всего кэша
+     */
     public function flushCache() {
         
         Cache::flush();

@@ -43,14 +43,9 @@ class TrashController extends Controller
         $albums = Albums::onlyTrashed()->get();
         foreach ($albums as $album){
 
-            $CacheKey = sha1($album->url);
-            
-            if (Cache::has($CacheKey))
-                Cache::forget($CacheKey);
-                
             $upload_path = public_path() . "/" . Setting::get('upload_dir') . "/" . $album->directory;
             $mobile_path = public_path() . "/" . Setting::get('mobile_upload_dir') . "/" . $album->directory;
-            $thumb_path = public_path() . "/" . Setting::get('thumbs_dir') . "/" . $album->directory;
+            $thumb_path  = public_path() . "/" . Setting::get('thumbs_dir') . "/" . $album->directory;
             
             if(File::isDirectory($upload_path))
                 File::deleteDirectory($upload_path);
@@ -69,6 +64,8 @@ class TrashController extends Controller
             $this->destroyGroup($group->id);
         }        
 
+        Cache::flush();
+        
         return back();
         
     }

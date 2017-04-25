@@ -16,6 +16,9 @@ use Cache;
 
 class GroupsController extends Controller
 {
+    /*
+     *  Создание новой группы
+     */
     public function postCreateGroup(Request $request) {
         
         Groups::create($request->all());
@@ -26,6 +29,9 @@ class GroupsController extends Controller
         
     }
     
+    /*
+     * Удаление группы
+     */
     public function deleteGroup(Router $router) {
         
         $Albums = Albums::where('groups_id', $router->input('id'))->get();
@@ -42,18 +48,24 @@ class GroupsController extends Controller
         return redirect()->route('admin');
         
     }
-
+    
+    /*
+     * Вывод формы редактирования группы
+     */
     public function getEditGroup(Router $router) {
         
         $group = Groups::find($router->input('id'));
         
         return Viewer::get('admin.group_edit', [
-            'type'              => 'edit',
+            'type'            => 'edit',
             'group'           => $group,
         ]);        
         
     }    
     
+    /*
+     * Сохранение изменений группы
+     */
     public function putSaveEditGroup(Router $router, Request $request) {
         
         Groups::where('id', $router->input('id'))->update([

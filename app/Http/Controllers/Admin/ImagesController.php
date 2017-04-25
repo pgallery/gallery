@@ -20,6 +20,9 @@ use BuildImage;
 class ImagesController extends Controller
 {
     
+    /*
+     * Загрузка (создание) изображений
+     */
     public function postCreateImage(Request $request) {
         
         $album = Albums::find($request->album_id);
@@ -64,13 +67,16 @@ class ImagesController extends Controller
         
     }    
     
+    /*
+     * Переименовывание изображения
+     */
     public function postRename(Request $request) {
         
         $oldName = Images::find($request->input('id'));
         
         $mobile_image = Helper::getFullPathMobileImage($request->input('id'));
         $thumb_image  = Helper::getFullPathThumbImage($request->input('id'));
-        $upload_dir = Helper::getUploadPath($oldName->albums_id);
+        $upload_dir   = Helper::getUploadPath($oldName->albums_id);
         
         if (File::exists($mobile_image))
             File::delete($mobile_image);
@@ -90,6 +96,9 @@ class ImagesController extends Controller
         
     }
     
+    /*
+     * Пересоздание миниатюр выбранного изображения
+     */
     public function getRebuild(Router $router) {
         
         BuildImage::run($router->input('id'));
@@ -98,6 +107,9 @@ class ImagesController extends Controller
         
     }
     
+    /*
+     * Разворот выбранного изображения
+     */
     public function getRotate(Router $router) {
         
         $file = Helper::getFullPathImage($router->input('id'));
@@ -119,6 +131,9 @@ class ImagesController extends Controller
         
     }
     
+    /*
+     * Удаление выбранного изображения
+     */
     public function deleteImage(Router $router) {
         
         $album_id = Images::find($router->input('id'))->album->id;
@@ -145,6 +160,9 @@ class ImagesController extends Controller
        
     }
     
+    /*
+     * Установка выбиранного изображения как миниатюру альбома
+     */
     public function putInstallImage(Router $router) {
         
         $album_id = Images::find($router->input('id'))->album->id;

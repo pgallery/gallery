@@ -24,6 +24,9 @@ class AlbumsController extends Controller
     // 10080 минут - 1 неделя
     const SHOWADMIN_CACHE_TTL = 10080;    
     
+    /*
+     * Удаление альбома
+     */
     public function deleteAlbum(Router $router) {
         
         Albums::destroy($router->input('id'));
@@ -40,9 +43,12 @@ class AlbumsController extends Controller
         
     }
     
+    /*
+     * Вывод формы редактирования альбома
+     */
     public function getEditAlbum(Router $router) {
         
-        $album = Albums::find($router->input('id'));
+        $album  = Albums::find($router->input('id'));
         $groups = Groups::pluck('name','id');
 
         return Viewer::get('admin.album_edit', [
@@ -53,6 +59,9 @@ class AlbumsController extends Controller
         
     }
     
+    /*
+     * Создание нового альбома
+     */
     public function postCreateAlbum(Request $request) {
         
         $getAlbumUrl = ($request->input('url')) ? $request->input('url') : md5($request->input('name')) ;
@@ -78,7 +87,10 @@ class AlbumsController extends Controller
         return back();
         
     }
-
+    
+    /*
+     * Вывод фотографий выбранного альбома
+     */
     public function getShowAlbum(Router $router, Request $request) {
                 
         $thisAlbum = Albums::find($router->input('id'));
@@ -112,6 +124,9 @@ class AlbumsController extends Controller
         
     }
     
+    /*
+     * Сохранение изменений альбома
+     */
     public function putSaveAlbum(Router $router, Request $request) {
         
         $getAlbumUrl = ($request->input('url')) ? $request->input('url') : md5($request->input('name')) ;
@@ -135,6 +150,9 @@ class AlbumsController extends Controller
         
     }    
     
+    /*
+     * Синхронизация изображений альбома из локальной директории
+     */
     public function getSync(Router $router){
         
         $album = Albums::find($router->input('id'));
@@ -199,6 +217,9 @@ class AlbumsController extends Controller
         return redirect()->route('admin');
     }
     
+    /*
+     * Пересоздание миниатюр всех изображений выборанного альбома
+     */
     public function getRebuild(Router $router) {
         
         Images::where('albums_id', $router->input('id'))->update([
@@ -208,6 +229,9 @@ class AlbumsController extends Controller
         return redirect()->route('admin');
     }
     
+    /*
+     * Вывод формы загрузки изображений в выбранный альбом
+     */
     public function getUploads(Router $router) {
 
         $Album = Albums::find($router->input('id'));
