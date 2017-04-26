@@ -47,11 +47,11 @@ php artisan cache:clear
 
 ### Рекомендуемые параметры PHP
 
-max_execution_time = 360
-max_file_uploads = 250
-memory_limit = 256Mb
-post_max_size = 256Mb
-upload_max_filesize = 256Mb
+ - **max_execution_time**: 360
+ - **max_file_uploads**: 250
+ - **memory_limit**: 256Mb
+ - **post_max_size**: 256Mb
+ - **upload_max_filesize**: 256Mb
 
 ### Если стоит ISPmanager 5 lite
 
