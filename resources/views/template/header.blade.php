@@ -68,7 +68,12 @@
 
     <div class="container">
 
-
+        @if(Auth::check() && Helper::isAdmin(Auth::user()->id))
+            <div id="showStatus">
+                
+            </div>
+        @endif
+        
         @yield('content')
         
 
@@ -107,13 +112,38 @@
         @yield('js-top')
         
         
+        @if (Auth::check() && Helper::isAdmin(Auth::user()->id))
+        function showStatus()  
+            {      
+                $.ajax({
+                    type: "GET", 
+                    url: "/admin/status", 
+                    cache: false,
+                    dataType: "text", 
+                    error: function(xhr) {
+                        console.log('Ошибка!'+xhr.status+' '+xhr.statusText); 
+                    },
+                    success: function(a) {
+                        document.getElementById("showStatus").innerHTML=a;
+                    }  
+                });
+            }
+        @endif
+        
         $(document).ready(function() { 
           $("a.fancyimage").fancybox(); 
           
           @yield('js')
           
           @if (Auth::check())
-              
+          
+            showStatus();  
+            setInterval('showStatus()',2000);
+            
+          @endif
+          
+          @if (Auth::check() && Helper::isAdmin(Auth::user()->id))
+          
           $('#album-table').DataTable();
           
           $('#group-table').DataTable();

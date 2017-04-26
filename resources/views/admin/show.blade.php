@@ -1,6 +1,9 @@
 @extends('template.header')
 
 @section('content')
+
+
+
 <h3>Группы <small>@if(Helper::isAdmin(Auth::user()->id))<a href="" data-toggle="modal" data-target="#newGroupModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
 <table id="group-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>

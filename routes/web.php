@@ -71,7 +71,14 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'InterfaceController@getCreateForm',
             'middleware'    => 'role:admin|moderator'
         ]);
-
+        
+        // Статус фоновых задач
+        Route::get('/status/', [
+            'as'            => 'status', 
+            'uses'          => 'StatusController@getStatus',
+            'middleware'    => 'role:admin'
+        ]);        
+        
         // Корзина мусора
         Route::get('/users/trash/', [
             'as'            => 'users-trash', 

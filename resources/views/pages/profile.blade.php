@@ -42,18 +42,18 @@
             <div class="col-sm-4">
                 {!! Form::password('confirmPassword', ['class' => 'form-control']) !!}
             </div>
-        </div>     
+        </div>
         <hr>
         <div class="form-group">
             <label class="col-sm-4 control-label">Текущий пароль:</label>
             <div class="col-sm-4">
                 {!! Form::password('password', ['class' => 'form-control', 'required']) !!}
             </div>
-        </div>       
+        </div>
         <div class="form-group">
             <label class="col-sm-8 control-label">Для сохранения изменений необходимо указать действующий пароль</label>
-        </div>        
-    @endif        
+        </div>
+    @endif
         
     <center>
         {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
