@@ -16,7 +16,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Имя:</label>
             <div class="col-sm-4">
-                {!! Form::text('name', $user->name, array('class' => 'form-control')) !!}
+                {!! Form::text('name', $user->name, array('class' => 'form-control', 'required')) !!}
             </div>
         </div>    
         <div class="form-group">
@@ -47,7 +47,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Текущий пароль:</label>
             <div class="col-sm-4">
-                {!! Form::password('password', ['class' => 'form-control']) !!}
+                {!! Form::password('password', ['class' => 'form-control', 'required']) !!}
             </div>
         </div>       
         <div class="form-group">

@@ -59,7 +59,6 @@
 </dl>
 @endsection
 
-
 @section('js-top')
 
         $(":file").filestyle({

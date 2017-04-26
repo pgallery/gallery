@@ -19,11 +19,11 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Название:</label>
             <div class="col-sm-4">
-                {!! Form::text('name', null, array('class' => 'form-control')) !!}
+                {!! Form::text('name', null, array('class' => 'form-control', 'required')) !!}
             </div>
             <label class="col-sm-2 control-label">URL:</label>
             <div class="col-sm-4">
-                {!! Form::text('url', null, array('class' => 'form-control')) !!}
+                {!! Form::text('url', null, array('class' => 'form-control', 'required')) !!}
             </div>
         </div>
 
@@ -32,8 +32,8 @@
             <div class="col-sm-4">
                 {!! Form::text('directory', null, 
                 (!empty($album->directory) 
-                    ? array_merge(['class' => 'form-control'], ['disabled' => '']) 
-                    : array('class' => 'form-control')
+                    ? array_merge(['class' => 'form-control', 'required'], ['disabled' => '']) 
+                    : array('class' => 'form-control', 'required')
                 )) !!}
             </div>
             <label class="col-sm-2 control-label">Год:</label>

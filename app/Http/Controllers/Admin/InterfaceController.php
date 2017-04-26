@@ -27,7 +27,7 @@ class InterfaceController extends Controller
      * Отображение общего списка групп/альбомов на странице администратора
      */
     public function getPage(){
-        
+                
         if(Groups::All()->count() == 0){
             $groups = [];
             $groupsArray = [];
