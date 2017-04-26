@@ -14,15 +14,27 @@ use Cache;
 
 class UsersController extends Controller
 {
+    protected $user;
+    protected $roles;
+
+    public function __construct(User $user, Roles $roles) {
+        $this->user  = $user;
+        $this->roles = $roles;
+    }
+
+
     /*
      * Вывод списка пользователей
      */
     public function getPage() {
         
-        $users = User::all();
-        
+        $users = $this->user->all();
+        $allRoles = $this->roles->pluck('display_name','id');
+//        print_r($roles);
+//        exit;
         return Viewer::get('admin.show_users', compact(
-                'users'
+                'users',
+                'allRoles'
         ));
     }
     
@@ -31,8 +43,8 @@ class UsersController extends Controller
      */
     public function getEdit(Router $router) {
         
-        $user       = User::find($router->input('id'));
-        $roles      = Roles::pluck('display_name','id');
+        $user       = $this->user->find($router->input('id'));
+        $roles      = $this->roles->pluck('display_name','id');
         $userRole   = $user->roles->pluck('id','id')->toArray();
 
         return Viewer::get('admin.user_edit', compact(
@@ -47,7 +59,7 @@ class UsersController extends Controller
      */    
     public function putUser(Router $router, Request $request) {
         
-        $user = User::find($router->input('id'));
+        $user = $this->user->find($router->input('id'));
         $user->update($request->all());
         $user->roles()->sync($request->input('roles'));
         
@@ -69,9 +81,19 @@ class UsersController extends Controller
      */
     public function deleteUser(Router $router) {
         
-        User::destroy($router->input('id'));
+        $this->user->destroy($router->input('id'));
         
         return redirect()->route('users');
         
+    }
+    
+    /*
+     * Добавление нового пользователя
+     */
+    public function getCreatePage(Request $request) {
+        
+        $this->user->createWithRoles($request->all());
+        
+        return redirect()->route('users');
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\User;
-use App\Models\Roles;
+//use App\Models\Roles;
 use Setting;
 
 use Auth;
@@ -14,6 +14,12 @@ use Hash;
 
 class UloginController extends Controller
 {
+    protected $user;
+    
+    public function __construct(User $user) {
+        $this->user  = $user;
+    }
+    
     public function login(Request $request) {
         
         if(Setting::get('use_ulogin') != 'yes')
@@ -22,7 +28,7 @@ class UloginController extends Controller
         $data = file_get_contents('http://ulogin.ru/token.php?token=' . $request->input('token') . '&host=' . $_SERVER['HTTP_HOST']);
         $user = json_decode($data, TRUE);
         
-        $userData = User::where('email', $user['email'])->first();
+        $userData = $this->user->where('email', $user['email'])->first();
         
         if (isset($userData->id))
         {
@@ -31,17 +37,19 @@ class UloginController extends Controller
         }
         else
         {
-            $newUser = User::create([
+            $input = [
                 'name'      => $user['first_name'] . ' ' . $user['last_name'],
                 'email'     => $user['email'],
-                'password'  => Hash::make(str_random(8)),
+                'password'  => str_random(8),
                 'method'    => $user['network'],
-            ]);
+            ];
             
-            $RoleGuest = Roles::select('id')->where('name', 'guest')->first();
-            $newUser->roles()->attach($RoleGuest->id);
+            $newUserId = $this->user->createWithRoles($input);
             
-            Auth::loginUsingId($newUser->id, TRUE);
+//            $RoleGuest = Roles::select('id')->where('name', 'guest')->first();
+//            $newUser->roles()->attach($RoleGuest->id);
+            
+            Auth::loginUsingId($newUserId, TRUE);
 
             \Session::flash('flash_message', trans('interface.ActivatedSuccess'));
 

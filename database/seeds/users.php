@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Hash;
 
 use App\User;
 use App\Models\Roles;
-//use Hash;
 
 class users extends Seeder
 {

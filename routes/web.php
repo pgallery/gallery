@@ -23,12 +23,18 @@
 
 // Публичные страницы, доступные без авторизации
 Route::get('/', [
-    'as' => 'home', 'uses' => 'User\AlbumsController@getShow'
+    'as'    => 'home', 
+    'uses'  => 'User\AlbumsController@getShow'
 ]);
 Route::get('/no_access', [
-    'as' => '403', 'uses' => 'User\AlbumsController@getNoAccess'
+    'as'    => '403', 
+    'uses'  => 'User\AlbumsController@getNoAccess'
 ]);
-Route::get('/gallery-{url}', 'User\ImagesController@getShow')->where('url', '[А-Яа-яA-Za-z0-9]+');
+Route::get('/gallery-{url}', [
+    'as'    => 'gallery-show', 
+    'uses'  => 'User\ImagesController@getShow'    
+])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
+
 Route::get('/gallery/show-{url}', 'User\ImagesController@getShowPage')->where('url', '[А-Яа-яA-Za-z0-9]+');
 Route::get('/album/{option}/{id}', 'User\AlbumsController@getShow')->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 
@@ -141,6 +147,11 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'UsersController@getPage',
             'middleware'    => 'role:admin'
         ]);
+        Route::post('/users/create/', [
+            'as'            => 'create-users', 
+            'uses'          => 'UsersController@getCreatePage',
+            'middleware'    => 'role:admin'
+        ]);
         Route::get('/users/delete/{id}', [
             'as'            => 'delete-user', 
             'uses'          => 'UsersController@deleteUser',
@@ -150,7 +161,7 @@ Route::group(['middleware' => 'auth'], function () {
             'as'            => 'edit-user', 
             'uses'          => 'UsersController@getEdit',
             'middleware'    => 'role:admin'
-        ])->where(['id' => '[0-9]+']);        
+        ])->where(['id' => '[0-9]+']);
         Route::post('/users/save/{id}', [
             'as'            => 'save-user',
             'uses'          => 'UsersController@putUser',

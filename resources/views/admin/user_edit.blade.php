@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="page-header">
-      <h2>Редкатирование пользователей </h2>
+      <h2>Редактирование пользователей </h2>
     </div>
 
 {!! Form::open([
@@ -15,18 +15,18 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Имя пользователя:</label>
             <div class="col-sm-4">
-                {!! Form::text('name', $user->name, array('class' => 'form-control')) !!}
+                {!! Form::text('name', $user->name, array('class' => 'form-control', 'required')) !!}
             </div>
             <label class="col-sm-2 control-label">E-Mail:</label>
             <div class="col-sm-4">
-                {!! Form::text('email', $user->email, array('class' => 'form-control')) !!}
+                {!! Form::text('email', $user->email, array('class' => 'form-control', 'required')) !!}
             </div>
         </div>
     
         <div class="form-group">
             <label class="col-sm-4 control-label">Права доступа:</label>
             <div class="col-sm-6">
-                {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control','multiple')) !!}
+                {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control', 'multiple', 'required')) !!}
             </div>
         </div>
     <hr>

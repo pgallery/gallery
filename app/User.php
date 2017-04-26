@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-
+use App\Models\Roles;
 
 class User extends Authenticatable
 {
@@ -65,5 +65,29 @@ class User extends Authenticatable
         }
         
         return false;
+    }
+    
+    public function createWithRoles($input) {
+        
+        if(empty($input['method'])) $input['method']   = 'thisSite';
+        
+        $input['password'] = \Hash::make($input['password']);
+        
+        $user = $this->create($input);
+        
+        if(isset($input['roles'])){
+            
+            foreach ($input['roles'] as $role) {
+                $user->roles()->attach($role);
+            }
+            
+        } else {
+            
+            $RoleGuest = Roles::select('id')->where('name', 'guest')->first();
+            $user->roles()->attach($RoleGuest->id);
+            
+        }
+
+        return $user->id;
     }
 }

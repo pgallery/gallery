@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="page-header">
-      <h2>Список пользователей </h2>
+      <h2>Список пользователей <a href="" data-toggle="modal" data-target="#newUserModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h2>
     </div>
 
 <table id="users-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -84,7 +84,65 @@
         </tbody>
 </table>
 
-
+<!-- Modal add User -->
+<div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="newUserModalLabel">Добавление пользователя</h4>
+      </div>
+        
+        {!! Form::open([
+            'route'     => 'create-users',
+            'class'     => 'form-horizontal',
+            'method'    => 'POST'
+        ]) !!}
+        
+      <div class="modal-body">
+          
+         
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Имя:</label>
+            <div class="col-sm-4">
+                {!! Form::text('name', null, array('class' => 'form-control', 'required')) !!}
+            </div>
+            <label class="col-sm-2 control-label">E-Mail:</label>
+            <div class="col-sm-4">
+                {!! Form::email('email', null, array('class' => 'form-control', 'required')) !!}
+            </div>
+        </div>
+          
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Пароль:</label>
+            <div class="col-sm-4">
+                {!! Form::password('password', array('class' => 'form-control', 'required')) !!}
+            </div>
+            <label class="col-sm-2 control-label">Повторить:</label>
+            <div class="col-sm-4">
+                {!! Form::password('confirm-password', array('class' => 'form-control', 'required')) !!}
+            </div>
+        </div>    
+          
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Права:</label>
+            <div class="col-sm-6">
+                {!! Form::select('roles[]', $allRoles, null, array('class' => 'form-control', 'multiple', 'required')) !!}
+            </div>
+        </div>
+          
+          
+        <center>
+            {!! Form::submit('Добавить пользователя', array('class' => 'btn btn-primary')) !!}
+        </center>
+            
+      </div>
+          
+        {!! Form::close() !!}
+        
+    </div>
+  </div>
+</div>
 
 
 @endsection

@@ -135,14 +135,14 @@
           
           @yield('js')
           
-          @if (Auth::check())
+          @if (Auth::check() && Helper::isAdmin(Auth::user()->id))
           
             showStatus();  
             setInterval('showStatus()',2000);
             
           @endif
           
-          @if (Auth::check() && Helper::isAdmin(Auth::user()->id))
+          @if (Auth::check())
           
           $('#album-table').DataTable();
           

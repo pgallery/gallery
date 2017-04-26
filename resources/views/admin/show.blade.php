@@ -125,7 +125,7 @@
                 </td>
                 <td>
                     
-                    <a href="{{ env('APP_URL') }}/gallery-{{ $album['url'] }}" class="btn btn-default btn-xs" target="_blank">
+                    <a href="{{ route('gallery-show', ['url' => $album['url']]) }}" class="btn btn-default btn-xs" target="_blank">
                         <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
                     </a>
                     

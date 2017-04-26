@@ -9,7 +9,7 @@
             <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 thumb">
                 
                 <p>
-                    <a href="{{ url('/gallery-' . $album['url']) }}"><img src="{{ $album['thumbs_url']  }}"  width="{{ $album['thumbs_width']  }}"/></a>
+                    <a href="{{ route('gallery-show', ['url' => $album['url']]) }}"><img src="{{ $album['thumbs_url']  }}"  width="{{ $album['thumbs_width']  }}"/></a>
                 </p>
                 <p>{{ $album['name'] }}</p>
                 <p>

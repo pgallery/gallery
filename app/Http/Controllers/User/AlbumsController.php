@@ -81,7 +81,7 @@ class AlbumsController extends Controller
     
     public function getNoAccess() {
         
-        return Viewer::get('errors.403'); 
+        return Viewer::get('errors.403');
         
     }
     
