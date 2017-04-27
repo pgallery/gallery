@@ -69,9 +69,13 @@ class User extends Authenticatable
     
     public function createWithRoles($input) {
         
+
+        
         if(empty($input['method'])) $input['method']   = 'thisSite';
         
         $input['password'] = \Hash::make($input['password']);
+        
+       
         
         $user = $this->create($input);
         
@@ -87,7 +91,8 @@ class User extends Authenticatable
             $user->roles()->attach($RoleGuest->id);
             
         }
-
+//        print_r($input);
+//        exit; 
         return $user->id;
     }
 }

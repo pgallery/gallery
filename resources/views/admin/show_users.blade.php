@@ -120,7 +120,7 @@
             </div>
             <label class="col-sm-2 control-label">Повторить:</label>
             <div class="col-sm-4">
-                {!! Form::password('confirm-password', array('class' => 'form-control', 'required')) !!}
+                {!! Form::password('password_confirmation', array('class' => 'form-control', 'required')) !!}
             </div>
         </div>    
           

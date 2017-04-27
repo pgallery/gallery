@@ -149,7 +149,7 @@ Route::group(['middleware' => 'auth'], function () {
         ]);
         Route::post('/users/create/', [
             'as'            => 'create-users', 
-            'uses'          => 'UsersController@getCreatePage',
+            'uses'          => 'UsersController@postCreateUser',
             'middleware'    => 'role:admin'
         ]);
         Route::get('/users/delete/{id}', [
@@ -166,7 +166,7 @@ Route::group(['middleware' => 'auth'], function () {
             'as'            => 'save-user',
             'uses'          => 'UsersController@putUser',
             'middleware'    => 'role:admin'
-        ])->where(['id' => '[0-9]+']);        
+        ])->where(['id' => '[0-9]+']);
         
         // Группы
         Route::get('/group/edit/{id}', [

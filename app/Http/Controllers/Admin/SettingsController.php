@@ -24,7 +24,7 @@ class SettingsController extends Controller
      */
     public function getSettings() {
         
-        $settings = $this->settings->all();
+        $settings = $this->settings->orderBy('set_desc')->get();
         
         return Viewer::get('admin.settings', [
             'settings' => $settings,

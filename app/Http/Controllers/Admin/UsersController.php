@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 
 use App\User;
@@ -88,7 +89,7 @@ class UsersController extends Controller
     /*
      * Добавление нового пользователя
      */
-    public function getCreatePage(Request $request) {
+    public function postCreateUser(UserRequest $request) {
         
         $this->user->createWithRoles($request->all());
         

@@ -15,11 +15,11 @@
     @foreach($settings as $setting)
         
         <div class="form-group">
-            <label class="col-sm-2 control-label">{{ $setting['set_name'] }}:</label>
+            <label class="col-sm-6 control-label">{{ $setting['set_desc'] }}:</label>
             <div class="col-sm-4">
                 {!! Form::text("newSetting[$setting[set_name]]", $setting['set_value'], array('class' => 'form-control', 'required')) !!}
             </div>
-            <p class="help-block">{{ $setting['set_desc'] }}</p>
+            <p class="help-block">{{ $setting['set_name'] }}</p>
         </div>    
 
     @endforeach
