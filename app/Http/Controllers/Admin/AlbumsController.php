@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AlbumsRequest;
 use App\Http\Controllers\Controller;
 
-use App\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
@@ -25,20 +24,22 @@ class AlbumsController extends Controller
     // 10080 минут - 1 неделя
     const SHOWADMIN_CACHE_TTL = 10080;    
     
+    protected $groups;
+    protected $albums;
+    protected $images;
+
+    public function __construct(Groups $groups, Albums $albums, Images $images) {
+        $this->groups  = $groups;
+        $this->albums  = $albums;
+        $this->images  = $images;
+    }
+    
     /*
      * Удаление альбома
      */
     public function deleteAlbum(Router $router) {
         
-        Albums::destroy($router->input('id'));
-        Images::where('albums_id', $router->input('id'))->delete();
-        
-        $CacheKey = sha1(Albums::find($router->input('id'))->url);
-        
-        if (Cache::has($CacheKey))
-                Cache::forget($CacheKey);        
-        
-        Cache::forget(sha1('admin.show.albums'));
+        $this->albums->deleteWithImages($router->input('id'));
         
         return redirect()->route('admin');
         
@@ -49,8 +50,8 @@ class AlbumsController extends Controller
      */
     public function getEditAlbum(Router $router) {
         
-        $album  = Albums::find($router->input('id'));
-        $groupsArray = Groups::pluck('name','id');
+        $album  = $this->albums->find($router->input('id'));
+        $groupsArray = $this->groups->pluck('name','id');
 
         return Viewer::get('admin.album_edit', [
             'type'          => 'edit',
@@ -70,7 +71,7 @@ class AlbumsController extends Controller
         $input['desc']      = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
         $input['users_id']  = Auth::user()->id;
         
-        Albums::create($input); 
+        $this->albums->create($input); 
         
         if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->input('directory')))
             File::makeDirectory(Setting::get('upload_dir') . "/" . $request->input('directory'), 0755, true);
@@ -86,7 +87,7 @@ class AlbumsController extends Controller
      */
     public function getShowAlbum(Router $router, Request $request) {
                 
-        $thisAlbum = Albums::find($router->input('id'));
+        $thisAlbum = $this->albums->find($router->input('id'));
         
         if($thisAlbum->imagesCount() == 0)
         {
@@ -126,23 +127,24 @@ class AlbumsController extends Controller
         $input['url']       = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
         $input['desc']      = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
 
-        Albums::find($router->input('id'))->update($input);
+        $this->albums->find($router->input('id'))->update($input);
+
+//        Cache::forget($this->albums->find($router->input('id'))->url);        
+//        Cache::forget(sha1('Cache.App.Helpers.Viewer'));
+//        Cache::forget(sha1('admin.show.albums'));
         
-        if (Cache::has(Albums::find($router->input('id'))->url))
-                Cache::forget(Albums::find($router->input('id'))->url);        
-        
-        Cache::forget(sha1('admin.show.albums'));
+        \Cache::flush();
         
         return redirect()->route('admin');
         
-    }    
+    }
     
     /*
      * Синхронизация изображений альбома из локальной директории
      */
     public function getSync(Router $router){
         
-        $album = Albums::find($router->input('id'));
+        $album = $this->albums->find($router->input('id'));
         
         $CacheKey = sha1($album->url);
         
@@ -179,9 +181,9 @@ class AlbumsController extends Controller
             
             $base_filename = basename($file);
             
-            if(Images::where('name', $base_filename)->where('albums_id', $router->input('id'))->count() == 0)
+            if($this->images->where('name', $base_filename)->where('albums_id', $router->input('id'))->count() == 0)
             {
-                    Images::create([
+                    $this->images->create([
                         'name'       => $base_filename,
                         'albums_id'  => $router->input('id'),
                         'users_id'   => Auth::user()->id,
@@ -194,8 +196,8 @@ class AlbumsController extends Controller
         if($album->images_id == 0)
         {
             
-            $Images = Images::where('albums_id', $album->id)->first();
-            Albums::find($album->id)->update(['images_id' => $Images->id]);
+            $Images = $this->images->where('albums_id', $album->id)->first();
+            $this->albums->find($album->id)->update(['images_id' => $Images->id]);
             
         }
         
@@ -209,7 +211,7 @@ class AlbumsController extends Controller
      */
     public function getRebuild(Router $router) {
         
-        Images::where('albums_id', $router->input('id'))->update([
+        $this->images->where('albums_id', $router->input('id'))->update([
             'is_rebuild'    => 1,
         ]);
         
@@ -221,7 +223,7 @@ class AlbumsController extends Controller
      */
     public function getUploads(Router $router) {
 
-        $Album = Albums::find($router->input('id'));
+        $Album = $this->albums->find($router->input('id'));
         
         return Viewer::get('admin.album_uploads', [
             'type'              => 'thisAlbum',

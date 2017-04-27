@@ -14,16 +14,22 @@ use Cache;
 
 class ProfileController extends Controller
 {
+    protected $user;
+
+    public function __construct(User $user) {
+        $this->user  = $user;
+    }
+    
     public function getProfile() {
         
-        $user = User::find(Auth::user()->id);
+        $user = $this->user->find(Auth::user()->id);
         
         return Viewer::get('pages.profile', compact('user'));
     }
     
     public function putProfile(Request $request) {
         
-        $user = User::find(Auth::user()->id);
+        $user = $this->user->find(Auth::user()->id);
                
         if($user->method == 'thisSite' and Hash::check($request->input('password'), Auth::user()->password))
         {

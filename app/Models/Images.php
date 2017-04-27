@@ -28,4 +28,21 @@ class Images extends Model
         });
     }
     
+    public static function deleteCheckAlbumPreview($id) {
+        
+        $album_id = self::find($id)->album->id;
+        self::destroy($id);
+        
+        if(Albums::find($album_id)->where('images_id', $id)->count() == 1) {
+            if(self::where('albums_id', $album_id)->count() == 0) {
+                Albums::find($album_id)->update(['images_id' => 0]);
+            } else {
+                $Images = self::where('albums_id', $album_id)->first();
+                Albums::find($album_id)->update(['images_id' => $Images->id]);
+            }
+        }
+        
+        \Cache::flush();
+        
+    }
 }

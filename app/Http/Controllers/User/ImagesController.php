@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Albums;
-use App\Models\Images;
 
 use Auth;
 use Agent;
@@ -18,14 +17,19 @@ use Cache;
 
 class ImagesController extends Controller
 {
+    protected $albums;
+
+    public function __construct(Albums $albums) {
+        $this->albums  = $albums;
+    }
     
     public function getShow(Router $router)
     {
         
-        if(Albums::where('url', $router->input('url'))->count() == 0)
+        if($this->albums->where('url', $router->input('url'))->count() == 0)
             return Viewer::get('errors.404');
         
-        $thisAlbum = Albums::where('url', $router->input('url'))->first();
+        $thisAlbum = $this->albums->where('url', $router->input('url'))->first();
         
 //        if (Agent::isMobile())
 //            $CacheKey = sha1($router->input('url') . '.Mobile');
@@ -87,10 +91,10 @@ class ImagesController extends Controller
         
         \Debugbar::disable();
         
-        if(Albums::where('url', $router->input('url'))->count() == 0)
+        if($this->albums->where('url', $router->input('url'))->count() == 0)
             return Viewer::get('errors.404');
         
-        $thisAlbum = Albums::where('url', $router->input('url'))->first();        
+        $thisAlbum = $this->albums->where('url', $router->input('url'))->first();        
         
         if (Agent::isMobile() and !Auth::check())
             $CacheKey = sha1($router->input('url') . '.Mobile' . $request->input('page'));

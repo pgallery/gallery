@@ -176,7 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
         ])->where(['id' => '[0-9]+']);
         Route::post('/group/save/{id}', [
             'as'            => 'save-group',
-            'uses'          => 'GroupsController@putSaveEditGroup',
+            'uses'          => 'GroupsController@putSaveGroup',
             'middleware'    => 'role:admin'
         ])->where(['id' => '[0-9]+']);
         Route::get('/group/delete/{id}', [

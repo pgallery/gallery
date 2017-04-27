@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Albums;
 use App\Models\Images;
-use App\Models\Groups;
 
 use Auth;
 use Helper;
@@ -18,10 +17,18 @@ use Cache;
 
 class AlbumsController extends Controller
 {
+    protected $albums;
+    protected $images;
+
+    public function __construct(Albums $albums, Images $images) {
+        $this->albums  = $albums;
+        $this->images  = $images;
+    }       
+    
     public function getShow(Router $router)
     {
         
-        if(Albums::where('permission', 'All')->where('images_id', '!=', '0')->count() == 0)
+        if($this->albums->where('permission', 'All')->where('images_id', '!=', '0')->count() == 0)
             return Viewer::get('errors.404'); 
         
         if(Auth::check() and Helper::isAdmin(Auth::user()->id))
@@ -42,7 +49,7 @@ class AlbumsController extends Controller
         else
         {
         
-            $AlbumsQuery = Albums::latest('year');
+            $AlbumsQuery = $this->albums->latest('year');
             
             if(!Auth::check() or !Helper::isAdmin(Auth::user()->id))
                 $AlbumsQuery = $AlbumsQuery->where('permission', 'All');
@@ -66,7 +73,7 @@ class AlbumsController extends Controller
                     'thumbs_url'    => Helper::getFullPathThumbImage($album->images_id, 'url'),
                     'thumbs_width'  => Setting::get('thumbs_width'),
                     'thumbs_height' => Setting::get('thumbs_height'),
-                    'count'         => Images::where('albums_id', $album->id)->count(),
+                    'count'         => $this->images->where('albums_id', $album->id)->count(),
                     'groups_name'   => $album->group->name,
                     'size'          => round(($album->imagesSumSize() / 1024 / 1024)) . " Mb",
                 ];

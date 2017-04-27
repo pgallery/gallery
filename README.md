@@ -6,12 +6,22 @@
 
 ### Требования
 
-PHP 7.0 и выше.
+ - **PHP:** 7.0 и выше.
+ - **База данных:** MySQL 5.5 и выше или PostgreSQL 9.4 и выше.
+
+### Рекомендуемые параметры PHP
+
+ - **max_execution_time**: 360
+ - **max_file_uploads**: 250
+ - **memory_limit**: 256Mb
+ - **post_max_size**: 256Mb
+ - **upload_max_filesize**: 256Mb
 
 ### Установка
 
 ```
 git clone https://github.com/Dasvasas/gallery.git
+cd gallery
 composer install
 composer update
 cp .env.example .env
@@ -44,14 +54,6 @@ php artisan cache:clear
 |**operator**| **Да**| Имеет возможность управления собственными альбомами и изображениями (не реализовано) |
 |**viewer**| **Нет**| Просмотр с отображением скрытых альбомов (не реализовано) |
 |**guest**| **Нет**| Только просмотр (выдается по умолчанию при регистрации) |
-
-### Рекомендуемые параметры PHP
-
- - **max_execution_time**: 360
- - **max_file_uploads**: 250
- - **memory_limit**: 256Mb
- - **post_max_size**: 256Mb
- - **upload_max_filesize**: 256Mb
 
 ### Если стоит ISPmanager 5 lite
 

@@ -22,16 +22,14 @@ class UsersController extends Controller
         $this->roles = $roles;
     }
 
-
     /*
      * Вывод списка пользователей
      */
     public function getPage() {
         
-        $users = $this->user->all();
+        $users    = $this->user->all();
         $allRoles = $this->roles->pluck('display_name','id');
-//        print_r($roles);
-//        exit;
+
         return Viewer::get('admin.show_users', compact(
                 'users',
                 'allRoles'

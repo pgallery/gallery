@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Images;
+
 class Albums extends Model
 {
     
@@ -15,9 +17,6 @@ class Albums extends Model
     protected $fillable = [
         'name', 'url', 'directory', 'images_id', 'year', 'desc', 'permission', 'groups_id', 'users_id'
     ];
-    
-//    protected $guarded = [];    
-//    protected static $unguarded = true;    
     
     public function group()
     {
@@ -45,5 +44,18 @@ class Albums extends Model
             return $this->hasOne('App\User', 'id', 'users_id')->select('name')->first();           
         });
     }    
+    
+    public static function deleteWithImages($id) {
+        
+//        \Cache::forget(sha1('Cache.App.Helpers.Viewer'));
+//        \Cache::forget(sha1('admin.show.albums'));
+//        \Cache::forget(sha1(self::find($id)->url));
+        
+        self::destroy($id);
+        Images::where('albums_id', $id)->delete();  
+        
+        \Cache::flush();
+
+    }
     
 }

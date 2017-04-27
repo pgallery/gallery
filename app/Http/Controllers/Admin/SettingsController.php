@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\SettingsRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\Settings;
@@ -12,12 +13,18 @@ use Cache;
 
 class SettingsController extends Controller
 {
+    protected $settings;
+
+    public function __construct(Settings $settings) {
+        $this->settings  = $settings;
+    }
+    
     /*
      * Вывод страницы редактирования настроек
      */
     public function getSettings() {
         
-        $settings = Settings::all();
+        $settings = $this->settings->all();
         
         return Viewer::get('admin.settings', [
             'settings' => $settings,
@@ -30,7 +37,7 @@ class SettingsController extends Controller
     public function putSettings(Request $request) {
         
         foreach ($request->input('newSetting') as $name => $value) {
-            Settings::where('set_name', $name)->update(['set_value' => $value]);
+            $this->settings->where('set_name', $name)->update(['set_value' => $value]);
         }
 
         Cache::flush();
@@ -40,10 +47,10 @@ class SettingsController extends Controller
     
     /*
      * Добавление новых настроек
-     */    
-    public function postSettings(Request $request) {
+     */
+    public function postSettings(SettingsRequest $request) {
         
-        Settings::create($request->all());
+        $this->settings->create($request->all());
         
         Cache::flush();
         

@@ -6,7 +6,6 @@
   <h2>Изменение настроек</h2>
 </div>
 
-
     {!! Form::open([
         'route'     => 'save-settings',
         'class'     => 'form-horizontal',
@@ -18,7 +17,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">{{ $setting['set_name'] }}:</label>
             <div class="col-sm-4">
-                {!! Form::text("newSetting[$setting[set_name]]", $setting['set_value'], array('class' => 'form-control')) !!}
+                {!! Form::text("newSetting[$setting[set_name]]", $setting['set_value'], array('class' => 'form-control', 'required')) !!}
             </div>
             <p class="help-block">{{ $setting['set_desc'] }}</p>
         </div>    
@@ -43,15 +42,15 @@
         <div class="form-group">
             <div class="col-xs-6">
                 Наименование ключа:
-                {!! Form::text('set_name', null, array('class' => 'form-control')) !!}
+                {!! Form::text('set_name', null, array('class' => 'form-control', 'required')) !!}
             </div>
             <div class="col-xs-6">
                 Значение:
-                {!! Form::text('set_value', null, array('class' => 'form-control')) !!}
+                {!! Form::text('set_value', null, array('class' => 'form-control', 'required')) !!}
             </div>
             <div class="col-xs-12">
                 Описание:
-                {!! Form::text('set_desc', null, array('class' => 'form-control')) !!}
+                {!! Form::text('set_desc', null, array('class' => 'form-control', 'required')) !!}
             </div>
         </div>
         <center>

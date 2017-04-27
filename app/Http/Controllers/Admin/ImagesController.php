@@ -19,13 +19,20 @@ use BuildImage;
 
 class ImagesController extends Controller
 {
+    protected $albums;
+    protected $images;
+
+    public function __construct(Albums $albums, Images $images) {
+        $this->albums  = $albums;
+        $this->images  = $images;
+    }    
     
     /*
      * Загрузка (создание) изображений
      */
     public function postCreateImage(Request $request) {
         
-        $album = Albums::find($request->album_id);
+        $album = $this->albums->find($request->album_id);
                
         $upload_path = Helper::getUploadPath($request->album_id);
         
@@ -42,7 +49,7 @@ class ImagesController extends Controller
                     // Загружаем оригинал
                     Image::make($f)->save($upload_path . "/" . $upload_file_name);
 
-                    Images::create([
+                    $this->images->create([
                         'name'          => $f->getClientOriginalName(),
                         'albums_id'     => $request->album_id,
                         'users_id'      => Auth::user()->id,
@@ -56,8 +63,8 @@ class ImagesController extends Controller
         if($album->images_id == 0)
         {
             
-            $Images = Images::where('albums_id', $album->id)->first();
-            Albums::find($album->id)->update(['images_id' => $Images->id]);
+            $Images = $this->images->where('albums_id', $album->id)->first();
+            $this->albums->find($album->id)->update(['images_id' => $Images->id]);
             
         }
         
@@ -72,7 +79,7 @@ class ImagesController extends Controller
      */
     public function postRename(Request $request) {
         
-        $oldName = Images::find($request->input('id'));
+        $oldName = $this->images->find($request->input('id'));
         
         $mobile_image = Helper::getFullPathMobileImage($request->input('id'));
         $thumb_image  = Helper::getFullPathThumbImage($request->input('id'));
@@ -85,7 +92,7 @@ class ImagesController extends Controller
             File::delete($thumb_image);        
         
         File::move($upload_dir . "/" . $oldName->name, $upload_dir . "/" . $request->input('newName'));
-        Images::where('id', $request->input('id'))->update([
+        $this->images->where('id', $request->input('id'))->update([
             'name'          => $request->input('newName'),
             'is_rebuild'    => 1,
         ]);
@@ -135,26 +142,8 @@ class ImagesController extends Controller
      * Удаление выбранного изображения
      */
     public function deleteImage(Router $router) {
-        
-        $album_id = Images::find($router->input('id'))->album->id;
-        
-        Images::destroy($router->input('id'));
-        
-        if(Albums::where('id', $album_id)->where('images_id', $router->input('id'))->count() == 1);
-        {
-            
-            if(Images::where('albums_id', $album_id)->count() == 0)
-            {
-                Albums::where('id', $album_id)->update(['images_id' => 0]);
-            }
-            else
-            {
-                $Images = Images::where('albums_id', $album_id)->first();
-                Albums::find($album_id)->update(['images_id' => $Images->id]);
-            }
-        }
-        
-        Cache::flush();
+               
+        $this->images->deleteCheckAlbumPreview($router->input('id'));
         
         return back();
        
@@ -165,8 +154,10 @@ class ImagesController extends Controller
      */
     public function putInstallImage(Router $router) {
         
-        $album_id = Images::find($router->input('id'))->album->id;
-        Albums::find($album_id)->update(['images_id' => $router->input('id')]);
+        $album_id = $this->images->find($router->input('id'))->album->id;
+        $this->albums->find($album_id)->update(['images_id' => $router->input('id')]);
+        
+        \Cache::flush();
         
         return back();
         

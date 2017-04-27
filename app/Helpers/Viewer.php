@@ -40,7 +40,7 @@ class Viewer
             Cache::add($CacheKey, $static, Setting::get('cache_ttl'));
         }
 
-        if($data == false)
+        if(!$data)
             $result = $static;
         else
             $result = array_merge($data, $static);

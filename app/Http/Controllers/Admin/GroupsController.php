@@ -17,6 +17,16 @@ use Cache;
 
 class GroupsController extends Controller
 {
+ 
+    protected $groups;
+    protected $albums;
+    protected $images;
+
+    public function __construct(Groups $groups, Albums $albums, Images $images) {
+        $this->groups  = $groups;
+        $this->albums  = $albums;
+        $this->images  = $images;
+    }
     
     /*
      *  Создание новой группы
@@ -26,7 +36,7 @@ class GroupsController extends Controller
         $input = $request->all();
         $input['users_id'] = Auth::user()->id;
 
-        Groups::create($input);
+        $this->groups->create($input);
         
         Cache::forget(sha1('admin.show.groups'));
         
@@ -39,16 +49,7 @@ class GroupsController extends Controller
      */
     public function deleteGroup(Router $router) {
         
-        $Albums = Albums::where('groups_id', $router->input('id'))->get();
-        foreach ($Albums as $album){
-            
-            Albums::destroy($album->id);
-            Images::where('albums_id', $album->id)->delete();
-
-        }
-        
-        Groups::destroy($router->input('id'));
-        Cache::forget(sha1('admin.show.groups'));
+        $this->groups->deleteWithAlbums($router->input('id'));
         
         return redirect()->route('admin');
         
@@ -59,7 +60,7 @@ class GroupsController extends Controller
      */
     public function getEditGroup(Router $router) {
         
-        $group = Groups::find($router->input('id'));
+        $group = $this->groups->find($router->input('id'));
         
         return Viewer::get('admin.group_edit', [
             'type'            => 'edit',
@@ -71,10 +72,11 @@ class GroupsController extends Controller
     /*
      * Сохранение изменений группы
      */
-    public function putSaveEditGroup(Router $router, GroupsRequest $request) {
+    public function putSaveGroup(Router $router, GroupsRequest $request) {
         
-        Groups::find($router->input('id'))->update($request->all());
+        $this->groups->find($router->input('id'))->update($request->all());
         
+        Cache::forget(sha1('Cache.App.Helpers.Viewer'));
         Cache::forget(sha1('admin.show.groups'));
         
         return redirect()->route('admin');
