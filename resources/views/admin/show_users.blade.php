@@ -12,6 +12,9 @@
                 <th>id</th>
                 <th>Имя</th>
                 <th>E-Mail</th>
+                <th>Групп</th>
+                <th>Альбомов</th>
+                <th>Фотографий</th>
                 <th>Метод авторизации</th>
                 <th>Права</th>
             </tr>
@@ -21,6 +24,9 @@
                 <th>id</th>
                 <th>Имя</th>
                 <th>E-Mail</th>
+                <th>Групп</th>
+                <th>Альбомов</th>
+                <th>Фотографий</th>                
                 <th>Метод авторизации</th>
                 <th>Права</th>
             </tr>
@@ -52,6 +58,9 @@
                     
                     {{ $user['name']  }} </td>
                 <td>{{ $user['email'] }}</td>
+                <td>{{ $user->groupsCount() }}</td>
+                <td>{{ $user->albumsCount() }}</td>
+                <td>{{ $user->imagesCount() }}</td>
                 <td>
                     @if($user['method'] == 'thisSite')
                         Сайт

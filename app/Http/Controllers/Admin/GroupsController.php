@@ -17,7 +17,7 @@ use Cache;
 
 class GroupsController extends Controller
 {
- 
+
     protected $groups;
     protected $albums;
     protected $images;

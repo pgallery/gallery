@@ -102,7 +102,6 @@ Route::group(['middleware' => 'auth'], function () {
             'middleware'    => 'role:admin|moderator'
         ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
 
-
         // Очистка всего кэша
         Route::get('/flush/cache/', [
             'as'            => 'flush-cache', 
@@ -140,7 +139,17 @@ Route::group(['middleware' => 'auth'], function () {
         ]);
         Route::get('/users/delete/{id}', [
             'as'            => 'delete-user', 
-            'uses'          => 'UsersController@deleteUser',
+            'uses'          => 'UsersController@deleteUserCheck',
+            'middleware'    => 'role:admin'
+        ])->where(['id' => '[0-9]+']);
+        Route::post('/users/force-delete/{id}', [
+            'as'            => 'force-delete-user', 
+            'uses'          => 'UsersController@deleteForceUser',
+            'middleware'    => 'role:admin'
+        ])->where(['id' => '[0-9]+']);
+        Route::post('/users/migrate-delete/{id}', [
+            'as'            => 'migrate-edelete-user', 
+            'uses'          => 'UsersController@deleteMigrateUser',
             'middleware'    => 'role:admin'
         ])->where(['id' => '[0-9]+']);
         Route::get('/users/edit/{id}', [

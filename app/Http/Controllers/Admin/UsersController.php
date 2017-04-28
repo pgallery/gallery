@@ -59,7 +59,7 @@ class UsersController extends Controller
                 'user',
                 'roles',
                 'userRole'
-        ));        
+        ));
     }
     
     /*
@@ -71,36 +71,117 @@ class UsersController extends Controller
         $user->update($request->all());
         $user->roles()->sync($request->input('roles'));
         
-        if (Cache::has(sha1('HelperIsAdmin_' . $router->input('id') . '_cache')))
-            Cache::forget(sha1('HelperIsAdmin_' . $router->input('id') . '_cache'));        
-        
-        if (Cache::has(sha1('HelperIsAdminMenu_' . $router->input('id') . '_cache')))
-            Cache::forget(sha1('HelperIsAdminMenu_' . $router->input('id') . '_cache'));
-
-        if (Cache::has(sha1('Middleware.UsersRoles_' . $router->input('id') . '_cache')))
-            Cache::forget(sha1('Middleware.UsersRoles_' . $router->input('id') . '_cache'));
+        Cache::forget(sha1('HelperIsAdmin_' . $router->input('id') . '_cache'));        
+        Cache::forget(sha1('HelperIsAdminMenu_' . $router->input('id') . '_cache'));
+        Cache::forget(sha1('Middleware.UsersRoles_' . $router->input('id') . '_cache'));
 
         return redirect()->route('users');
         
     }
     
     /*
-     * Удаление выбранного пользователя
+     * Проверяка удаляемого пользователя на наличие связанных объектов
      */
-    public function deleteUser(Router $router) {
+    public function deleteUserCheck(Router $router) {
         
-        $id = $router->input('id');
+        $id     = $router->input('id');
+        $user   = $this->user->find($id);
         
-        $this->groups->where('users_id', $id)->update(['users_id' => 1]);
-        $this->albums->where('users_id', $id)->update(['users_id' => 1]);
-        $this->images->where('users_id', $id)->update(['users_id' => 1]);
+        $issetObject = false;
         
-        $this->user->destroy($id);
+        if($user->groupsCount() != 0) $issetObject = true;
+        if($user->albumsCount() != 0) $issetObject = true;
+        if($user->imagesCount() != 0) $issetObject = true;
         
-        Cache::flush();
+        if($issetObject) {
+            
+            $allUsers = $this->user->pluck('name','id');
+            
+            return Viewer::get('admin.user_object', compact(
+                'user',
+                'allUsers'
+            ));
+            
+        }
+            
+        $this->deleteUser($id);
         
         return redirect()->route('users');
         
+    }
+    
+    /*
+     * Удаление выбранного пользователя вместе с привязанными объектами
+     */
+    public function deleteForceUser(Router $router) {
+        
+        $id     = $router->input('id');
+        $user   = $this->user->find($id);
+        
+        if($user->groupsCount() != 0) {
+            
+            $userGroups = $user->groups()->get();
+            
+            foreach ($userGroups as $group) {
+                echo "GrID: " . $group->id . "<br>";
+                $this->groups->deleteWithAlbums($group->id);
+            }
+            
+        }
+        
+        if($user->albumsCount() != 0) {
+            
+            $userAlbums = $user->albums()->get();
+            
+            foreach ($userAlbums as $album) {
+                echo "AlID: " . $album->id . "<br>";
+                $this->albums->deleteWithImages($album->id);
+            }
+            
+        }        
+    
+        if($user->imagesCount() != 0) {
+            
+            $userImages = $user->images()->get();
+            
+            foreach ($userImages as $image) {
+                echo "ImID: " . $image->id . "<br>";
+                $this->images->deleteCheckAlbumPreview($image->id);
+            }
+            
+        }        
+        
+        $this->deleteUser($id);
+        
+        return redirect()->route('users');
+        
+    }
+    
+    /*
+     * Перенос объектов к другому пользователю и удаление выбранного пользователя
+     */
+    public function deleteMigrateUser(Router $router, Request $request) {
+        
+        $id       = $router->input('id');
+        $newOwner = $request->input('newOwner');
+
+        $this->groups->where('users_id', $id)->update(['users_id' => $newOwner]);
+        $this->albums->where('users_id', $id)->update(['users_id' => $newOwner]);
+        $this->images->where('users_id', $id)->update(['users_id' => $newOwner]);        
+        
+        $this->deleteUser($id);
+        
+        return redirect()->route('users');
+    }
+    
+    /*
+     * Удаление выбранного пользователя
+     */
+    public function deleteUser($id) {
+        
+        $this->user->destroy($id);        
+        Cache::flush();
+
     }
     
     /*

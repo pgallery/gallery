@@ -15,33 +15,44 @@ class User extends Authenticatable
     use SoftDeletes;    
     
     protected $dates = ['deleted_at'];
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
     protected $fillable = [
         'name', 'email', 'password', 'method'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
     
-    public function roles()
-    {
-        
+    public function roles() {
         return $this->belongsToMany('App\Models\Roles', 'roles_user');
-
     }
     
-    public function hasRole($roles)
-    {
+    public function groupsCount() {
+        return $this->hasMany('App\Models\Groups', 'users_id', 'id')->count();
+    }
+
+    public function groups() {
+        return $this->hasMany('App\Models\Groups', 'users_id', 'id');
+    }
+    
+    public function albumsCount() {
+        return $this->hasMany('App\Models\Albums', 'users_id', 'id')->count();
+    }
+
+    public function albums() {
+        return $this->hasMany('App\Models\Albums', 'users_id', 'id');
+    }
+    
+    public function imagesCount() {
+        return $this->hasMany('App\Models\Images', 'users_id', 'id')->count();
+    }
+   
+    public function images() {
+        return $this->hasMany('App\Models\Images', 'users_id', 'id');
+    }
+    
+    public function hasRole($roles) {
         $user_id = \Illuminate\Support\Facades\Auth::user()->id;
         
         $user_roles = \Cache::remember(sha1('Middleware.UsersRoles_' . $user_id . '_cache'), 100, function() use ($user_id){
@@ -68,8 +79,6 @@ class User extends Authenticatable
     }
     
     public function createWithRoles($input) {
-        
-
         
         if(empty($input['method'])) $input['method']   = 'thisSite';
         
