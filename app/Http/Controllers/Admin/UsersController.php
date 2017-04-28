@@ -96,7 +96,8 @@ class UsersController extends Controller
         if($issetObject) {
             
             $allUsers = $this->user->pluck('name','id');
-            
+            unset($allUsers[$id]);
+
             return Viewer::get('admin.user_object', compact(
                 'user',
                 'allUsers'

@@ -76,7 +76,7 @@ class AlbumsController extends Controller
         if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->input('directory')))
             File::makeDirectory(Setting::get('upload_dir') . "/" . $request->input('directory'), 0755, true);
         
-        Cache::forget(sha1('admin.show.albums'));
+        Cache::flush();
         
         return back();
         
