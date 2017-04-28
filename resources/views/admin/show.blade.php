@@ -60,8 +60,6 @@
 
 <h3>Альбомы <small><a href="" data-toggle="modal" data-target="#newAlbumModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h3> 
 
-
-
 <table id="album-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>

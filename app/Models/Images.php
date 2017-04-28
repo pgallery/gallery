@@ -45,4 +45,24 @@ class Images extends Model
         \Cache::flush();
         
     }
+    
+    public function destroyImage($id){
+        
+        $full_image   = \Helper::getFullPathImage($id);
+        $mobile_image = \Helper::getFullPathMobileImage($id);
+        $thumb_image  = \Helper::getFullPathThumbImage($id);
+        
+        if (\File::exists($full_image))
+            \File::delete($full_image);
+        
+        if (\File::exists($mobile_image))
+            \File::delete($mobile_image);
+        
+        if (\File::exists($thumb_image))
+            \File::delete($thumb_image);        
+        
+        $image = $this->withTrashed()->findOrFail($id);
+        $image->forceDelete();
+        
+    }
 }

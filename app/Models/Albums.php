@@ -58,4 +58,26 @@ class Albums extends Model
 
     }
     
+    public function destroyAlbum($id){
+        
+        $album = $this->onlyTrashed()->where('id', $id)->first();
+        
+        $upload_path = \Helper::getUploadPath($id) . $album->directory;
+        $mobile_path = \Helper::getFullPathMobile($id) . $album->directory;
+        $thumb_path  = \Helper::getFullPathThumb($id) . $album->directory;
+        
+        if(\File::isDirectory($upload_path))
+            \File::deleteDirectory($upload_path);
+            
+        if(\File::isDirectory($mobile_path))
+            \File::deleteDirectory($mobile_path);
+
+        if(\File::isDirectory($thumb_path))
+            \File::deleteDirectory($thumb_path);         
+        
+        $album = $this->withTrashed()->findOrFail($id);
+        $album->forceDelete();
+        
+    }
+    
 }

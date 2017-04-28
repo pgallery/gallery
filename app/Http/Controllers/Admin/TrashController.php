@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -17,52 +18,35 @@ use Cache;
 
 class TrashController extends Controller
 {
+    protected $groups;
+    protected $albums;
+    protected $images;
+
+    public function __construct(Groups $groups, Albums $albums, Images $images) {
+        $this->groups  = $groups;
+        $this->albums  = $albums;
+        $this->images  = $images;
+    }
+    
     public function deleteTrash() {
         
-        $images = Images::onlyTrashed()->get();
+        $images = $this->images->onlyTrashed()->get();
 
         foreach ($images as $image){
-            
-            $full_image = Helper::getFullPathImage($image['id']);
-            $mobile_image = Helper::getFullPathMobileImage($image['id']);
-            $thumb_image = Helper::getFullPathThumbImage($image['id']);
-            
-            if (File::exists($full_image))
-                File::delete($full_image);
-            
-            if (File::exists($mobile_image))
-                File::delete($mobile_image);
-            
-            if (File::exists($thumb_image))
-                File::delete($thumb_image); 
-            
-            $this->destroyImage($image->id);
-            
+            $this->images->destroyImage($image->id);
         }
         
-        $albums = Albums::onlyTrashed()->get();
-        foreach ($albums as $album){
-
-            $upload_path = public_path() . "/" . Setting::get('upload_dir') . "/" . $album->directory;
-            $mobile_path = public_path() . "/" . Setting::get('mobile_upload_dir') . "/" . $album->directory;
-            $thumb_path  = public_path() . "/" . Setting::get('thumbs_dir') . "/" . $album->directory;
-            
-            if(File::isDirectory($upload_path))
-                File::deleteDirectory($upload_path);
-            
-            if(File::isDirectory($mobile_path))
-                File::deleteDirectory($mobile_path);
-
-            if(File::isDirectory($thumb_path))
-                File::deleteDirectory($thumb_path);            
-                      
-            $this->destroyAlbum($album->id);
-        }   
+        $albums = $this->albums->onlyTrashed()->get();
         
-        $groups = Groups::onlyTrashed()->get();
+        foreach ($albums as $album){
+            $this->albums->destroyAlbum($album->id);
+        }
+        
+        $groups = $this->groups->onlyTrashed()->get();
+        
         foreach ($groups as $group){
-            $this->destroyGroup($group->id);
-        }        
+            $this->groups->destroyGroup($group->id);
+        }
 
         Cache::flush();
         
@@ -70,36 +54,14 @@ class TrashController extends Controller
         
     }
     
-    public function getGroups() {
+    public function getOptionPage(Router $router) {
         
-        $groups = Groups::onlyTrashed()->get();
+        $groups = $this->groups->onlyTrashed()->get();
         
         return Viewer::get('admin.show_trashed', [
             'groups'    => $groups,
         ]);        
         
-    }    
-    
-    private function destroyGroup($id){
-        
-        $group = Groups::withTrashed()->findOrFail($id);
-        $group->forceDelete();
-        
     }
-    
-    private function destroyAlbum($id){
-        
-        $album = Albums::withTrashed()->findOrFail($id);
-        $album->forceDelete();
-        
-    }
-    
-    private function destroyImage($id){
-        
-        $image = Images::withTrashed()->findOrFail($id);
-        $image->forceDelete();
-        
-    }
-
     
 }

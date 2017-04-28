@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row"> 
-
+    
     @foreach($albums as $album)
         
             <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 thumb">

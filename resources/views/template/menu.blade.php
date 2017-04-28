@@ -63,11 +63,11 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> ({{ $summary_trashed }}) <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     @if(Helper::isAdmin(Auth::user()->id))
-                        <li><a href="{{ route('users-trash') }}">Пользователи ({{ $users_trashed }})</a></li>
-                        <li><a href="{{ route('groups-trash') }}">Группы ({{ $groups_trashed }})</a></li>
+                        <li><a href="{{ route('show-trash', ['option' => 'users']) }}">Пользователи ({{ $users_trashed }})</a></li>
+                        <li><a href="{{ route('show-trash', ['option' => 'groups']) }}">Группы ({{ $groups_trashed }})</a></li>
                     @endif
-                    <li><a href="{{ route('albums-trash') }}">Альбомы ({{ $albums_trashed }})</a></li>
-                    <li><a href="{{ route('images-trash') }}">Фотографии ({{ $images_trashed }})</a></li>
+                    <li><a href="{{ route('show-trash', ['option' => 'albums']) }}">Альбомы ({{ $albums_trashed }})</a></li>
+                    <li><a href="{{ route('show-trash', ['option' => 'images']) }}">Фотографии ({{ $images_trashed }})</a></li>
                     @if(Helper::isAdmin(Auth::user()->id))
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('empty-trash') }}">Очистить корзину</a></li>
@@ -95,8 +95,6 @@
                 <li><a href="{{ route('login') }}">Вход</a></li>
         @endif
 
-              
-              
           </ul> 
 
         </div><!--/.nav-collapse -->

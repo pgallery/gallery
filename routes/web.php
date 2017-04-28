@@ -86,37 +86,23 @@ Route::group(['middleware' => 'auth'], function () {
         ]);        
         
         // Корзина мусора
-        Route::get('/users/trash/', [
-            'as'            => 'users-trash', 
-            'uses'          => 'TrashController@getUsers',
+        Route::get('/trash/empty/', [
+            'as'            => 'empty-trash', 
+            'uses'          => 'TrashController@deleteTrash',
             'middleware'    => 'role:admin'
         ]);
-        Route::get('/groups/trash/', [
-            'as'            => 'groups-trash', 
-            'uses'          => 'TrashController@getGroups',
-            'middleware'    => 'role:admin'
-        ]);
+        Route::get('/trash/{option}/', [
+            'as'            => 'show-trash', 
+            'uses'          => 'TrashController@getOptionPage',
+            'middleware'    => 'role:admin|moderator'
+        ])->where(['option' => '[a-z]+']);  
         Route::get('/restore/trash/{option}/{id}', [
             'as'            => 'restoreGroup-trash',
             'uses'          => 'TrashController@getRestore',
             'middleware'    => 'role:admin|moderator'
         ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
-        Route::get('/albums/trash/', [
-            'as'            => 'albums-trash', 
-            'uses'          => 'TrashController@getAlbums',
-            'middleware'    => 'role:admin|moderator'
-        ]);
-        Route::get('/images/trash/', [
-            'as'            => 'images-trash', 
-            'uses'          => 'TrashController@getImages',
-            'middleware'    => 'role:admin|moderator'
-        ]);
-        Route::get('/empty/trash/', [
-            'as'            => 'empty-trash', 
-            'uses'          => 'TrashController@deleteTrash',
-            'middleware'    => 'role:admin'
-        ]);
-        
+
+
         // Очистка всего кэша
         Route::get('/flush/cache/', [
             'as'            => 'flush-cache', 

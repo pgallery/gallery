@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Models\Roles;
+use App\Models\Groups;
+use App\Models\Albums;
+use App\Models\Images;
 
 use Viewer;
 use Cache;
@@ -17,10 +20,16 @@ class UsersController extends Controller
 {
     protected $user;
     protected $roles;
+    protected $groups;
+    protected $albums;
+    protected $images;
 
-    public function __construct(User $user, Roles $roles) {
-        $this->user  = $user;
-        $this->roles = $roles;
+    public function __construct(User $user, Roles $roles, Groups $groups, Albums $albums, Images $images) {
+        $this->user    = $user;
+        $this->roles   = $roles;
+        $this->groups  = $groups;
+        $this->albums  = $albums;
+        $this->images  = $images;
     }
 
     /*
@@ -80,7 +89,15 @@ class UsersController extends Controller
      */
     public function deleteUser(Router $router) {
         
-        $this->user->destroy($router->input('id'));
+        $id = $router->input('id');
+        
+        $this->groups->where('users_id', $id)->update(['users_id' => 1]);
+        $this->albums->where('users_id', $id)->update(['users_id' => 1]);
+        $this->images->where('users_id', $id)->update(['users_id' => 1]);
+        
+        $this->user->destroy($id);
+        
+        Cache::flush();
         
         return redirect()->route('users');
         

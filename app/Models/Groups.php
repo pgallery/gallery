@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-//use App\Models\Albums;
-
 class Groups extends Model
 {
 
@@ -52,6 +50,13 @@ class Groups extends Model
         
 //        \Cache::forget(sha1('Cache.App.Helpers.Viewer'));
 //        \Cache::forget(sha1('admin.show.groups'));        
+        
+    }
+    
+    public function destroyGroup($id){
+        
+        $group = $this->withTrashed()->findOrFail($id);
+        $group->forceDelete();
         
     }
 }

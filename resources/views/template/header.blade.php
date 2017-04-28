@@ -55,7 +55,7 @@
         .thumb { 
           padding:5px; 
         } 
-        
+
         @yield('css')
         
               
