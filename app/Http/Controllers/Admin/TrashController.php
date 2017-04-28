@@ -6,6 +6,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
@@ -18,11 +19,13 @@ use Cache;
 
 class TrashController extends Controller
 {
+    protected $user;    
     protected $groups;
     protected $albums;
     protected $images;
 
-    public function __construct(Groups $groups, Albums $albums, Images $images) {
+    public function __construct(User $user, Groups $groups, Albums $albums, Images $images) {
+        $this->user    = $user;        
         $this->groups  = $groups;
         $this->albums  = $albums;
         $this->images  = $images;
@@ -48,6 +51,12 @@ class TrashController extends Controller
             $this->groups->destroyGroup($group->id);
         }
 
+        $users = $this->user->onlyTrashed()->get();
+        
+        foreach ($users as $user){
+            $this->user->destroyUser($user->id);
+        }
+        
         Cache::flush();
         
         return back();

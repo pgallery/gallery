@@ -75,8 +75,6 @@ class User extends Authenticatable
         
         $input['password'] = \Hash::make($input['password']);
         
-       
-        
         $user = $this->create($input);
         
         if(isset($input['roles'])){
@@ -91,8 +89,14 @@ class User extends Authenticatable
             $user->roles()->attach($RoleGuest->id);
             
         }
-//        print_r($input);
-//        exit; 
+
         return $user->id;
+    }
+    
+    public function destroyUser($id){
+        
+        $user = $this->withTrashed()->findOrFail($id);
+        $user->forceDelete();
+        
     }
 }
