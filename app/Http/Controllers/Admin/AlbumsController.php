@@ -73,8 +73,10 @@ class AlbumsController extends Controller
         
         $this->albums->create($input); 
         
-        if(!File::isDirectory(Setting::get('upload_dir') . "/" . $request->input('directory')))
-            File::makeDirectory(Setting::get('upload_dir') . "/" . $request->input('directory'), 0755, true);
+        $album_directory = Setting::get('upload_dir') . "/" . $request->input('directory');
+        
+        if(!File::isDirectory($album_directory))
+            File::makeDirectory($album_directory,  0755, true);
         
         Cache::flush();
         

@@ -16,11 +16,25 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">По группам <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     
-                    @foreach($group_list as $group)
-                        @if( $group->albumCountPublic() != 0)
-                            <li><a href="{{ url('/album/byGroup/' . $group['id']) }}">{{ $group->name }}</a></li>
-                        @endif
-                    @endforeach
+                      @if(Auth::check() && Helper::isAdmin(Auth::user()->id))
+                    
+                        @foreach($group_list as $group)
+                            @if( $group->albumCount() != 0)
+                                <li><a href="{{ url('/album/byGroup/' . $group['id']) }}">{{ $group->name }}</a></li>
+                            @endif
+                        @endforeach                      
+                      
+                      @else
+                      
+                        @foreach($group_list as $group)
+                            @if( $group->albumCountPublic() != 0)
+                                <li><a href="{{ url('/album/byGroup/' . $group['id']) }}">{{ $group->name }}</a></li>
+                            @endif
+                        @endforeach                      
+                      
+                      @endif
+                      
+
 
                   </ul>
                 </li>  

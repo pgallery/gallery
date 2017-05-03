@@ -15,6 +15,7 @@ class Viewer
     public static function get($page, $data = false) {
         
         $CacheKey = sha1('Cache.App.Helpers.Viewer');
+        
         if (Cache::has($CacheKey))
         {
             $static = Cache::get($CacheKey);

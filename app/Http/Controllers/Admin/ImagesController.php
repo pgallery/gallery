@@ -33,7 +33,7 @@ class ImagesController extends Controller
     public function postCreateImage(Request $request) {
         
         $album = $this->albums->find($request->album_id);
-               
+        
         $upload_path = Helper::getUploadPath($request->album_id);
         
         if(!File::isDirectory($upload_path))
