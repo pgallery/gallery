@@ -25,8 +25,7 @@ class AlbumsController extends Controller
         $this->images  = $images;
     }       
     
-    public function getShow(Router $router)
-    {
+    public function getShow(Router $router) {
         
         if($this->albums->where('permission', 'All')->where('images_id', '!=', '0')->count() == 0)
             return Viewer::get('errors.404'); 

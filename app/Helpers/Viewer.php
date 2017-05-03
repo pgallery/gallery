@@ -7,14 +7,22 @@ use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
 
+use Auth;
 use Cache;
 use Setting;
+use Helper;
 
 class Viewer
 {
     public static function get($page, $data = false) {
         
-        $CacheKey = sha1('Cache.App.Helpers.Viewer');
+        if(Auth::check() and Helper::isAdmin(Auth::user()->id))
+            $preCacheKey = 'Admin.';
+        else
+            $preCacheKey = 'User.';        
+        
+        $preCacheKey .= 'Cache.App.Helpers.Viewer';
+        $CacheKey = sha1($preCacheKey);
         
         if (Cache::has($CacheKey))
         {
@@ -27,9 +35,14 @@ class Viewer
             $CountTrashedAlbums = Albums::onlyTrashed()->count();
             $CountTrashedImages = Images::onlyTrashed()->count();
 
+            if(Auth::check() and Helper::isAdmin(Auth::user()->id))
+                $year_list = Albums::select('year')->groupBy('year')->get();
+            else
+                $year_list = Albums::select('year')->where('permission', 'All')->groupBy('year')->get();            
+            
             $static = [
                 'group_list'        => Groups::orderBy('name')->get(),
-                'year_list'         => Albums::select('year')->where('permission', 'All')->groupBy('year')->get(), 
+                'year_list'         => $year_list, 
                 'summary_trashed'   => $CountTrashedUsers + $CountTrashedGroups + $CountTrashedAlbums + $CountTrashedImages,
                 'users_trashed'     => $CountTrashedUsers,
                 'groups_trashed'    => $CountTrashedGroups,
