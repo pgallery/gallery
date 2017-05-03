@@ -43,7 +43,7 @@ class AlbumsController extends Controller
         
         if (Cache::has($CacheKey))
         {
-            $albums = Cache::get($CacheKey);
+            $resultData = Cache::get($CacheKey);
         }
         else
         {
@@ -60,28 +60,23 @@ class AlbumsController extends Controller
 
             $AlbumsQuery = $AlbumsQuery->where('images_id', '!=', '0');
             
-            $AlbumsQuery = $AlbumsQuery->get();
+            $albums = $AlbumsQuery->get();
 
-            foreach ($AlbumsQuery as $album){
-                $albums[] = [
-                    'id'            => $album->id,
-                    'name'          => $album->name,
-                    'url'           => $album->url,
-                    'year'          => $album->year,
-                    'desc'          => $album->desc,
-                    'thumbs_url'    => Helper::getFullPathThumbImage($album->images_id, 'url'),
-                    'thumbs_width'  => Setting::get('thumbs_width'),
-                    'thumbs_height' => Setting::get('thumbs_height'),
-                    'count'         => $this->images->where('albums_id', $album->id)->count(),
-                    'groups_name'   => $album->group->name,
-                    'size'          => round(($album->imagesSumSize() / 1024 / 1024)) . " Mb",
-                ];
-            }
+            $thumbs_width  = Setting::get('thumbs_width');
+            $thumbs_height = Setting::get('thumbs_height');
+            $thumbs_dir    = Setting::get('thumbs_dir');
             
-            Cache::add($CacheKey, $albums, Setting::get('cache_ttl'));
+            $resultData = compact(
+                'albums', 
+                'thumbs_width', 
+                'thumbs_height', 
+                'thumbs_dir'
+            );
+            
+            Cache::add($CacheKey, $resultData, Setting::get('cache_ttl'));
         }
         
-        return Viewer::get('pages.albums', compact('albums'));
+        return Viewer::get('pages.albums', $resultData);
 
     }
     

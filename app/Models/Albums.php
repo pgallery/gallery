@@ -30,27 +30,33 @@ class Albums extends Model
     
     public function imagesCount()
     {
-        return $this->hasMany('App\Models\Images')->count();
+        return \Cache::remember(sha1('albums.imagesCount_' . $this->id . '_cache'), 100, function(){
+            return $this->hasMany('App\Models\Images')->count();
+        });
     }
     
     public function imagesSumSize()
     {
-        return $this->hasMany('App\Models\Images')->sum('size');
+        return \Cache::remember(sha1('albums.imagesSumSize_' . $this->id . '_cache'), 100, function(){
+            return $this->hasMany('App\Models\Images')->sum('size');
+        });
     }
     
     public function owner()
     {
-        return \Cache::remember(sha1('owner_' . $this->users_id . '_cache'), 100, function(){
+        return \Cache::remember(sha1('albums.owner_' . $this->users_id . '_cache'), 100, function(){
             return $this->hasOne('App\User', 'id', 'users_id')->select('name')->first();           
         });
-    }    
+    }
+    
+    public function thumbs() {
+        return \Cache::remember(sha1('albums.thumbs_' . $this->images_id . '_cache'), 100, function(){
+            return $this->hasOne('App\Models\Images', 'id', 'images_id')->select('name')->first();
+        });
+    }
     
     public static function deleteWithImages($id) {
-        
-//        \Cache::forget(sha1('Cache.App.Helpers.Viewer'));
-//        \Cache::forget(sha1('admin.show.albums'));
-//        \Cache::forget(sha1(self::find($id)->url));
-        
+               
         self::destroy($id);
         Images::where('albums_id', $id)->delete();  
         

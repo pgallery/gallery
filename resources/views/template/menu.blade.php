@@ -20,7 +20,7 @@
                     
                         @foreach($group_list as $group)
                             @if( $group->albumCount() != 0)
-                                <li><a href="{{ url('/album/byGroup/' . $group['id']) }}">{{ $group->name }} ({{ $group->albumCount() }})</a></li>
+                                <li><a href="{{ url('/album/byGroup/' . $group->id) }}">{{ $group->name }} ({{ $group->albumCount() }})</a></li>
                             @endif
                         @endforeach                      
                       
@@ -28,14 +28,12 @@
                       
                         @foreach($group_list as $group)
                             @if( $group->albumCountPublic() != 0)
-                                <li><a href="{{ url('/album/byGroup/' . $group['id']) }}">{{ $group->name }} ({{ $group->albumCountPublic() }})</a></li>
+                                <li><a href="{{ url('/album/byGroup/' . $group->id) }}">{{ $group->name }} ({{ $group->albumCountPublic() }})</a></li>
                             @endif
                         @endforeach                      
                       
                       @endif
                       
-
-
                   </ul>
                 </li>  
                 <li class="dropdown">

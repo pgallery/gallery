@@ -18,21 +18,21 @@ class Groups extends Model
     
     public function albumCount()
     {
-        return \Cache::remember(sha1('albumCount_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember(sha1('groups.albumCount_' . $this->id . '_cache'), 100, function(){
             return $this->hasMany('App\Models\Albums')->count();           
         });
     }
     
     public function albumCountPublic()
     {
-        return \Cache::remember(sha1('albumCountPublic_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember(sha1('groups.albumCountPublic_' . $this->id . '_cache'), 100, function(){
             return $this->hasMany('App\Models\Albums')->where('albums.permission', 'All')->count();           
         });
     }     
     
     public function albumCountPrivate()
     {
-        return \Cache::remember(sha1('albumCountPrivate_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember(sha1('groups.albumCountPrivate_' . $this->id . '_cache'), 100, function(){
             return $this->hasMany('App\Models\Albums')->where('albums.permission', '!=', 'All')->count();           
         });
     }
@@ -47,9 +47,6 @@ class Groups extends Model
         self::destroy($id);
         
         \Cache::flush();
-        
-//        \Cache::forget(sha1('Cache.App.Helpers.Viewer'));
-//        \Cache::forget(sha1('admin.show.groups'));        
         
     }
     
