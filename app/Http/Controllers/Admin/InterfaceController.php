@@ -51,43 +51,46 @@ class InterfaceController extends Controller
 
             if (Cache::has($CacheKey))
             {
-                $albums = Cache::get($CacheKey);
+                $resultData = Cache::get($CacheKey);
             }
             else
             {
+                $thumbs_dir = Setting::get('thumbs_dir');
+                $albums     = Albums::all();
+
+                $resultData = compact(
+                    'groupsArray',
+                    'thumbs_dir',
+                    'albums', 
+                    'groups'
+                );
+                
+//                foreach ($AllAlbums as $album){
+//
+//                    if($album->images_id != 0)
+//                        $thumbs_url = Helper::getFullPathThumbImage($album->images_id, 'url');
+//                    else
+//                        $thumbs_url = "";
+//
+//                    $albums[] = [
+//                        'id'            => $album->id,
+//                        'name'          => $album->name,
+//                        'url'           => $album->url,
+//                        'thumbs_url'    => $thumbs_url,
+//                        'year'          => $album->year,
+//                        'permission'    => $album->permission,
+//                        'owner'         => $album->owner()->name,
+//                        'count'         => $album->imagesCount(),
+//                        'summary_size'  => $album->imagesSumSize(),
+//                        'groups_name'   => $album->group->name,
+//                    ];
+//                }
             
-                $AllAlbums = Albums::all();
-
-                foreach ($AllAlbums as $album){
-
-                    if($album->images_id != 0)
-                        $thumbs_url = Helper::getFullPathThumbImage($album->images_id, 'url');
-                    else
-                        $thumbs_url = "";
-
-                    $albums[] = [
-                        'id'            => $album->id,
-                        'name'          => $album->name,
-                        'url'           => $album->url,
-                        'thumbs_url'    => $thumbs_url,
-                        'year'          => $album->year,
-                        'permission'    => $album->permission,
-                        'owner'         => $album->owner()->name,
-                        'count'         => $album->imagesCount(),
-                        'summary_size'  => $album->imagesSumSize(),
-                        'groups_name'   => $album->group->name,
-                    ];
-                }
-            
-                Cache::add($CacheKey, $albums, Setting::get('cache_ttl'));
+//                Cache::add($CacheKey, $resultData, Setting::get('cache_ttl'));
             }
         }
         
-        return Viewer::get('admin.show', compact(
-            'groupsArray',
-            'albums', 
-            'groups'
-        ));
+        return Viewer::get('admin.show', $resultData);
         
     }
     

@@ -94,11 +94,11 @@
     @foreach($albums as $album)
         
             <tr
-            @if(empty($album['thumbs_url']))
+            @if($album->images_id == 0)
                  class="danger"
             @endif
             >
-                <td>{{ $album['id'] }}</td>
+                <td>{{ $album->id }}</td>
                 <td> 
                     <!-- Single button -->
                     <div class="btn-group">
@@ -106,41 +106,41 @@
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{{ route('edit-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
+                        <li><a href="{{ route('edit-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
                         @if($album['count'] != 0)
-                            <li><a href="{{ route('show-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-open" aria-hidden="true"></span> Просмотреть фотографии</a></li>
-                            <li><a href="{{ route('rebuild-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать все миниатюры</a></li>
+                            <li><a href="{{ route('show-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-open" aria-hidden="true"></span> Просмотреть фотографии</a></li>
+                            <li><a href="{{ route('rebuild-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать все миниатюры</a></li>
                         @endif
-                        <li><a href="{{ route('uploads-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-paste" aria-hidden="true"></span> Загрузить фотографии</a></li>
-                        <li><a href="{{ route('sync-album', ['id' => $album['id']]) }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Синхронизировать из директории</a></li>
+                        <li><a href="{{ route('uploads-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-paste" aria-hidden="true"></span> Загрузить фотографии</a></li>
+                        <li><a href="{{ route('sync-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Синхронизировать из директории</a></li>
                         
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{ route('delete-album', ['id' => $album['id']]) }}" data-toggle="confirmation" data-title="Удалить альбом и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
+                        <li><a href="{{ route('delete-album', ['id' => $album->id]) }}" data-toggle="confirmation" data-title="Удалить альбом и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
                     </div>                    
                     
-                     {{ $album['name'] }}
+                     {{ $album->name }}
                 </td>
                 <td>
                     
-                    <a href="{{ route('gallery-show', ['url' => $album['url']]) }}" class="btn btn-default btn-xs" target="_blank">
+                    <a href="{{ route('gallery-show', ['url' => $album->url]) }}" class="btn btn-default btn-xs" target="_blank">
                         <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
                     </a>
                     
                 </td>
                 <td>
-                    @if(!empty($album['thumbs_url']))
-                        <a href="{{ $album['thumbs_url'] }}" data-fancybox="images"> 
-                            <img  src="{{ $album['thumbs_url'] }}" width="75"/> 
+                    @if($album->images_id != 0)
+                        <a href="/{{ $thumbs_dir }}/{{ $album->directory }}/{{ $album->thumbs()->name  }}" data-fancybox="images"> 
+                            <img  src="/{{ $thumbs_dir }}/{{ $album->directory }}/{{ $album->thumbs()->name  }}" width="75"/> 
                         </a>
                     @endif
                 </td>
-                <td>{{ $album['count'] }}</td>
-                <td>{{ round(($album['summary_size'] / 1024 / 1024)) }} Mb</td>
-                <td>{{ $album['groups_name'] }}</td>
-                <td>{{ $album['year'] }}</td>
-                <td>{{ $album['permission'] }}</td>
-                <td>{{ $album['owner'] }}</td>
+                <td>{{ $album->imagesCount() }}</td>
+                <td>{{ round(($album->imagesSumSize() / 1024 / 1024)) }} Mb</td>
+                <td>{{ $album->group->name }}</td>
+                <td>{{ $album->year }}</td>
+                <td>{{ $album->permission }}</td>
+                <td>{{ $album->owner()->name }}</td>
             </tr>
 
     @endforeach
