@@ -27,7 +27,11 @@ class AlbumsController extends Controller
     
     public function getShow(Router $router) {
         
-        if($this->albums->where('permission', 'All')->where('images_id', '!=', '0')->count() == 0)
+        $countAllPublicAlbums = Cache::remember(sha1('all.public.albums'), Setting::get('cache_ttl'), function() {
+            return $this->albums->where('permission', 'All')->where('images_id', '!=', '0')->count();
+        });
+        
+        if($countAllPublicAlbums == 0)
             return Viewer::get('errors.404'); 
         
         if(Auth::check() and Helper::isAdmin(Auth::user()->id))

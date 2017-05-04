@@ -25,19 +25,23 @@ class ImagesController extends Controller
     
     public function getPage(Router $router, Request $request) {
         
-        if($this->albums->where('url', $router->input('url'))->count() == 0)
-            return Viewer::get('errors.404');        
-       
-        $thisAlbum = $this->albums->where('url', $router->input('url'))->first();        
+        $url = $router->input('url');
+        
+        $thisAlbum = Cache::remember(sha1('albums.show.' . $url), Setting::get('cache_ttl'), function() use ($url){
+            return $this->albums->where('url', $url)->first();
+        });
+        
+        if(!$thisAlbum)
+            return Viewer::get('errors.404');
         
         if (Agent::isMobile() and !Auth::check())
-            $CacheKey = sha1($router->input('url') . '.Mobile' . $request->input('page'));
+            $CacheKey = sha1($url . '.Mobile' . $request->input('page'));
         elseif(Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
-            $CacheKey = sha1($router->input('url') . '.AdminMobile' . $request->input('page'));
+            $CacheKey = sha1($url . '.AdminMobile' . $request->input('page'));
         elseif(!Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
-            $CacheKey = sha1($router->input('url') . '.Admin' . $request->input('page'));        
+            $CacheKey = sha1($url . '.Admin' . $request->input('page'));        
         else
-            $CacheKey = sha1($router->input('url') . $request->input('page'));
+            $CacheKey = sha1($url . $request->input('page'));
         
         if (Cache::has($CacheKey))
         {
