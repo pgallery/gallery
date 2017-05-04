@@ -20,7 +20,9 @@ class Albums extends Model
     
     public function group()
     {
-        return $this->hasOne('App\Models\Groups', 'id', 'groups_id');
+        return \Cache::remember(sha1('albums.group_' . $this->groups_id . '_cache'), 100, function(){
+            return $this->hasOne('App\Models\Groups', 'id', 'groups_id')->select('name')->first();
+        });
     }
     
     public function images()

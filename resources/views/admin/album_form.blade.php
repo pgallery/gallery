@@ -31,7 +31,7 @@
             <label class="col-sm-2 control-label">Директория:</label>
             <div class="col-sm-4">
                 {!! Form::text('directory', null, 
-                (!empty($album->directory) 
+                ((!empty($album->directory) and !empty($type))
                     ? array_merge(['class' => 'form-control', 'required'], ['disabled' => '']) 
                     : array('class' => 'form-control', 'required')
                 )) !!}

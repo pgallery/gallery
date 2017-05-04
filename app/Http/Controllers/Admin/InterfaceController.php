@@ -27,62 +27,29 @@ class InterfaceController extends Controller
      * Отображение общего списка групп/альбомов на странице администратора
      */
     public function getPage(){
-                
-        if(Groups::All()->count() == 0){
-            $groups = [];
-            $groupsArray = [];
-        }else{
+        
+//        if(Groups::count() == 0) {
+//            $groups = [];
+//            $groupsArray = [];
+//        } else {
             $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
                 return Groups::All();
             });
             $groupsArray = Cache::remember(sha1('admin.show.groupsArray'), self::SHOWADMIN_CACHE_TTL, function() {
                 return Groups::orderBy('name')->pluck('name','id');
             });
-        }
+//        }
         
         $thumbs_dir = Setting::get('thumbs_dir');
         
-        if(Albums::All()->count() == 0)
-        {
+        if(Albums::count() == 0) {
             $albums=[];
-        }
-        else
-        {
-
-            $CacheKey = sha1('admin.show.albums');        
-
-            if (Cache::has($CacheKey))
-            {
-                $albums = Cache::get($CacheKey);
-            }
-            else
-            {
-                
-                $albums     = Albums::all();
-
-//                foreach ($AllAlbums as $album){
-//
-//                    if($album->images_id != 0)
-//                        $thumbs_url = Helper::getFullPathThumbImage($album->images_id, 'url');
-//                    else
-//                        $thumbs_url = "";
-//
-//                    $albums[] = [
-//                        'id'            => $album->id,
-//                        'name'          => $album->name,
-//                        'url'           => $album->url,
-//                        'thumbs_url'    => $thumbs_url,
-//                        'year'          => $album->year,
-//                        'permission'    => $album->permission,
-//                        'owner'         => $album->owner()->name,
-//                        'count'         => $album->imagesCount(),
-//                        'summary_size'  => $album->imagesSumSize(),
-//                        'groups_name'   => $album->group->name,
-//                    ];
-//                }
+        } else {
             
-//                Cache::add($CacheKey, $albums, Setting::get('cache_ttl'));
-            }
+            $albums = Cache::remember(sha1('admin.show.albums'), self::SHOWADMIN_CACHE_TTL, function() {
+                return Albums::all();
+            });
+            
         }
         
         $resultData = compact(
