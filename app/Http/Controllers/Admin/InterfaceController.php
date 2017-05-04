@@ -42,15 +42,15 @@ class InterfaceController extends Controller
         
         $thumbs_dir = Setting::get('thumbs_dir');
         
-        if(Albums::count() == 0) {
-            $albums=[];
-        } else {
+//        if(Albums::count() == 0) {
+//            $albums=[];
+//        } else {
             
             $albums = Cache::remember(sha1('admin.show.albums'), self::SHOWADMIN_CACHE_TTL, function() {
                 return Albums::all();
             });
             
-        }
+//        }
         
         $resultData = compact(
             'groupsArray',
