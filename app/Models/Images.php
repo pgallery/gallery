@@ -23,7 +23,7 @@ class Images extends Model
     
     public function owner()
     {
-        return \Cache::remember(sha1('images.owner_' . $this->users_id . '_cache'), 100, function(){
+        return \Cache::remember(sha1('owner_' . $this->users_id . '_cache'), 100, function(){
             return $this->hasOne('App\User', 'id', 'users_id')->select('name')->first();           
         });
     }

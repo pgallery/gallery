@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Наименование альбома:</label>
                     <div class="col-sm-6">
-                        {!! Form::select('album_id', $albums, null, (empty($type) && count($albums) == 0 
+                        {!! Form::select('album_id', $albumsArray, null, (empty($type) && count($albumsArray) == 0 
                             ? array_merge(['placeholder' => 'Отсутствуют альбомы', 'class' => 'form-control'], ['disabled' => '']) 
                             : array('class' => 'form-control')
                         )) !!}
@@ -41,7 +41,7 @@
             <center>
                 
                 {!! Form::submit('Загрузить выбранные файлы', 
-                (empty($type) && count($albums) == 0 
+                (empty($type) && count($albumsArray) == 0 
                     ? array_merge(['class' => 'btn btn-primary'], ['disabled' => '']) 
                     : array('class' => 'btn btn-primary')
                 )) !!}

@@ -52,8 +52,7 @@ class ProfileController extends Controller
             ]);
         }
         
-        if (Cache::has(sha1('owner_' . Auth::user()->id . '_cache')))
-            Cache::forget(sha1('owner_' . Auth::user()->id . '_cache'));
+        Cache::forget(sha1('owner_' . Auth::user()->id . '_cache'));
         
         return redirect()->route('edit-profile');
         

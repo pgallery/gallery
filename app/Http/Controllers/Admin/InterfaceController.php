@@ -21,7 +21,7 @@ class InterfaceController extends Controller
 {
     // 10080 минут - 1 неделя
     const SHOWADMIN_CACHE_TTL = 10080;
-    const SHOWALBUMS_COUNTER_PAGE = 10;
+//    const SHOWALBUMS_COUNTER_PAGE = 10;
     
     /*
      * Отображение общего списка групп/альбомов на странице администратора
@@ -35,7 +35,9 @@ class InterfaceController extends Controller
             $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
                 return Groups::All();
             });
-            $groupsArray = Groups::pluck('name','id');
+            $groupsArray = Cache::remember(sha1('admin.show.groupsArray'), self::SHOWADMIN_CACHE_TTL, function() {
+                return Groups::orderBy('name')->pluck('name','id');
+            });
         }
         
         if(Albums::All()->count() == 0)
@@ -94,11 +96,16 @@ class InterfaceController extends Controller
      */    
     public function getCreateForm(){
         
-        $groupsArray = Groups::pluck('name','id');
-        $albums = Albums::pluck('name','id');  
-
+        $groupsArray = Cache::remember(sha1('admin.show.groupsArray'), self::SHOWADMIN_CACHE_TTL, function() {
+            return Groups::orderBy('name')->pluck('name','id');
+        });
+        
+        $albumsArray = Cache::remember(sha1('admin.show.albumsArray'), self::SHOWADMIN_CACHE_TTL, function() {
+            return Albums::orderBy('name')->pluck('name','id');
+        });
+        
         return Viewer::get('admin.create', compact(
-            'albums', 
+            'albumsArray', 
             'groupsArray'
         ));
         

@@ -39,6 +39,7 @@ class GroupsController extends Controller
         $this->groups->create($input);
         
         Cache::forget(sha1('admin.show.groups'));
+        Cache::forget(sha1('admin.show.groupsArray'));
         
         return back();
         
@@ -78,6 +79,7 @@ class GroupsController extends Controller
         
         Cache::forget(sha1('Cache.App.Helpers.Viewer'));
         Cache::forget(sha1('admin.show.groups'));
+        Cache::forget(sha1('admin.show.groupsArray'));
         
         return redirect()->route('admin');
         

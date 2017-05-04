@@ -130,10 +130,6 @@ class AlbumsController extends Controller
         $input['desc']      = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
 
         $this->albums->find($router->input('id'))->update($input);
-
-//        Cache::forget($this->albums->find($router->input('id'))->url);        
-//        Cache::forget(sha1('Cache.App.Helpers.Viewer'));
-//        Cache::forget(sha1('admin.show.albums'));
         
         \Cache::flush();
         
