@@ -40,6 +40,8 @@ class InterfaceController extends Controller
             });
         }
         
+        $thumbs_dir = Setting::get('thumbs_dir');
+        
         if(Albums::All()->count() == 0)
         {
             $albums=[];
@@ -51,20 +53,13 @@ class InterfaceController extends Controller
 
             if (Cache::has($CacheKey))
             {
-                $resultData = Cache::get($CacheKey);
+                $albums = Cache::get($CacheKey);
             }
             else
             {
-                $thumbs_dir = Setting::get('thumbs_dir');
+                
                 $albums     = Albums::all();
 
-                $resultData = compact(
-                    'groupsArray',
-                    'thumbs_dir',
-                    'albums', 
-                    'groups'
-                );
-                
 //                foreach ($AllAlbums as $album){
 //
 //                    if($album->images_id != 0)
@@ -86,9 +81,16 @@ class InterfaceController extends Controller
 //                    ];
 //                }
             
-//                Cache::add($CacheKey, $resultData, Setting::get('cache_ttl'));
+//                Cache::add($CacheKey, $albums, Setting::get('cache_ttl'));
             }
         }
+        
+        $resultData = compact(
+            'groupsArray',
+            'thumbs_dir',
+            'albums', 
+            'groups'
+        );        
         
         return Viewer::get('admin.show', $resultData);
         
