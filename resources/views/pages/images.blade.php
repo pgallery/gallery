@@ -62,7 +62,7 @@
                     if (!loadingHeroes)
                     {  
                         loadingHeroes = true;
-                        $.get('/gallery/show-{{ $thisAlbum->url }}?page='+nextPage, {}, function(data) {
+                        $.get('{{ route('gallery-show', ['url' => $thisAlbum->url]) }}?page='+nextPage, {}, function(data) {
                             console.log(nextPage);
                             $(data).insertAfter("#allImages .thumb:last()");
                             loadingHeroes = false;

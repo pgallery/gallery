@@ -23,7 +23,7 @@ class AlbumsController extends Controller
     public function __construct(Albums $albums, Images $images) {
         $this->albums  = $albums;
         $this->images  = $images;
-    }       
+    }
     
     public function getShow(Router $router) {
         

@@ -32,10 +32,10 @@ Route::get('/no_access', [
 ]);
 Route::get('/gallery-{url}', [
     'as'    => 'gallery-show', 
-    'uses'  => 'User\ImagesController@getShow'    
+    'uses'  => 'User\ImagesController@getPage'    
 ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
 
-Route::get('/gallery/show-{url}', 'User\ImagesController@getShowPage')->where('url', '[А-Яа-яA-Za-z0-9]+');
+//Route::get('/gallery/show-{url}', 'User\ImagesController@getShowPage')->where('url', '[А-Яа-яA-Za-z0-9]+');
 Route::get('/album/{option}/{id}', 'User\AlbumsController@getShow')->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 
 Route::post('/ulogin', 'User\UloginController@login');
@@ -184,7 +184,14 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'GroupsController@postCreateGroup',
             'middleware'    => 'role:admin'
         ]);
+//        Route::resource('group', 'GroupsController', 
+//                [
+//                    'except'        => ['index', 'store', 'show'],
+//                    'names'         => ['destroy' => 'group.delete'],
+//                    'middleware'    => ['role:admin']
+//                ]);
 
+        
         // Альбомы
         Route::get('/album/edit/{id}', [
             'as'            => 'edit-album', 

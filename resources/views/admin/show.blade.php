@@ -127,7 +127,6 @@
                         <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
                     </a>
                     
-                    
                 </td>
                 <td>
                     @if(!empty($album['thumbs_url']))
