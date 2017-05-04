@@ -34,9 +34,10 @@ Route::get('/gallery-{url}', [
     'as'    => 'gallery-show', 
     'uses'  => 'User\ImagesController@getPage'    
 ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
-
-//Route::get('/gallery/show-{url}', 'User\ImagesController@getShowPage')->where('url', '[А-Яа-яA-Za-z0-9]+');
-Route::get('/album/{option}/{id}', 'User\AlbumsController@getShow')->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
+Route::get('/album/{option}/{id}', [
+    'as'    => 'album-showBy', 
+    'uses'  => 'User\AlbumsController@getShow'    
+])->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 
 Route::post('/ulogin', 'User\UloginController@login');
 

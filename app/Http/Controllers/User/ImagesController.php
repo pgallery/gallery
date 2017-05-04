@@ -83,6 +83,4 @@ class ImagesController extends Controller
         return Viewer::get('pages.images', $resultData);
         
     }
-
-    
 }
