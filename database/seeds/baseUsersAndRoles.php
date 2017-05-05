@@ -2,11 +2,6 @@
 
 use Illuminate\Database\Seeder;
 
-use Illuminate\Support\Facades\Hash;
-
-use App\Models\User;
-use App\Models\Roles;
-
 class baseUsersAndRoles extends Seeder
 {
     /**
@@ -16,7 +11,6 @@ class baseUsersAndRoles extends Seeder
      */
     public function run()
     {
-
         Roles::create([
             'name'          => 'admin', 
             'display_name'  => 'Administrator',
@@ -68,7 +62,6 @@ class baseUsersAndRoles extends Seeder
         $user->roles()->attach($RoleAdmin->id);
 
         $user = User::find(2);
-        $user->roles()->attach($RoleModer->id);        
-        
+        $user->roles()->attach($RoleModer->id);
     }
 }
