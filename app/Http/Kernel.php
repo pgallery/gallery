@@ -36,7 +36,10 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HttpsProtocol::class,
         ],
-
+        'admin' => [
+            'web',
+            'auth',
+        ],
         'api' => [
             'throttle:60,1',
             'bindings',

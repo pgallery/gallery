@@ -94,10 +94,10 @@
                   <ul class="dropdown-menu">
                     <li><a href="{{ route('edit-profile') }}">Редактировать профиль</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="{{ route('logout') }}">Выход</a></li>
+                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Выход</a></li>
                   </ul>
                 </li>
-                
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
                 @else
                 
                 @if( Setting::get('use_ulogin') == 'yes' )

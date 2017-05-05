@@ -28,6 +28,7 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan db:seed
+php artisan route:cache
 ```
 
 ### Обновление
@@ -36,7 +37,9 @@ php artisan db:seed
 git pull
 composer update
 php artisan migrate
+php artisan route:clear
 php artisan cache:clear
+php artisan route:cache
 ```
 
 ### Необходимо прописать в crontab
