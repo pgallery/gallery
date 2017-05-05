@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-use App\User;
+use App\Models\User;
 
 use Auth;
 use Viewer;

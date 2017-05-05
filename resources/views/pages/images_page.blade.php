@@ -8,7 +8,6 @@
             <a href="/{{ $upload_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" data-fancybox="images"> 
                 <img  src="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" width="{{ $thumbs_width  }}"/> 
             </a> 
-
         
         @if ($show_admin_panel == 1)
 

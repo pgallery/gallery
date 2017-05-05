@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\User;
+use App\Models\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;

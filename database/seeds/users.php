@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\Hash;
 
-use App\User;
+use App\Models\User;
 use App\Models\Roles;
 
 class users extends Seeder
