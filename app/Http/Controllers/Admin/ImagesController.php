@@ -16,6 +16,7 @@ use Helper;
 use Setting;
 use Cache;
 use BuildImage;
+use Validator;
 
 class ImagesController extends Controller
 {
@@ -32,6 +33,17 @@ class ImagesController extends Controller
      */
     public function postCreateImage(Request $request) {
         
+        $rule = [
+            'image' => 'image|mimes:jpeg,jpg,jpe,png,gif,bmp|required'
+        ];
+
+        $messages = [
+            'image'    => 'должно быть изображением.',
+            'mimes'    => 'расширение должно быть jpeg, jpg, jpe, png, gif, bmp.',
+            'required' => 'поле обязательно.',
+        ];
+
+        
         $album = $this->albums->find($request->album_id);
         
         $upload_path = Helper::getUploadPath($request->album_id);
@@ -41,20 +53,26 @@ class ImagesController extends Controller
         
         foreach ($request->file() as $file) {
             foreach ($file as $f) {
-                
-                $upload_file_name = $f->getClientOriginalName();
 
-                if (!File::exists($upload_path . "/" . $upload_file_name))
-                {
-                    // Загружаем оригинал
-                    Image::make($f)->save($upload_path . "/" . $upload_file_name);
+            $validator = Validator::make(['image' => $f], $rule, $messages);
 
-                    $this->images->create([
-                        'name'          => $f->getClientOriginalName(),
-                        'albums_id'     => $request->album_id,
-                        'users_id'      => Auth::user()->id,
-                        'is_rebuild'    => 1,
-                    ]);
+                if(!$validator->fails()) {
+
+                    $upload_file_name = $f->getClientOriginalName();
+
+                    if (!File::exists($upload_path . "/" . $upload_file_name))
+                    {
+                        // Загружаем оригинал
+                        Image::make($f)->save($upload_path . "/" . $upload_file_name);
+
+                        $this->images->create([
+                            'name'          => $f->getClientOriginalName(),
+                            'albums_id'     => $request->album_id,
+                            'users_id'      => Auth::user()->id,
+                            'is_rebuild'    => 1,
+                        ]);
+                    }
+
                 }
             }
         }

@@ -65,7 +65,7 @@ class AlbumsController extends Controller
             $AlbumsQuery = $AlbumsQuery->where('images_id', '!=', '0');
             
             $albums = $AlbumsQuery->get();
-
+            
             $thumbs_width  = Setting::get('thumbs_width');
             $thumbs_height = Setting::get('thumbs_height');
             $thumbs_dir    = Setting::get('thumbs_dir');

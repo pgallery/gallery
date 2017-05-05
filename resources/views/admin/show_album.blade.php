@@ -1,8 +1,10 @@
 @extends('template.header')
 
 @section('content')
+    <div class="page-header">
+      <h2>{{ $thisAlbum->group()->name }} > {{ $thisAlbum->name }} > Фотографии <a href="" data-toggle="modal" data-target="#uploadsModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h2>
+    </div>
 
-<h3>{{ $thisAlbum->name }} > Фотографии</h3>
 
 {{ $listImages->links() }}
 
@@ -78,7 +80,29 @@
 
 
 
-<!-- Modal -->
+<!-- Modal Uploads Images -->
+<div class="modal fade" id="uploadsModal" tabindex="-1" role="dialog" aria-labelledby="uploadsModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="uploadsModalLabel">Загрузить изображения</h4>
+      </div>
+        
+         
+      <div class="modal-body">
+                      
+            @include('admin.uploads_images')
+            
+      </div>
+
+
+          
+    </div>
+  </div>
+</div>
+
+<!-- Modal Rename Image -->
 <div class="modal fade" id="RenameModal" tabindex="-1" role="dialog" aria-labelledby="RenameModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -121,11 +145,15 @@
 
 @section('js-top')
 
-$('a.clickeable').click(function(e){
-    $('#id').val(this.getAttribute('data-id'));
-    $('#newName').val(this.getAttribute('data-name'));
-    e.preventDefault();
-});
+        $('a.clickeable').click(function(e){
+            $('#id').val(this.getAttribute('data-id'));
+            $('#newName').val(this.getAttribute('data-name'));
+            e.preventDefault();
+        });
 
+        $(":file").filestyle({
+            input: false,
+            buttonText: 'Выберите файлы'
+        });
         
 @endsection

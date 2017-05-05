@@ -37,6 +37,13 @@ class Groups extends Model
         });
     }
     
+    public function owner()
+    {
+        return \Cache::remember(sha1('owner_' . $this->users_id . '_cache'), 100, function(){
+            return $this->hasOne('App\Models\User', 'id', 'users_id')->select('name')->first();           
+        });
+    }    
+    
     public static function deleteWithAlbums($id) {
         
         $Albums = Albums::where('groups_id', $id)->get();

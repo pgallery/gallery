@@ -38,6 +38,8 @@ class GroupsController extends Controller
 
         $this->groups->create($input);
         
+        Cache::forget(sha1('Admin.Cache.App.Helpers.Viewer'));
+        Cache::forget(sha1('User.Cache.App.Helpers.Viewer'));        
         Cache::forget(sha1('admin.show.groups'));
         Cache::forget(sha1('admin.show.groupsArray'));
         
@@ -68,7 +70,7 @@ class GroupsController extends Controller
             'group'           => $group,
         ]);        
         
-    }    
+    }
     
     /*
      * Сохранение изменений группы
@@ -77,7 +79,8 @@ class GroupsController extends Controller
         
         $this->groups->find($router->input('id'))->update($request->all());
         
-        Cache::forget(sha1('Cache.App.Helpers.Viewer'));
+        Cache::forget(sha1('Admin.Cache.App.Helpers.Viewer'));
+        Cache::forget(sha1('User.Cache.App.Helpers.Viewer'));
         Cache::forget(sha1('admin.show.groups'));
         Cache::forget(sha1('admin.show.groupsArray'));
         

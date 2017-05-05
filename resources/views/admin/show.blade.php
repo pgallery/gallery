@@ -13,6 +13,7 @@
                 <th>Всего альбомов</th>
                 <th>Публичных альбомов</th>
                 <th>Закрытых альбомов</th>
+                <th>Владелец</th>
             </tr>
         </thead>
         <tfoot>
@@ -22,6 +23,7 @@
                 <th>Всего альбомов</th>
                 <th>Публичных альбомов</th>
                 <th>Закрытых альбомов</th>
+                <th>Владелец</th>
             </tr>
 
         </tfoot>
@@ -50,6 +52,7 @@
                 <td>{{ $group->albumCount() }}</td>
                 <td>{{ $group->albumCountPublic() }}</td>
                 <td>{{ $group->albumCountPrivate() }}</td>
+                <td>{{ $group->owner()->name }}</td>
             </tr>
 
     @endforeach
@@ -139,7 +142,7 @@
                 <td>{{ round(($album->imagesSumSize() / 1024 / 1024)) }} Mb</td>
                 <td>{{ $album->group()->name }}</td>
                 <td>{{ $album->year }}</td>
-                <td>{{ $album->permission }}</td>
+                <td>{{ ($album->permission == 'All' ? "Всем" : "По ссылке") }}</td>
                 <td>{{ $album->owner()->name }}</td>
             </tr>
 
@@ -183,7 +186,7 @@
 
       <div class="modal-body">
           
-         @include('admin.album_form')
+            @include('admin.album_form')
             
       </div>
           
