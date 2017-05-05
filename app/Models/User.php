@@ -86,7 +86,7 @@ class User extends Authenticatable
         
         $user = $this->create($input);
         
-        if(isset($input['roles'])){
+        if(isset($input['roles'])) {
             
             foreach ($input['roles'] as $role) {
                 $user->roles()->attach($role);
