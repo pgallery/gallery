@@ -104,11 +104,10 @@ class AlbumsController extends Controller
             $thumbs_dir = Setting::get('thumbs_dir');
             $mobile_dir = Setting::get('mobile_upload_dir');
             $upload_dir = Setting::get('upload_dir'); 
+            $type       = 'thisAlbum';
+            $album_id   = $thisAlbum->id;
             
-            $type = 'thisAlbum';
-            $album_id = $thisAlbum->id;
-            
-            $listImages = Cache::remember(sha1('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage), self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {                
+            $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {                
                 return $thisAlbum->images()->paginate(Setting::get('count_images'));
             });
             
@@ -131,9 +130,9 @@ class AlbumsController extends Controller
      */
     public function putSaveAlbum(Router $router, Request $request) {
         
-        $input              = $request->all();
-        $input['url']       = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
-        $input['desc']      = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
+        $input          = $request->all();
+        $input['url']   = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
+        $input['desc']  = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
 
         $this->albums->find($router->input('id'))->update($input);
         

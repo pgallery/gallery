@@ -52,7 +52,7 @@ class ProfileController extends Controller
             ]);
         }
         
-        Cache::forget(sha1('owner_' . Auth::user()->id . '_cache'));
+        Cache::forget('owner_' . Auth::user()->id . '_cache');
         
         return redirect()->route('edit-profile');
         

@@ -13,7 +13,7 @@ class Setting
     
     public static function get($key){
         
-        $settings = Cache::remember(sha1('global.settings'), self::SETTING_CACHE_TTL, function() {
+        $settings = Cache::remember('global.settings', self::SETTING_CACHE_TTL, function() {
             
             $globalSettings = Settings::select('set_name', 'set_value')->get()->toArray();
             foreach ($globalSettings as $Setting){

@@ -18,28 +18,28 @@ class Groups extends Model
     
     public function albumCount()
     {
-        return \Cache::remember(sha1('groups.albumCount_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember('groups.albumCount_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->count();           
         });
     }
     
     public function albumCountPublic()
     {
-        return \Cache::remember(sha1('groups.albumCountPublic_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember('groups.albumCountPublic_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->where('albums.permission', 'All')->count();           
         });
     }     
     
     public function albumCountPrivate()
     {
-        return \Cache::remember(sha1('groups.albumCountPrivate_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember('groups.albumCountPrivate_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->where('albums.permission', '!=', 'All')->count();           
         });
     }
     
     public function owner()
     {
-        return \Cache::remember(sha1('owner_' . $this->users_id . '_cache'), 100, function(){
+        return \Cache::remember('owner_' . $this->users_id . '_cache', 100, function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('name')->first();           
         });
     }    

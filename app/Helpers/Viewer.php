@@ -17,12 +17,11 @@ class Viewer
     public static function get($page, $data = false) {
         
         if(Auth::check() and Helper::isAdmin(Auth::user()->id))
-            $preCacheKey = 'Admin.';
+            $CacheKey = 'Admin.';
         else
-            $preCacheKey = 'User.';        
+            $CacheKey = 'User.';        
         
-        $preCacheKey .= 'Cache.App.Helpers.Viewer';
-        $CacheKey = sha1($preCacheKey);
+        $CacheKey .= 'Cache.App.Helpers.Viewer';
         
         if (Cache::has($CacheKey))
         {

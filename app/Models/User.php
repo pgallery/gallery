@@ -55,7 +55,7 @@ class User extends Authenticatable
     public function hasRole($roles) {
         $user_id = \Illuminate\Support\Facades\Auth::user()->id;
         
-        $user_roles = \Cache::remember(sha1('Middleware.UsersRoles_' . $user_id . '_cache'), 100, function() use ($user_id){
+        $user_roles = \Cache::remember('Middleware.UsersRoles_' . $user_id . '_cache', 100, function() use ($user_id){
             return $this->find($user_id)->roles;
         });
         

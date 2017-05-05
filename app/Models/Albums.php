@@ -20,7 +20,7 @@ class Albums extends Model
     
     public function group()
     {
-        return \Cache::remember(sha1('albums.group_' . $this->groups_id . '_cache'), 100, function(){
+        return \Cache::remember('albums.group_' . $this->groups_id . '_cache', 100, function(){
             return $this->hasOne('App\Models\Groups', 'id', 'groups_id')->select('name')->first();
         });
     }
@@ -32,27 +32,27 @@ class Albums extends Model
     
     public function imagesCount()
     {
-        return \Cache::remember(sha1('albums.imagesCount_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember('albums.imagesCount_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Images')->count();
         });
     }
     
     public function imagesSumSize()
     {
-        return \Cache::remember(sha1('albums.imagesSumSize_' . $this->id . '_cache'), 100, function(){
+        return \Cache::remember('albums.imagesSumSize_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Images')->sum('size');
         });
     }
     
     public function owner()
     {
-        return \Cache::remember(sha1('owner_' . $this->users_id . '_cache'), 100, function(){
+        return \Cache::remember('owner_' . $this->users_id . '_cache', 100, function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('name')->first();           
         });
     }
     
     public function thumbs() {
-        return \Cache::remember(sha1('albums.thumbs_' . $this->images_id . '_cache'), 100, function(){
+        return \Cache::remember('albums.thumbs_' . $this->images_id . '_cache', 100, function(){
             return $this->hasOne('App\Models\Images', 'id', 'images_id')->select('name')->first();
         });
     }

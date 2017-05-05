@@ -15,7 +15,7 @@ class Helper
     // Проверяет, является ли пользователь Администратором
     public static function isAdmin($user){
 
-        $userRoles = \Cache::remember(sha1('HelperIsAdmin_' . $user . '_cache'), 100, function() use ($user){
+        $userRoles = \Cache::remember('HelperIsAdmin_' . $user . '_cache', 100, function() use ($user){
             return User::find($user)->roles->pluck('id','name')->toArray();
         });
 
@@ -29,7 +29,7 @@ class Helper
     // Проверяет, имеет ли пользователь доступ к меню управления
     public static function isAdminMenu($user) {
         
-        $userRoles = \Cache::remember(sha1('HelperIsAdminMenu_' . $user . '_cache'), 100, function() use ($user){
+        $userRoles = \Cache::remember('HelperIsAdminMenu_' . $user . '_cache', 100, function() use ($user){
             return User::find($user)->roles->pluck('id','topanel')->toArray();
         });
         

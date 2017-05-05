@@ -29,15 +29,15 @@ class InterfaceController extends Controller
         
         $thumbs_dir = Setting::get('thumbs_dir');
         
-        $groups = Cache::remember(sha1('admin.show.groups'), self::SHOWADMIN_CACHE_TTL, function() {
+        $groups = Cache::remember('admin.show.groups', self::SHOWADMIN_CACHE_TTL, function() {
             return Groups::All();
         });
         
-        $groupsArray = Cache::remember(sha1('admin.show.groupsArray'), self::SHOWADMIN_CACHE_TTL, function() {
+        $groupsArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
             return Groups::orderBy('name')->pluck('name','id');
         });
         
-        $albums = Cache::remember(sha1('admin.show.albums'), self::SHOWADMIN_CACHE_TTL, function() {
+        $albums = Cache::remember('admin.show.albums', self::SHOWADMIN_CACHE_TTL, function() {
             return Albums::all();
         });   
         
@@ -55,11 +55,11 @@ class InterfaceController extends Controller
      */    
     public function getCreateForm(){
         
-        $groupsArray = Cache::remember(sha1('admin.show.groupsArray'), self::SHOWADMIN_CACHE_TTL, function() {
+        $groupsArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
             return Groups::orderBy('name')->pluck('name','id');
         });
         
-        $albumsArray = Cache::remember(sha1('admin.show.albumsArray'), self::SHOWADMIN_CACHE_TTL, function() {
+        $albumsArray = Cache::remember('admin.show.albumsArray', self::SHOWADMIN_CACHE_TTL, function() {
             return Albums::orderBy('name')->pluck('name','id');
         });
         

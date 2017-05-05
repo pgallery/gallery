@@ -38,10 +38,10 @@ class GroupsController extends Controller
 
         $this->groups->create($input);
         
-        Cache::forget(sha1('Admin.Cache.App.Helpers.Viewer'));
-        Cache::forget(sha1('User.Cache.App.Helpers.Viewer'));        
-        Cache::forget(sha1('admin.show.groups'));
-        Cache::forget(sha1('admin.show.groupsArray'));
+        Cache::forget('Admin.Cache.App.Helpers.Viewer');
+        Cache::forget('User.Cache.App.Helpers.Viewer');        
+        Cache::forget('admin.show.groups');
+        Cache::forget('admin.show.groupsArray');
         
         return back();
         
@@ -79,10 +79,10 @@ class GroupsController extends Controller
         
         $this->groups->find($router->input('id'))->update($request->all());
         
-        Cache::forget(sha1('Admin.Cache.App.Helpers.Viewer'));
-        Cache::forget(sha1('User.Cache.App.Helpers.Viewer'));
-        Cache::forget(sha1('admin.show.groups'));
-        Cache::forget(sha1('admin.show.groupsArray'));
+        Cache::forget('Admin.Cache.App.Helpers.Viewer');
+        Cache::forget('User.Cache.App.Helpers.Viewer');
+        Cache::forget('admin.show.groups');
+        Cache::forget('admin.show.groupsArray');
         
         return redirect()->route('admin');
         

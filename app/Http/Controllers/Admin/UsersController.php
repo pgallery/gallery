@@ -71,9 +71,9 @@ class UsersController extends Controller
         $user->update($request->all());
         $user->roles()->sync($request->input('roles'));
         
-        Cache::forget(sha1('HelperIsAdmin_' . $router->input('id') . '_cache'));        
-        Cache::forget(sha1('HelperIsAdminMenu_' . $router->input('id') . '_cache'));
-        Cache::forget(sha1('Middleware.UsersRoles_' . $router->input('id') . '_cache'));
+        Cache::forget('HelperIsAdmin_' . $router->input('id') . '_cache');        
+        Cache::forget('HelperIsAdminMenu_' . $router->input('id') . '_cache');
+        Cache::forget('Middleware.UsersRoles_' . $router->input('id') . '_cache');
 
         return redirect()->route('users');
         

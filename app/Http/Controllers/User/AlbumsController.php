@@ -27,7 +27,7 @@ class AlbumsController extends Controller
     
     public function getShow(Router $router) {
         
-        $countAllPublicAlbums = Cache::remember(sha1('all.public.albums'), Setting::get('cache_ttl'), function() {
+        $countAllPublicAlbums = Cache::remember('all.public.albums', Setting::get('cache_ttl'), function() {
             return $this->albums->where('permission', 'All')->where('images_id', '!=', '0')->count();
         });
         
@@ -35,15 +35,13 @@ class AlbumsController extends Controller
             return Viewer::get('errors.404'); 
         
         if(Auth::check() and Helper::isAdmin(Auth::user()->id))
-            $preCacheKey = 'Admin.';
+            $CacheKey = 'Admin.';
         else
-            $preCacheKey = 'User.';
+            $CacheKey = 'User.';
         
-        $preCacheKey .= 'Cache.Albums.';
-        $preCacheKey .= (!empty($router->input('option'))) ? $router->input('option') : "Base" ;
-        $preCacheKey .= (is_numeric($router->input('id'))) ? "." . $router->input('id') : ".Null" ;
-
-        $CacheKey = sha1($preCacheKey);
+        $CacheKey .= 'Cache.Albums.';
+        $CacheKey .= (!empty($router->input('option'))) ? $router->input('option') : "Base" ;
+        $CacheKey .= (is_numeric($router->input('id'))) ? "." . $router->input('id') : ".Null" ;
         
         if (Cache::has($CacheKey))
         {
