@@ -126,6 +126,12 @@ Route::group(['middleware' => 'auth'], function () {
             'uses'          => 'SettingsController@postSettings',
             'middleware'    => 'role:admin'
         ]);
+//        Route::resource('settings', 'SettingsController', 
+//                [
+//                    'only'        => ['index', 'create', 'update'],
+//                    'middleware'    => ['role:admin']
+//                ]);
+        
         
         // Управление пользователями
         Route::get('/users/', [

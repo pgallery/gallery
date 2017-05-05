@@ -60,3 +60,7 @@ php artisan cache:clear
 ```
 /opt/php71/bin/php /usr/local/bin/composer install
 ```
+
+### Скриншоты
+
+![AdminCreatePage](https://twh.club/wp-content/uploads/2017/05/gl_screen_createall.png)

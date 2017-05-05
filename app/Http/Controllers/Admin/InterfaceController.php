@@ -39,16 +39,14 @@ class InterfaceController extends Controller
         
         $albums = Cache::remember(sha1('admin.show.albums'), self::SHOWADMIN_CACHE_TTL, function() {
             return Albums::all();
-        });
+        });   
         
-        $resultData = compact(
+        return Viewer::get('admin.show', compact(
             'groupsArray',
             'thumbs_dir',
             'albums', 
             'groups'
-        );        
-        
-        return Viewer::get('admin.show', $resultData);
+        ));
         
     }
     

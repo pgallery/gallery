@@ -107,7 +107,7 @@
                       </button>
                       <ul class="dropdown-menu">
                         <li><a href="{{ route('edit-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
-                        @if($album['count'] != 0)
+                        @if($album->imagesCount() != 0)
                             <li><a href="{{ route('show-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-open" aria-hidden="true"></span> Просмотреть фотографии</a></li>
                             <li><a href="{{ route('rebuild-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать все миниатюры</a></li>
                         @endif
