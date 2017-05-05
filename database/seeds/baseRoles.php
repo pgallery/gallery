@@ -13,6 +13,7 @@ class baseRoles extends Seeder
      */
     public function run()
     {
+        
         Roles::create([
             'name'          => 'admin', 
             'display_name'  => 'Administrator',
@@ -42,6 +43,7 @@ class baseRoles extends Seeder
             'display_name'  => 'Guest',
             'description'   => 'Гость галереи',
             'topanel'       => 'N',
-        ]);        
+        ]);
+        
     }
 }

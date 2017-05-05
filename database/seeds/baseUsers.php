@@ -16,6 +16,7 @@ class baseUsers extends Seeder
      */
     public function run()
     {
+        
         User::create([
             'name'      => 'Admin',
             'email'     => 'admin@example.com',
@@ -36,6 +37,7 @@ class baseUsers extends Seeder
         $user->roles()->attach($RoleAdmin->id);
 
         $user = User::find(2);
-        $user->roles()->attach($RoleModer->id);        
+        $user->roles()->attach($RoleModer->id);
+        
     }
 }

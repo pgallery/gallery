@@ -85,6 +85,5 @@ class baseConfig extends Seeder
             'set_desc' => 'Минимальный год Ваших фотоальбомов',
         ]);
         
-        
     }
 }
