@@ -16,7 +16,6 @@ class StatusController extends Controller
         $rebuild =  Images::where('is_rebuild', 1)->count();
         
         $output = [
-
             'rebuild' => $rebuild,            
         ];
         
@@ -33,7 +32,6 @@ class StatusController extends Controller
         
         if($result != '')
             $result = '<div class="alert alert-success" role="alert">' . $result .  '</div>';
-            
             
         return $result;        
         
