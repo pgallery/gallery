@@ -43,12 +43,9 @@ class AlbumsController extends Controller
         $CacheKey .= (!empty($router->input('option'))) ? $router->input('option') : "Base" ;
         $CacheKey .= (is_numeric($router->input('id'))) ? "." . $router->input('id') : ".Null" ;
         
-        if (Cache::has($CacheKey))
-        {
+        if (Cache::has($CacheKey)) {
             $resultData = Cache::get($CacheKey);
-        }
-        else
-        {
+        } else {
         
             $AlbumsQuery = $this->albums->latest('year');
             

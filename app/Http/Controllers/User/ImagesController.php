@@ -43,12 +43,9 @@ class ImagesController extends Controller
         else
             $CacheKey = $url . $request->input('page');
         
-        if (Cache::has($CacheKey))
-        {
+        if (Cache::has($CacheKey)) {
             $resultData = Cache::get($CacheKey);
-        }
-        else
-        {
+        } else {
         
             $thumbs_width  = Setting::get('thumbs_width');
             $thumbs_height = Setting::get('thumbs_height');

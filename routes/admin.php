@@ -23,7 +23,7 @@ Route::get('/status/', [
     'as'            => 'status', 
     'uses'          => 'StatusController@getStatus',
     'middleware'    => 'role:admin'
-]);        
+]);
 
 // Корзина мусора
 Route::get('/trash/empty/', [
@@ -200,6 +200,11 @@ Route::post('/image/rename/', [
     'as'            => 'rename-image', 
     'uses'          => 'ImagesController@postRename',
     'middleware'    => 'role:admin|moderator'
+]);
+Route::post('/image/changeowner/', [
+    'as'            => 'changeowner-image', 
+    'uses'          => 'ImagesController@postChangeOwnerImage',
+    'middleware'    => 'role:admin'
 ]);
 Route::get('/image/install/{id}', [
     'as'            => 'install-image', 

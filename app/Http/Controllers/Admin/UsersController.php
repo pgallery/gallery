@@ -193,5 +193,6 @@ class UsersController extends Controller
         $this->user->createWithRoles($request->all());
         
         return redirect()->route('users');
+        
     }
 }

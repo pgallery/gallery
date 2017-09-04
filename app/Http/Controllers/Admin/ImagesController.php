@@ -181,4 +181,19 @@ class ImagesController extends Controller
         
     }
     
+    /*
+     * 
+     */
+    public function postChangeOwnerImage(Request $request) {
+        
+//        print_r($_POST);
+        
+        $this->images->where('id', $request->input('id'))->update([
+            'users_id' => $request->input('ChangeOwnerNew'),
+        ]);
+        
+        \Cache::flush();
+        
+        return back();
+    }
 }

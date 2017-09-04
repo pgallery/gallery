@@ -49,6 +49,9 @@
                         <li><a href="{{ route('rotate-image', ['option' => 'left', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Повернуть влево</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'right', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Повернуть вправо</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'top', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span> Перевернуть</a></li>
+                        @if(Helper::isAdmin(Auth::user()->id))
+                            <li><a href="" data-toggle="modal" data-target="#ChangeOwnerModal" class="clickeableChangeOwner" data-id="{{ $image['id'] }}" data-name="{{ $image->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
+                        @endif
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('delete-image', ['id' => $image['id']]) }}" data-toggle="confirmation" data-title="Удалить фотографию?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
@@ -139,6 +142,43 @@
   </div>
 </div>
 
+<!-- Modal Change Owner Image -->
+<div class="modal fade" id="ChangeOwnerModal" tabindex="-1" role="dialog" aria-labelledby="ChangeOwnerModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="ChangeOwnerModal">Смена владельца изображения</h4>
+      </div>
+        
+        {!! Form::open([
+            'route'     => 'changeowner-image',
+            'class'     => 'form-horizontal',
+            'method'    => 'POST'
+        ]) !!}        
+          <input type="hidden"  name="id" id="ChangeOwnerID" value="">
+          
+      <div class="modal-body">
+                      
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Владелец:</label>
+                <div class="col-sm-8">
+                        {!! Form::select('ChangeOwnerNew', $usersArray, null, array('class' => 'form-control')) !!}  
+                </div>
+            </div>              
+            
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+          
+      {!! Form::close() !!}
+          
+    </div>
+  </div>
+</div>
+
 
 @endsection
 
@@ -151,6 +191,12 @@
             e.preventDefault();
         });
 
+        $('a.clickeableChangeOwner').click(function(e){
+            $('#ChangeOwnerID').val(this.getAttribute('data-id'));
+            $('#ChangeOwnerNew').val(this.getAttribute('data-name'));
+            e.preventDefault();
+        });
+        
         $(":file").filestyle({
             input: false,
             buttonText: 'Выберите файлы'

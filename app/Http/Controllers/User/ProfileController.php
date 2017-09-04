@@ -31,8 +31,7 @@ class ProfileController extends Controller
         
         $user = $this->user->find(Auth::user()->id);
                
-        if($user->method == 'thisSite' and Hash::check($request->input('password'), Auth::user()->password))
-        {
+        if($user->method == 'thisSite' and Hash::check($request->input('password'), Auth::user()->password)) {
         
             $user->update([
                 'name'  => $request->input('name'),
@@ -44,9 +43,7 @@ class ProfileController extends Controller
                     'password' => Hash::make($request->input('newPassword')),
                 ]);
             
-        }
-        elseif($user->method != 'thisSite')
-        {
+        } elseif($user->method != 'thisSite') {
             $user->update([
                 'name' => $request->input('name'),
             ]);

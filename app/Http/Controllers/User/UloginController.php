@@ -29,13 +29,13 @@ class UloginController extends Controller
         
         $userData = $this->user->where('email', $user['email'])->first();
         
-        if (isset($userData->id))
-        {
+        if (isset($userData->id)) {
+            
             Auth::loginUsingId($userData->id, TRUE);
             return back()->withInput();
-        }
-        else
-        {
+            
+        } else {
+            
             $input = [
                 'name'      => $user['first_name'] . ' ' . $user['last_name'],
                 'email'     => $user['email'],
@@ -44,9 +44,6 @@ class UloginController extends Controller
             ];
             
             $newUserId = $this->user->createWithRoles($input);
-            
-//            $RoleGuest = Roles::select('id')->where('name', 'guest')->first();
-//            $newUser->roles()->attach($RoleGuest->id);
             
             Auth::loginUsingId($newUserId, TRUE);
 

@@ -9,6 +9,7 @@ use App\Http\Requests\AlbumsDirectoryRequest;
 use App\Http\Requests\AlbumsEditRequest;
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
@@ -30,7 +31,8 @@ class AlbumsController extends Controller
     protected $albums;
     protected $images;
 
-    public function __construct(Groups $groups, Albums $albums, Images $images) {
+    public function __construct(User $users, Groups $groups, Albums $albums, Images $images) {
+        $this->users   = $users;
         $this->groups  = $groups;
         $this->albums  = $albums;
         $this->images  = $images;
@@ -109,6 +111,8 @@ class AlbumsController extends Controller
                 return $thisAlbum->images()->paginate(Setting::get('count_images'));
             });
             
+            $usersArray = $this->users->pluck('name','id');
+            
         }
         
         return Viewer::get('admin.show_album', compact(
@@ -118,7 +122,8 @@ class AlbumsController extends Controller
             'thisAlbum',
             'listImages',
             'type',
-            'album_id'
+            'album_id',
+            'usersArray'
         ));
         
     }
@@ -237,6 +242,7 @@ class AlbumsController extends Controller
         $thumb_path  = \Helper::getFullPathThumb($router->input('id'));        
 
         if(File::move($upload_path, public_path() . "/" . Setting::get('upload_dir') . "/" . $request->input('directory'))) {
+            
             if(\File::isDirectory($mobile_path))
                 \File::deleteDirectory($mobile_path);
 
