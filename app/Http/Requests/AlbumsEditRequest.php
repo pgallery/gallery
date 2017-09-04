@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AlbumsRequest extends FormRequest
+class AlbumsEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class AlbumsRequest extends FormRequest
         return [
             'name'          => 'required|string', 
             'url'           => 'required|unique:albums',
-            'directory'     => 'required|alpha_dash|unique:albums',
             'year'          => 'required|numeric',
             'groups_id'     => 'required|numeric',
         ];
@@ -43,9 +42,6 @@ class AlbumsRequest extends FormRequest
             'name.required'         => 'Поле "Название" обязательно для заполнения',
             'url.required'          => 'Поле "URL" обязательно для заполнения',
             'url.unique'            => 'Поле "URL" должно быть уникальным, возможно уже создан альбом с данным URL',
-            'directory.required'    => 'Поле "Директория" обязательно для заполнения',
-            'directory.alpha_dash'  => 'Поле "Директория" должно содержать только латинские символы, цифры, знаки подчёркивания (_) и дефисы (-)',
-            'directory.unique'      => 'Поле "Директория" должно быть уникальным, возможно уже создан альбом с данной директорией',
             'year.required'         => 'Поле "Год" обязательно для заполнения',
             'year.numeric'          => 'Поле "Год" должно содержать только цифры',
             'groups_id.required'    => 'Поле "Группа" обязательно для заполнения',

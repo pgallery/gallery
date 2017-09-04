@@ -174,6 +174,11 @@ Route::get('/album/renamedir/{id}', [
     'uses'          => 'AlbumsController@getRenameDir',
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
+Route::post('/album/savedir/{id}', [
+    'as'            => 'savedir-album',
+    'uses'          => 'AlbumsController@putRenameDir',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
 Route::get('/album/uploads/{id}', [
     'as'            => 'uploads-album',
     'uses'          => 'AlbumsController@getUploads',

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use App\Http\Requests\AlbumsRequest;
+use App\Http\Requests\AlbumsDirectoryRequest;
+use App\Http\Requests\AlbumsEditRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\Groups;
@@ -17,7 +19,6 @@ use Setting;
 use Viewer;
 use File;
 use Cache;
-use Validator;
 
 class AlbumsController extends Controller
 {
@@ -92,12 +93,9 @@ class AlbumsController extends Controller
                 
         $thisAlbum = $this->albums->find($router->input('id'));
         
-        if($thisAlbum->imagesCount() == 0)
-        {
+        if($thisAlbum->imagesCount() == 0) {
             $images=[];
-        }
-        else
-        {
+        } else {
             
             $thisPage = $request->has('page') ? $request->query('page') : 1;
             
@@ -128,7 +126,7 @@ class AlbumsController extends Controller
     /*
      * Сохранение изменений альбома
      */
-    public function putSaveAlbum(Router $router, Request $request) {
+    public function putSaveAlbum(Router $router, AlbumsEditRequest $request) {
         
         $input          = $request->all();
         $input['url']   = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
@@ -219,16 +217,41 @@ class AlbumsController extends Controller
      */
     public function getRenameDir(Router $router) {
         
-        echo "
-            Вывести полную инфу об альбоме и статистику по кол-ву фоток и объему
-             <br> <br>
-             - удалям тумбы <br>
-             - File::moveDirectory() <br>
-             - Пересоздать тумбы <br>
-             - Чистим кэши
-            ";
+        $thisAlbum = $this->albums->find($router->input('id'));
         
+        return Viewer::get('admin.album_renamedir', compact(
+            'thisAlbum'
+        ));
         
+    }
+    
+    /*
+     * Переименование директории
+     */
+    public function putRenameDir(Router $router, AlbumsDirectoryRequest $request) {
         
+        $album = $this->albums->find($router->input('id'));
+        
+        $upload_path = \Helper::getUploadPath($router->input('id'));
+        $mobile_path = \Helper::getFullPathMobile($router->input('id'));
+        $thumb_path  = \Helper::getFullPathThumb($router->input('id'));        
+
+        if(File::move($upload_path, public_path() . "/" . Setting::get('upload_dir') . "/" . $request->input('directory'))) {
+            if(\File::isDirectory($mobile_path))
+                \File::deleteDirectory($mobile_path);
+
+            if(\File::isDirectory($thumb_path))
+                \File::deleteDirectory($thumb_path);            
+            
+            $this->albums->find($router->input('id'))->update($request->all());
+
+            $this->images->where('albums_id', $router->input('id'))->update([
+                'is_rebuild'    => 1,
+            ]);
+            
+            Cache::flush();
+        }
+        
+        return redirect()->route('admin');
     }
 }
