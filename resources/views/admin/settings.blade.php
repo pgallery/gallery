@@ -16,8 +16,16 @@
         
         <div class="form-group">
             <label class="col-sm-6 control-label">{{ $setting['set_desc'] }}:</label>
-            <div class="col-sm-4">
-                {!! Form::text("newSetting[$setting[set_name]]", $setting['set_value'], array('class' => 'form-control', 'required')) !!}
+            <div class="col-sm-4"> 
+                @if( $setting['set_type'] == '1')
+                    {!! Form::select("newSetting[$setting[set_name]]", [
+                        'yes'   => 'Включено',
+                        'no'    => 'Отключено'
+                    ], $setting['set_value'], array('class' => 'form-control')) !!}   
+                @else
+                    {!! Form::text("newSetting[$setting[set_name]]", $setting['set_value'], array('class' => 'form-control', 'required')) !!}
+                @endif
+                
             </div>
             <p class="help-block">{{ $setting['set_name'] }}</p>
         </div>    

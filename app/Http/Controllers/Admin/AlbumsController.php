@@ -213,4 +213,22 @@ class AlbumsController extends Controller
         ]);        
         
     }
+    
+    /*
+     *  Вывод формы переименовывания директории альбома
+     */
+    public function getRenameDir(Router $router) {
+        
+        echo "
+            Вывести полную инфу об альбоме и статистику по кол-ву фоток и объему
+             <br> <br>
+             - удалям тумбы <br>
+             - File::moveDirectory() <br>
+             - Пересоздать тумбы <br>
+             - Чистим кэши
+            ";
+        
+        
+        
+    }
 }

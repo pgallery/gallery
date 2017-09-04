@@ -169,6 +169,11 @@ Route::get('/album/rebuild/{id}', [
     'uses'          => 'AlbumsController@getRebuild',
     'middleware'    => 'role:admin|moderator'
 ])->where(['id' => '[0-9]+']);
+Route::get('/album/renamedir/{id}', [
+    'as'            => 'renamedir-album',
+    'uses'          => 'AlbumsController@getRenameDir',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
 Route::get('/album/uploads/{id}', [
     'as'            => 'uploads-album',
     'uses'          => 'AlbumsController@getUploads',
