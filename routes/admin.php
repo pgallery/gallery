@@ -6,6 +6,16 @@
  * 
  */
 
+/*
+ * 
+ * POST  — создать новую запись
+ * GET — получить запись
+ * PUT — редактирование записи
+ * DELETE — удаление записи
+ * 
+ * 
+ */
+
 // Генерация разных страниц
 Route::get('/', [
     'as'            => 'admin', 
@@ -65,12 +75,6 @@ Route::post('/settings/create/', [
     'uses'          => 'SettingsController@postSettings',
     'middleware'    => 'role:admin'
 ]);
-//Route::resource('settings', 'SettingsController', 
-//        [
-//            'only'        => ['index', 'create', 'update'],
-//            'middleware'    => ['role:admin']
-//        ]);
-
 
 // Управление пользователями
 Route::get('/users/', [
@@ -184,7 +188,7 @@ Route::post('/album/create/', [
 ]);
 Route::post('/album/changeowner/', [
     'as'            => 'changeowner-album', 
-    'uses'          => 'AlbumsController@postChangeOwnerAlbum',
+    'uses'          => 'AlbumsController@putChangeOwnerAlbum',
     'middleware'    => 'role:admin'
 ]);
 
@@ -196,17 +200,17 @@ Route::get('/image/delete/{id}', [
 ])->where(['id' => '[0-9]+']);
 Route::post('/image/rename/', [
     'as'            => 'rename-image', 
-    'uses'          => 'ImagesController@postRename',
+    'uses'          => 'ImagesController@putRename',
     'middleware'    => 'role:admin|moderator'
 ]);
 Route::post('/image/changeowner/', [
     'as'            => 'changeowner-image', 
-    'uses'          => 'ImagesController@postChangeOwnerImage',
+    'uses'          => 'ImagesController@putChangeOwnerImage',
     'middleware'    => 'role:admin'
 ]);
 Route::post('/image/movetoalbum/', [
     'as'            => 'movetoalbum-image', 
-    'uses'          => 'ImagesController@postMoveToAlbum',
+    'uses'          => 'ImagesController@putMoveToAlbum',
     'middleware'    => 'role:admin'
 ]);
 Route::get('/image/install/{id}', [

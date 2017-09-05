@@ -92,7 +92,7 @@ class AlbumsController extends Controller
     /*
      * Изменение владельца альбома
      */    
-    public function postChangeOwnerAlbum(Request $request) {
+    public function putChangeOwnerAlbum(Request $request) {
         
         $this->albums->where('id', $request->input('id'))->update([
             'users_id' => $request->input('ChangeOwnerAlbumNew'),

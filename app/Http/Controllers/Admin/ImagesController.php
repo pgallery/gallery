@@ -93,7 +93,7 @@ class ImagesController extends Controller
     /*
      * Переименовывание изображения
      */
-    public function postRename(Request $request) {
+    public function putRename(Request $request) {
         
         $oldName = $this->images->find($request->input('id'));
         
@@ -184,7 +184,7 @@ class ImagesController extends Controller
     /*
      * Изменение владельца изображения
      */
-    public function postChangeOwnerImage(Request $request) {
+    public function putChangeOwnerImage(Request $request) {
         
         $this->images->where('id', $request->input('id'))->update([
             'users_id' => $request->input('ChangeOwnerNew'),
@@ -199,11 +199,15 @@ class ImagesController extends Controller
     /*
      * Перемещение изображения в другой альбом
      */
-    public function postMoveToAlbum(Request $request) {
+    public function putMoveToAlbum(Request $request) {
         
-        $this_image = $this->images->find($request->input('id'));
-        $new_album = $this->albums->find($request->input('MoveToAlbumNew'));
+        $this_image     = $this->images->find($request->input('id'));
+        $new_album      = $this->albums->find($request->input('MoveToAlbumNew'));
+//        $old_album      = $this->albums->find($request->input('MoveToAlbumNew'));
 
+//        echo $this_image->album->images_id;
+//        exit;
+        
         $old_path       = Helper::getFullPathImage($this_image->id);
         $new_path       = Helper::getUploadPath($new_album->id) . "/" . $this_image->name;
         $delete_thumb   = Helper::getFullPathThumbImage($this_image->id);
@@ -222,11 +226,18 @@ class ImagesController extends Controller
                 'is_rebuild' => 1,
             ]);
             
+            if($this_image->album->images_id == $this_image->id) {
+                
+                $Images = $this->images->where('albums_id', $this_image->albums_id)->first();
+                $this->albums->find($this_image->albums_id)->update(['images_id' => $Images->id]);
+                
+            }
+            
         }
         
         Cache::flush();
-        
-        return back();        
+       
+        return redirect()->route('show-album', ['id' => $new_album->id]);
         
     }    
     
