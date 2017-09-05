@@ -40,7 +40,6 @@
                       </button>
                       <ul class="dropdown-menu">
                         <li><a href="{{ route('edit-group', ['id' => $group['id']]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
-                        <li><a href=""><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('delete-group', ['id' => $group['id']]) }}" data-toggle="confirmation" data-title="Удалить группу, а так же все альбомы и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
@@ -118,7 +117,7 @@
                         @if(Helper::isAdmin(Auth::user()->id))
                             <li><a href="{{ route('sync-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Синхронизировать из директории</a></li>
                             <li><a href="{{ route('renamedir-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Переименовать директорию</a></li>
-                            <li><a href=""><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
+                            <li><a href="" data-toggle="modal" data-target="#ChangeOwnerAlbumModal" class="clickChangeOwnerAlbum" data-id="{{ $album->id }}" data-owner="{{ $album->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
                         @endif
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('delete-album', ['id' => $album->id]) }}" data-toggle="confirmation" data-title="Удалить альбом и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
@@ -197,4 +196,51 @@
   </div>
 </div>
 
+<!-- Modal Change Owner Album -->
+<div class="modal fade" id="ChangeOwnerAlbumModal" tabindex="-1" role="dialog" aria-labelledby="ChangeOwnerAlbumModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="ChangeOwnerModal">Смена владельца альбома</h4>
+      </div>
+        
+        {!! Form::open([
+            'route'     => 'changeowner-album',
+            'class'     => 'form-horizontal',
+            'method'    => 'POST'
+        ]) !!}        
+          <input type="hidden"  name="id" id="ChangeOwnerAlbumID" value="">
+          
+      <div class="modal-body">
+                      
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Владелец:</label>
+                <div class="col-sm-8">
+                        {!! Form::select('ChangeOwnerAlbumNew', $usersArray, null, array('class' => 'form-control', 'id' => 'ChangeOwnerAlbumNew')) !!}  
+                </div>
+            </div>              
+            
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+          
+      {!! Form::close() !!}
+          
+    </div>
+  </div>
+</div>
+
+@endsection
+
+@section('js-top')
+
+        $('a.clickChangeOwnerAlbum').click(function(e){
+            $('#ChangeOwnerAlbumID').val(this.getAttribute('data-id'));
+            $('#ChangeOwnerAlbumNew').val(this.getAttribute('data-owner'));
+            e.preventDefault();
+        });
+              
 @endsection

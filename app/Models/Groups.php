@@ -40,7 +40,7 @@ class Groups extends Model
     public function owner()
     {
         return \Cache::remember('owner_' . $this->users_id . '_cache', 100, function(){
-            return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id','name')->first();           
+            return $this->hasOne('App\Models\User', 'id', 'users_id')->select('name')->first();           
         });
     }    
     

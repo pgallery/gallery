@@ -130,13 +130,6 @@ Route::post('/group/create/', [
     'uses'          => 'GroupsController@postCreateGroup',
     'middleware'    => 'role:admin'
 ]);
-//Route::resource('group', 'GroupsController', 
-//        [
-//            'except'        => ['index', 'store', 'show'],
-//            'names'         => ['destroy' => 'group.delete'],
-//            'middleware'    => ['role:admin']
-//        ]);
-
 
 // Альбомы
 Route::get('/album/edit/{id}', [
@@ -188,6 +181,11 @@ Route::post('/album/create/', [
     'as'            => 'create-album', 
     'uses'          => 'AlbumsController@postCreateAlbum',
     'middleware'    => 'role:admin|moderator'
+]);
+Route::post('/album/changeowner/', [
+    'as'            => 'changeowner-album', 
+    'uses'          => 'AlbumsController@postChangeOwnerAlbum',
+    'middleware'    => 'role:admin'
 ]);
 
 // Изображения

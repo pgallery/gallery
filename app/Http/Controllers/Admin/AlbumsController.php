@@ -90,6 +90,21 @@ class AlbumsController extends Controller
     }
     
     /*
+     * Изменение владельца альбома
+     */    
+    public function postChangeOwnerAlbum(Request $request) {
+        
+        $this->albums->where('id', $request->input('id'))->update([
+            'users_id' => $request->input('ChangeOwnerAlbumNew'),
+        ]);
+        
+        Cache::flush();
+        
+        return back();
+        
+    }
+    
+    /*
      * Вывод фотографий выбранного альбома
      */
     public function getShowAlbum(Router $router, Request $request) {

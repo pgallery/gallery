@@ -182,7 +182,7 @@ class ImagesController extends Controller
     }
     
     /*
-     * 
+     * Изменение владельца изображения
      */
     public function postChangeOwnerImage(Request $request) {
         
@@ -193,5 +193,6 @@ class ImagesController extends Controller
         Cache::flush();
         
         return back();
+        
     }
 }

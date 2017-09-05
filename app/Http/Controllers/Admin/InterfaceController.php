@@ -41,11 +41,14 @@ class InterfaceController extends Controller
             return Albums::all();
         });   
         
+        $usersArray = User::pluck('name','id');
+        
         return Viewer::get('admin.show', compact(
             'groupsArray',
             'thumbs_dir',
             'albums', 
-            'groups'
+            'groups',
+            'usersArray'
         ));
         
     }
