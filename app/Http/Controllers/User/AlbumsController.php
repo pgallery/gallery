@@ -26,18 +26,26 @@ class AlbumsController extends Controller
     }
     
     public function getShow(Router $router) {
+                
+        if(Auth::check() and Helper::isAdmin(Auth::user()->id)) {
         
-        $countAllPublicAlbums = Cache::remember('all.public.albums', Setting::get('cache_ttl'), function() {
-            return $this->albums->where('permission', 'All')->where('images_id', '!=', '0')->count();
-        });
-        
-        if($countAllPublicAlbums == 0)
-            return Viewer::get('errors.404'); 
-        
-        if(Auth::check() and Helper::isAdmin(Auth::user()->id))
+            $countShowAlbums = Cache::remember('all.showadmin.albums', Setting::get('cache_ttl'), function() {
+                return $this->albums->where('images_id', '!=', '0')->count();
+            });
+            
             $CacheKey = 'Admin.';
-        else
+            
+        } else {
+            
+            $countShowAlbums = Cache::remember('all.public.albums', Setting::get('cache_ttl'), function() {
+                return $this->albums->where('permission', 'All')->where('images_id', '!=', '0')->count();
+            });
+            
             $CacheKey = 'User.';
+        }
+        
+        if($countShowAlbums == 0)
+            return Viewer::get('errors.404');         
         
         $CacheKey .= 'Cache.Albums.';
         $CacheKey .= (!empty($router->input('option'))) ? $router->input('option') : "Base" ;
