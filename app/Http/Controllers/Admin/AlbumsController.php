@@ -25,8 +25,9 @@ class AlbumsController extends Controller
 {
     
     // 10080 минут - 1 неделя
-    const SHOWADMIN_CACHE_TTL = 10080;    
-    
+    const SHOWADMIN_CACHE_TTL = 10080;
+
+    protected $users;
     protected $groups;
     protected $albums;
     protected $images;
@@ -139,7 +140,7 @@ class AlbumsController extends Controller
 
         $this->albums->find($router->input('id'))->update($input);
         
-        \Cache::flush();
+        Cache::flush();
         
         return redirect()->route('admin');
         
@@ -237,9 +238,9 @@ class AlbumsController extends Controller
         
         $album = $this->albums->find($router->input('id'));
         
-        $upload_path = \Helper::getUploadPath($router->input('id'));
-        $mobile_path = \Helper::getFullPathMobile($router->input('id'));
-        $thumb_path  = \Helper::getFullPathThumb($router->input('id'));        
+        $upload_path = Helper::getUploadPath($router->input('id'));
+        $mobile_path = Helper::getFullPathMobile($router->input('id'));
+        $thumb_path  = Helper::getFullPathThumb($router->input('id'));        
 
         if(File::move($upload_path, public_path() . "/" . Setting::get('upload_dir') . "/" . $request->input('directory'))) {
             

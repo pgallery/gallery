@@ -50,7 +50,7 @@
                         <li><a href="{{ route('rotate-image', ['option' => 'right', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Повернуть вправо</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'top', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span> Перевернуть</a></li>
                         @if(Helper::isAdmin(Auth::user()->id))
-                            <li><a href="" data-toggle="modal" data-target="#ChangeOwnerModal" class="clickeableChangeOwner" data-id="{{ $image['id'] }}" data-name="{{ $image->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
+                            <li><a href="" data-toggle="modal" data-target="#ChangeOwnerModal" class="clickeableChangeOwner" data-id="{{ $image['id'] }}" data-owner="{{ $image->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
                         @endif
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('delete-image', ['id' => $image['id']]) }}" data-toggle="confirmation" data-title="Удалить фотографию?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
@@ -163,7 +163,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Владелец:</label>
                 <div class="col-sm-8">
-                        {!! Form::select('ChangeOwnerNew', $usersArray, null, array('class' => 'form-control')) !!}  
+                        {!! Form::select('ChangeOwnerNew', $usersArray, null, array('class' => 'form-control', 'id' => 'ChangeOwnerNew')) !!}  
                 </div>
             </div>              
             
@@ -193,7 +193,7 @@
 
         $('a.clickeableChangeOwner').click(function(e){
             $('#ChangeOwnerID').val(this.getAttribute('data-id'));
-            $('#ChangeOwnerNew').val(this.getAttribute('data-name'));
+            $('#ChangeOwnerNew').val(this.getAttribute('data-owner'));
             e.preventDefault();
         });
         

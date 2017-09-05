@@ -79,10 +79,7 @@ class GroupsController extends Controller
         
         $this->groups->find($router->input('id'))->update($request->all());
         
-        Cache::forget('Admin.Cache.App.Helpers.Viewer');
-        Cache::forget('User.Cache.App.Helpers.Viewer');
-        Cache::forget('admin.show.groups');
-        Cache::forget('admin.show.groupsArray');
+        Cache::flush();
         
         return redirect()->route('admin');
         

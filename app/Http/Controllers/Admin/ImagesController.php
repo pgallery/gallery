@@ -42,7 +42,6 @@ class ImagesController extends Controller
             'mimes'    => 'расширение должно быть jpeg, jpg, jpe, png, gif, bmp.',
             'required' => 'поле обязательно.',
         ];
-
         
         $album = $this->albums->find($request->album_id);
         
@@ -78,8 +77,7 @@ class ImagesController extends Controller
         }
         
         // Проверяем альбом на наличие миниатюры
-        if($album->images_id == 0)
-        {
+        if($album->images_id == 0) {
             
             $Images = $this->images->where('albums_id', $album->id)->first();
             $this->albums->find($album->id)->update(['images_id' => $Images->id]);
@@ -103,19 +101,21 @@ class ImagesController extends Controller
         $thumb_image  = Helper::getFullPathThumbImage($request->input('id'));
         $upload_dir   = Helper::getUploadPath($oldName->albums_id);
         
-        if (File::exists($mobile_image))
-            File::delete($mobile_image);
-        
-        if (File::exists($thumb_image))
-            File::delete($thumb_image);        
-        
-        File::move($upload_dir . "/" . $oldName->name, $upload_dir . "/" . $request->input('newName'));
-        $this->images->where('id', $request->input('id'))->update([
-            'name'          => $request->input('newName'),
-            'is_rebuild'    => 1,
-        ]);
-    
-        Cache::flush();
+        if(File::move($upload_dir . "/" . $oldName->name, $upload_dir . "/" . $request->input('newName'))) {
+            
+            if (File::exists($mobile_image))
+                File::delete($mobile_image);
+
+            if (File::exists($thumb_image))
+                File::delete($thumb_image);            
+            
+            $this->images->where('id', $request->input('id'))->update([
+                'name'          => $request->input('newName'),
+                'is_rebuild'    => 1,
+            ]);
+
+            Cache::flush();
+        }
         
         return back();
         
@@ -175,7 +175,7 @@ class ImagesController extends Controller
         $album_id = $this->images->find($router->input('id'))->album->id;
         $this->albums->find($album_id)->update(['images_id' => $router->input('id')]);
         
-        \Cache::flush();
+        Cache::flush();
         
         return back();
         
@@ -186,13 +186,11 @@ class ImagesController extends Controller
      */
     public function postChangeOwnerImage(Request $request) {
         
-//        print_r($_POST);
-        
         $this->images->where('id', $request->input('id'))->update([
             'users_id' => $request->input('ChangeOwnerNew'),
         ]);
         
-        \Cache::flush();
+        Cache::flush();
         
         return back();
     }

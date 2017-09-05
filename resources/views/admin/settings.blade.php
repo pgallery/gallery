@@ -47,8 +47,7 @@
         </ul>
     </div>
 @endif
-    
-    
+
 <div class="page-header">
   <h2>Добавление параметра</h2>
 </div>
