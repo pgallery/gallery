@@ -195,4 +195,39 @@ class ImagesController extends Controller
         return back();
         
     }
+    
+    /*
+     * Перемещение изображения в другой альбом
+     */
+    public function postMoveToAlbum(Request $request) {
+        
+        $this_image = $this->images->find($request->input('id'));
+        $new_album = $this->albums->find($request->input('MoveToAlbumNew'));
+
+        $old_path       = Helper::getFullPathImage($this_image->id);
+        $new_path       = Helper::getUploadPath($new_album->id) . "/" . $this_image->name;
+        $delete_thumb   = Helper::getFullPathThumbImage($this_image->id);
+        $delete_mobile  = Helper::getFullPathMobileImage($this_image->id);
+        
+        if(File::move($old_path, $new_path) and $this_image->albums_id != $request->input('MoveToAlbumNew')) {
+            
+            if (File::exists($delete_thumb))
+                File::delete($delete_thumb);
+            
+            if (File::exists($delete_mobile))
+                File::delete($delete_mobile);            
+            
+            $this->images->where('id', $this_image->id)->update([
+                'albums_id'  => $new_album->id,
+                'is_rebuild' => 1,
+            ]);
+            
+        }
+        
+        Cache::flush();
+        
+        return back();        
+        
+    }    
+    
 }

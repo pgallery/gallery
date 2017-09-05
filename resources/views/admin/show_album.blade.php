@@ -35,7 +35,7 @@
     @foreach($listImages as $image)
         
             <tr>
-                <td>{{ $image['id'] }}</td>
+                <td>{{ $image->id }}</td>
                 <td> 
                     <!-- Single button -->
                     <div class="btn-group">
@@ -43,32 +43,37 @@
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{{ route('install-image', ['id' => $image['id']]) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Установить как миниатюру</a></li>
-                        <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickeable" data-id="{{ $image['id'] }}" data-name="{{ $image['name'] }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
-                        <li><a href="{{ route('rebuild-image', ['id' => $image['id']]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать миниатюру</a></li>
-                        <li><a href="{{ route('rotate-image', ['option' => 'left', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Повернуть влево</a></li>
-                        <li><a href="{{ route('rotate-image', ['option' => 'right', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Повернуть вправо</a></li>
-                        <li><a href="{{ route('rotate-image', ['option' => 'top', 'id' => $image['id']]) }}"><span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span> Перевернуть</a></li>
+                        <li><a href="{{ route('install-image', ['id' => $image->id]) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Установить как миниатюру</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickRename" data-id="{{ $image->id }}" data-name="{{ $image->name }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
+                        <li><a href="{{ route('rebuild-image', ['id' => $image->id]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать миниатюру</a></li>
+                        <li><a href="{{ route('rotate-image', ['option' => 'left', 'id' => $image->id]) }}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Повернуть влево</a></li>
+                        <li><a href="{{ route('rotate-image', ['option' => 'right', 'id' => $image->id]) }}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Повернуть вправо</a></li>
+                        <li><a href="{{ route('rotate-image', ['option' => 'top', 'id' => $image->id]) }}"><span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span> Перевернуть</a></li>
+                        
                         @if(Helper::isAdmin(Auth::user()->id))
-                            <li><a href="" data-toggle="modal" data-target="#ChangeOwnerModal" class="clickeableChangeOwner" data-id="{{ $image['id'] }}" data-owner="{{ $image->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
+                        
+                            <li><a href="" data-toggle="modal" data-target="#MoveToAlbumModal" class="clickMoveToAlbum" data-id="{{ $image->id }}" data-album="{{ $thisAlbum->id }}"><span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> Переместить в альбом</a></li>
+                            <li><a href="" data-toggle="modal" data-target="#ChangeOwnerModal" class="clickChangeOwner" data-id="{{ $image->id }}" data-owner="{{ $image->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
+                        
                         @endif
+                        
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{ route('delete-image', ['id' => $image['id']]) }}" data-toggle="confirmation" data-title="Удалить фотографию?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
+                        <li><a href="{{ route('delete-image', ['id' => $image->id]) }}" data-toggle="confirmation" data-title="Удалить фотографию?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
                     </div>
-                    <a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" data-fancybox="images"> 
-                        <img  src="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" width="75"/> 
+                    <a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" data-fancybox="images"> 
+                        <img  src="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" width="75"/> 
                     </a>
-                        @if($thisAlbum->images_id == $image['id']) 
+                        @if($thisAlbum->images_id == $image->id) 
                             Миниатюра альбома 
                         @endif
                 </td>
-                <td><a href="/{{ $upload_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" target="_blank">{{ $image['name'] }}</a>
-                    <br><a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" target="_blank">Миниатюра</a> 
+                <td><a href="/{{ $upload_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">{{ $image->name }}</a>
+                    <br><a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Миниатюра</a> 
                     | 
-                    <a href="/{{ $mobile_dir }}/{{ $thisAlbum->directory }}/{{ $image['name'] }}" target="_blank">Мобильная</a> </td>
-                <td>{{ round($image['size'] / 1024) . " Kb"  }}</td>
-                <td>{{ $image['width'] }}х{{ $image['height'] }}</td>
+                    <a href="/{{ $mobile_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Мобильная</a> </td>
+                <td>{{ round($image->size / 1024) . " Kb"  }}</td>
+                <td>{{ $image->width }}х{{ $image->height }}</td>
                 <td>{{ $image->owner()->name }}</td>
                 
             </tr>
@@ -142,6 +147,43 @@
   </div>
 </div>
 
+<!-- Modal Move To Album -->
+<div class="modal fade" id="MoveToAlbumModal" tabindex="-1" role="dialog" aria-labelledby="MoveToAlbumModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="MoveToAlbumModal">Перемещение фотографии в другой альбом</h4>
+      </div>
+        
+        {!! Form::open([
+            'route'     => 'movetoalbum-image',
+            'class'     => 'form-horizontal',
+            'method'    => 'POST'
+        ]) !!}        
+          <input type="hidden"  name="id" id="MoveToAlbumID" value="">
+          
+      <div class="modal-body">
+                      
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Альбом:</label>
+                <div class="col-sm-8">
+                        {!! Form::select('MoveToAlbumNew', $albumsArray, null, array('class' => 'form-control', 'id' => 'MoveToAlbumNew')) !!}  
+                </div>
+            </div>
+            
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+          
+      {!! Form::close() !!}
+          
+    </div>
+  </div>
+</div>
+
 <!-- Modal Change Owner Image -->
 <div class="modal fade" id="ChangeOwnerModal" tabindex="-1" role="dialog" aria-labelledby="ChangeOwnerModalLabel">
   <div class="modal-dialog" role="document">
@@ -185,18 +227,24 @@
 
 @section('js-top')
 
-        $('a.clickeable').click(function(e){
+        $('a.clickRename').click(function(e){
             $('#id').val(this.getAttribute('data-id'));
             $('#newName').val(this.getAttribute('data-name'));
             e.preventDefault();
         });
 
-        $('a.clickeableChangeOwner').click(function(e){
+        $('a.clickMoveToAlbum').click(function(e){
+            $('#MoveToAlbumID').val(this.getAttribute('data-id'));
+            $('#MoveToAlbumNew').val(this.getAttribute('data-album'));
+            e.preventDefault();
+        });        
+        
+        $('a.clickChangeOwner').click(function(e){
             $('#ChangeOwnerID').val(this.getAttribute('data-id'));
             $('#ChangeOwnerNew').val(this.getAttribute('data-owner'));
             e.preventDefault();
         });
-        
+
         $(":file").filestyle({
             input: false,
             buttonText: 'Выберите файлы'

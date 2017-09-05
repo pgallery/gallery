@@ -204,6 +204,11 @@ Route::post('/image/changeowner/', [
     'uses'          => 'ImagesController@postChangeOwnerImage',
     'middleware'    => 'role:admin'
 ]);
+Route::post('/image/movetoalbum/', [
+    'as'            => 'movetoalbum-image', 
+    'uses'          => 'ImagesController@postMoveToAlbum',
+    'middleware'    => 'role:admin'
+]);
 Route::get('/image/install/{id}', [
     'as'            => 'install-image', 
     'uses'          => 'ImagesController@putInstallImage',

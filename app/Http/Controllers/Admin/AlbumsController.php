@@ -117,17 +117,17 @@ class AlbumsController extends Controller
             
             $thisPage = $request->has('page') ? $request->query('page') : 1;
             
-            $thumbs_dir = Setting::get('thumbs_dir');
-            $mobile_dir = Setting::get('mobile_upload_dir');
-            $upload_dir = Setting::get('upload_dir'); 
-            $type       = 'thisAlbum';
-            $album_id   = $thisAlbum->id;
+            $thumbs_dir  = Setting::get('thumbs_dir');
+            $mobile_dir  = Setting::get('mobile_upload_dir');
+            $upload_dir  = Setting::get('upload_dir'); 
+            $type        = 'thisAlbum';
+            $album_id    = $thisAlbum->id;
+            $usersArray  = $this->users->pluck('name','id');
+            $albumsArray = $this->albums->pluck('name','id');
             
             $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {                
                 return $thisAlbum->images()->paginate(Setting::get('count_images'));
             });
-            
-            $usersArray = $this->users->pluck('name','id');
             
         }
         
@@ -139,7 +139,8 @@ class AlbumsController extends Controller
             'listImages',
             'type',
             'album_id',
-            'usersArray'
+            'usersArray',
+            'albumsArray'
         ));
         
     }
