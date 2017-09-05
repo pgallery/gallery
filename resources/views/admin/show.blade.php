@@ -219,6 +219,12 @@
                 <div class="col-sm-8">
                         {!! Form::select('ChangeOwnerAlbumNew', $usersArray, null, array('class' => 'form-control', 'id' => 'ChangeOwnerAlbumNew')) !!}  
                 </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Рекурсивно:</label>
+                <div class="col-sm-8">
+                        {!! Form::checkbox('ChangeOwnerAlbumRecursion', 'yes') !!}  
+                </div>
             </div>              
             
       </div>

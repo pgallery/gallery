@@ -98,6 +98,14 @@ class AlbumsController extends Controller
             'users_id' => $request->input('ChangeOwnerAlbumNew'),
         ]);
         
+        if($request->input('ChangeOwnerAlbumRecursion')) {
+            
+            $this->images->where('albums_id', $request->input('id'))->update([
+                'users_id' => $request->input('ChangeOwnerAlbumNew'),
+            ]);
+            
+        }
+        
         Cache::flush();
         
         return back();
