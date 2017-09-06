@@ -59,8 +59,7 @@ class ImagesController extends Controller
 
                     $upload_file_name = $f->getClientOriginalName();
 
-                    if (!File::exists($upload_path . "/" . $upload_file_name))
-                    {
+                    if (!File::exists($upload_path . "/" . $upload_file_name)) {
                         // Загружаем оригинал
                         Image::make($f)->save($upload_path . "/" . $upload_file_name);
 

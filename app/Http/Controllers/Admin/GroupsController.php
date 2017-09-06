@@ -38,10 +38,7 @@ class GroupsController extends Controller
 
         $this->groups->create($input);
         
-        Cache::forget('Admin.Cache.App.Helpers.Viewer');
-        Cache::forget('User.Cache.App.Helpers.Viewer');        
-        Cache::forget('admin.show.groups');
-        Cache::forget('admin.show.groupsArray');
+        Cache::flush();
         
         return back();
         

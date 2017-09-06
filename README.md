@@ -27,10 +27,10 @@ cd gallery
 composer install
 composer update
 cp .env.example .env
-php artisan key:generate
-php artisan migrate
-php artisan db:seed
-php artisan route:cache
+/opt/php71/bin/php artisan key:generate
+/opt/php71/bin/php artisan migrate
+/opt/php71/bin/php artisan db:seed
+/opt/php71/bin/php artisan route:cache
 ```
 
 ### Обновление
@@ -38,16 +38,16 @@ php artisan route:cache
 ```
 git pull
 composer update
-php artisan migrate
-php artisan route:clear
-php artisan cache:clear
-php artisan route:cache
+/opt/php71/bin/php artisan migrate
+/opt/php71/bin/php artisan route:clear
+/opt/php71/bin/php artisan cache:clear
+/opt/php71/bin/php artisan route:cache
 ```
 
 ### Необходимо прописать в crontab
 
 ```
-* * * * * /usr/bin/php PATH/TO/artisan schedule:run >/dev/null 2>&1
+* * * * * /opt/php71/bin/php PATH/TO/artisan schedule:run >/dev/null 2>&1
 ```
 
 ### Роли пользователей
