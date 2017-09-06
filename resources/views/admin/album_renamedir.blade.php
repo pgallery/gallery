@@ -22,6 +22,46 @@
     </div>
 @endif
 
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Название:</label>
+            <div class="col-sm-4">
+                {{ $thisAlbum->name }}
+            </div>
+            <label class="col-sm-2 control-label">URL:</label>
+            <div class="col-sm-4">
+                {{ $thisAlbum->url }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Директория:</label>
+            <div class="col-sm-4">
+                {{ $thisAlbum->directory }}
+            </div>
+            <label class="col-sm-2 control-label">Год:</label>
+            <div class="col-sm-4">
+                {{ $thisAlbum->year }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Группа:</label>
+            <div class="col-sm-4">
+                {{ $thisAlbum->group()->name }}
+            </div>
+            <label class="col-sm-2 control-label">Права:</label>
+            <div class="col-sm-4">
+                {{ $thisAlbum->permission }}              
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Описание:</label>
+            <div class="col-sm-10">
+                {{ $thisAlbum->desc }}
+            </div>
+        </div>
+<hr>
 <div class="form-group">
     <label class="col-sm-4 control-label">Имя директории:</label>
     <div class="col-sm-6">

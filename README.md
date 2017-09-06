@@ -24,8 +24,8 @@
 ```
 git clone https://github.com/Dasvasas/gallery.git
 cd gallery
-composer install
-composer update
+/opt/php71/bin/php /usr/local/bin/composer install
+/opt/php71/bin/php /usr/local/bin/composer update
 cp .env.example .env
 /opt/php71/bin/php artisan key:generate
 /opt/php71/bin/php artisan migrate
@@ -37,7 +37,7 @@ cp .env.example .env
 
 ```
 git pull
-composer update
+/opt/php71/bin/php /usr/local/bin/composer update
 /opt/php71/bin/php artisan migrate
 /opt/php71/bin/php artisan route:clear
 /opt/php71/bin/php artisan cache:clear
