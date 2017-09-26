@@ -16,19 +16,16 @@ use Google2FA;
 
 class ProfileController extends Controller
 {
-//    protected $user;
-//
-//    public function __construct(User $user) {
-//        $this->user  = $user;
-//    }
+
+    public function __construct(User $user) {
+        $this->middleware('g2fa')->except('getEnable2FA');
+    }
     
     /*
      * Вывод формы редактирования профиля
      */
     public function getProfile() {
         
-//        https://www.sitepoint.com/2fa-in-laravel-with-google-authenticator-get-secure/
-
         $user = Auth::user();
 
         return Viewer::get('pages.profile', compact('user'));
