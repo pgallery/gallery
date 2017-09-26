@@ -17,12 +17,19 @@ class User extends Authenticatable
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'name', 'email', 'password', 'method'
+        'name', 'email', 'password', 'method', 'google2fa_enabled', 'google2fa_ts', 'google2fa_secret'
     ];
 
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public function generateKey() {
+        $google2fa = app('pragmarx.google2fa');
+        $this->google2fa_secret = $google2fa->generateSecretKey();
+
+        return $this;
+    }
     
     public function roles() {
         return $this->belongsToMany('App\Models\Roles', 'roles_user');

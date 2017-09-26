@@ -25,6 +25,9 @@ class TrashController extends Controller
     protected $images;
 
     public function __construct(User $user, Groups $groups, Albums $albums, Images $images) {
+        
+        $this->middleware('g2fa');
+        
         $this->user    = $user;        
         $this->groups  = $groups;
         $this->albums  = $albums;

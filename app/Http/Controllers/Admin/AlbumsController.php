@@ -33,6 +33,9 @@ class AlbumsController extends Controller
     protected $images;
 
     public function __construct(User $users, Groups $groups, Albums $albums, Images $images) {
+        
+        $this->middleware('g2fa');
+        
         $this->users   = $users;
         $this->groups  = $groups;
         $this->albums  = $albums;

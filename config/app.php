@@ -188,6 +188,11 @@ return [
         
         // Forms & HTML
         Collective\Html\HtmlServiceProvider::class,
+        
+        // Google 2FA
+        PragmaRX\Google2FALaravel\ServiceProvider::class,
+
+        
     ],
 
     /*
@@ -254,6 +259,9 @@ return [
         // Forms & HTML
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        
+        // Google 2FA
+        'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
     ],
 
 ];

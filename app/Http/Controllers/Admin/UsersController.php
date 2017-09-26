@@ -25,6 +25,9 @@ class UsersController extends Controller
     protected $images;
 
     public function __construct(User $user, Roles $roles, Groups $groups, Albums $albums, Images $images) {
+        
+        $this->middleware('g2fa');
+        
         $this->user    = $user;
         $this->roles   = $roles;
         $this->groups  = $groups;

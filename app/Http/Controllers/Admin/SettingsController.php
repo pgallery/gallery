@@ -16,6 +16,9 @@ class SettingsController extends Controller
     protected $settings;
 
     public function __construct(Settings $settings) {
+        
+        $this->middleware('g2fa');
+        
         $this->settings  = $settings;
     }
     

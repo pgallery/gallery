@@ -22,6 +22,12 @@ class InterfaceController extends Controller
     // 10080 минут - 1 неделя
     const SHOWADMIN_CACHE_TTL = 10080;
     
+    public function __construct() {
+        
+        $this->middleware('g2fa');
+    
+    }
+    
     /*
      * Отображение общего списка групп/альбомов на странице администратора
      */

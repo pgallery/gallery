@@ -24,6 +24,9 @@ class ImagesController extends Controller
     protected $images;
 
     public function __construct(Albums $albums, Images $images) {
+        
+        $this->middleware('g2fa');
+        
         $this->albums  = $albums;
         $this->images  = $images;
     }    

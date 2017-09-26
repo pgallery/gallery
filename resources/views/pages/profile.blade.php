@@ -7,6 +7,16 @@
       <h2>Редактирование профиля </h2>
     </div>
 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 {!! Form::open([
     'route'     => 'save-profile',
     'class'     => 'form-horizontal',
@@ -29,6 +39,21 @@
                 )) !!}
             </div>
         </div> 
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Включить 2-х факторную авторизацию:</label>
+            <div class="col-sm-4">
+                @if($user->google2fa_enabled)
+
+                    <a href="{{ route('disabled2fa-profile') }}">Выкл</a>
+                
+                @else
+                
+                    <a href="{{ route('enable2fa-profile') }}">Вкл</a>
+                
+                @endif
+            </div>
+        </div>
 
     @if( $user->method == 'thisSite')
         <div class="form-group">
@@ -60,5 +85,7 @@
     </center>
     
 {!! Form::close() !!} 
+
+
 
 @endsection

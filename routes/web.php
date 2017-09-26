@@ -42,6 +42,7 @@ Route::post('/ulogin', 'User\UloginController@login');
 // Маршруты авторизации
 Auth::routes();
 
+
 // Маршруты авторизованных пользователей
 Route::group(['middleware' => 'auth'], function () {
     
@@ -50,9 +51,31 @@ Route::group(['middleware' => 'auth'], function () {
         'as'            => 'edit-profile', 
         'uses'          => 'User\ProfileController@getProfile',
     ]);
-    Route::post('/save/profile/', [
+    Route::post('/profile/save/', [
         'as'            => 'save-profile', 
         'uses'          => 'User\ProfileController@putProfile',
     ]);
+    
+    Route::get('/profile/enable2fa/', [
+        'as'            => 'enable2fa-profile', 
+        'uses'          => 'User\ProfileController@getEnable2FA',
+    ]);
+    Route::get('/profile/disabled2fa/', [
+        'as'            => 'disabled2fa-profile', 
+        'uses'          => 'User\ProfileController@getDisable2FA',
+    ]);    
+    Route::post('/profile/disabled2fa/', [
+        'as'            => 'disabled2fa-profile', 
+        'uses'          => 'User\ProfileController@getDisable2FA',
+    ]);
+    
+    Route::get('/google2fa/authenticate', [
+        'as'            => 'google2fa.auth', 
+        'uses'          => 'User\Google2FAController@g2faAuth'
+    ]);
+    Route::post('/google2fa/authenticate', [
+        'as'            => 'google2fa.auth', 
+        'uses'          => 'User\Google2FAController@g2faAuth'
+    ]);    
     
 });

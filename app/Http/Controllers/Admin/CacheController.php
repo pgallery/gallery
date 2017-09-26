@@ -9,6 +9,12 @@ use Cache;
 
 class CacheController extends Controller
 {
+    public function __construct() {
+        
+        $this->middleware('g2fa');
+    
+    }    
+    
     /*
      * Очистка всего кэша
      */
