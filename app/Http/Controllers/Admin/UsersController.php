@@ -15,6 +15,7 @@ use App\Models\Images;
 
 use Viewer;
 use Cache;
+use Hash;
 
 class UsersController extends Controller
 {
@@ -71,7 +72,23 @@ class UsersController extends Controller
     public function putUser(Router $router, Request $request) {
         
         $user = $this->user->find($router->input('id'));
-        $user->update($request->all());
+        
+        print_r($request->all());
+        
+        $input['name']  = $request->input('new_name');
+        $input['email'] = $request->input('new_email');
+        
+        if($request->input('new_password'))
+            $input['password'] = Hash::make($request->input('new_password'));
+        
+        if($request->input('new_go2fa'))
+            $input['google2fa_enabled'] = true;
+        else
+            $input['google2fa_enabled'] = false;
+        
+        print_r($input);
+//        exit;
+        $user->update($input);
         $user->roles()->sync($request->input('roles'));
         
         Cache::forget('HelperIsAdmin_' . $router->input('id') . '_cache');        

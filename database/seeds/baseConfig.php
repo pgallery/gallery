@@ -100,6 +100,14 @@ class baseConfig extends Seeder
             'set_type'  => 1,
             'set_sort'  => 14,
         ]);
-       
+        Settings::create([
+            'set_name'  => 'registration', 
+            'set_value' => 'no',
+            'set_desc'  => 'Разрешить регистрацию на сайте',
+            'set_type'  => 1,
+            'set_sort'  => 15,
+        ]);        
+        
+        
     }
 }

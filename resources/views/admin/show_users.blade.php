@@ -16,6 +16,7 @@
                 <th>Альбомов</th>
                 <th>Фотографий</th>
                 <th>Метод авторизации</th>
+                <th>2FA</th>
                 <th>Права</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <th>Альбомов</th>
                 <th>Фотографий</th>                
                 <th>Метод авторизации</th>
+                <th>2FA</th>
                 <th>Права</th>
             </tr>
 
@@ -37,10 +39,10 @@
     @foreach($users as $user)
         
             <tr>
-                <td>{{ $user['id'] }}</td>
+                <td>{{ $user->id }}</td>
 
                 <td>
-                    @if($user['id'] != 1)
+                    @if($user->id != 1)
                     
                     <!-- Single button -->
                     <div class="btn-group">
@@ -48,24 +50,31 @@
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{{ route('edit-user', ['id' => $user['id']]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
+                        <li><a href="{{ route('edit-user', ['id' => $user->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{ route('delete-user', ['id' => $user['id']]) }}" data-toggle="confirmation" data-title="Удалить пользователя?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
+                        <li><a href="{{ route('delete-user', ['id' => $user->id]) }}" data-toggle="confirmation" data-title="Удалить пользователя?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
                     </div>
                     
                     @endif
                     
-                    {{ $user['name']  }} </td>
-                <td>{{ $user['email'] }}</td>
+                    {{ $user->name  }} </td>
+                <td>{{ $user->email }}</td>
                 <td>{{ $user->groupsCount() }}</td>
                 <td>{{ $user->albumsCount() }}</td>
                 <td>{{ $user->imagesCount() }}</td>
                 <td>
-                    @if($user['method'] == 'thisSite')
+                    @if($user->method == 'thisSite')
                         Сайт
                     @else
-                        {{ $user['method'] }}
+                        {{ $user->method }}
+                    @endif
+                </td>
+                <td>
+                    @if($user->google2fa_enabled)
+                        Вкл
+                    @else
+                        Выкл
                     @endif
                 </td>
                 <td><h4>

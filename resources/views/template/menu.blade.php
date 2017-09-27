@@ -103,7 +103,9 @@
                 @if( Setting::get('use_ulogin') == 'yes' )
                     <li><div style="margin-top: 18px" id="uLogin_{{ Setting::get('ulogin_id') }}" data-uloginid="{{ Setting::get('ulogin_id') }}"></div></li>
                 @endif
-                
+                @if( Setting::get('registration') == 'yes' )
+                    <li><a href="{{ route('register') }}">Регистрация</a></li>
+                @endif
                 <li><a href="{{ route('login') }}">Вход</a></li>
         @endif
 

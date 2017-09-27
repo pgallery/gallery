@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 
@@ -13,6 +12,7 @@ use Auth;
 use Viewer;
 use Cache;
 use Google2FA;
+use Hash;
 
 class ProfileController extends Controller
 {
