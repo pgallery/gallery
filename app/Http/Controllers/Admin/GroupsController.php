@@ -68,8 +68,7 @@ class GroupsController extends Controller
         return Viewer::get('admin.group_edit', [
             'type'            => 'edit',
             'group'           => $group,
-        ]);        
-        
+        ]);
     }
     
     /*
@@ -82,7 +81,6 @@ class GroupsController extends Controller
         Cache::flush();
         
         return redirect()->route('admin');
-        
     }
     
 }

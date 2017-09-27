@@ -18,6 +18,8 @@ use Cache;
 use BuildImage;
 use Validator;
 
+use App\Jobs\BuildImagesJob;
+
 class ImagesController extends Controller
 {
     protected $albums;
@@ -65,15 +67,18 @@ class ImagesController extends Controller
                     if (!File::exists($upload_path . "/" . $upload_file_name)) {
                         // Загружаем оригинал
                         Image::make($f)->save($upload_path . "/" . $upload_file_name);
+                        
+                        $image = new Images();
+                        $image->name = $f->getClientOriginalName();
+                        $image->albums_id = $request->album_id;
+                        $image->users_id = Auth::user()->id;
+                        $image->is_rebuild = 1;
+                        $image->save();
+                        
+                        if(Setting::get('use_queue'))
+                            BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
 
-                        $this->images->create([
-                            'name'          => $f->getClientOriginalName(),
-                            'albums_id'     => $request->album_id,
-                            'users_id'      => Auth::user()->id,
-                            'is_rebuild'    => 1,
-                        ]);
                     }
-
                 }
             }
         }
@@ -127,8 +132,13 @@ class ImagesController extends Controller
      * Пересоздание миниатюр выбранного изображения
      */
     public function getRebuild(Router $router) {
-        
-        BuildImage::run($router->input('id'));
+
+        $image = $this->images->find($router->input('id'));
+        $image->is_rebuild = 1;
+        $image->save();
+
+        if(Setting::get('use_queue'))
+            BuildImagesJob::dispatch($router->input('id'))->onQueue('BuildImage');
         
         return back();
         
@@ -151,8 +161,13 @@ class ImagesController extends Controller
         Image::make($file)
             ->rotate($rotate)
             ->save($file);
-        
-        BuildImage::run($router->input('id'));
+
+        $image = $this->images->find($router->input('id'));
+        $image->is_rebuild = 1;
+        $image->save();
+
+        if(Setting::get('use_queue'))
+            BuildImagesJob::dispatch($router->input('id'))->onQueue('BuildImage');        
         
         return back();
         
@@ -188,9 +203,9 @@ class ImagesController extends Controller
      */
     public function putChangeOwnerImage(Request $request) {
         
-        $this->images->where('id', $request->input('id'))->update([
-            'users_id' => $request->input('ChangeOwnerNew'),
-        ]);
+        $image = $this->images->find($request->input('id'));
+        $image->users_id = $request->input('ChangeOwnerNew');
+        $image->save();
         
         Cache::flush();
         
@@ -205,10 +220,6 @@ class ImagesController extends Controller
         
         $this_image     = $this->images->find($request->input('id'));
         $new_album      = $this->albums->find($request->input('MoveToAlbumNew'));
-//        $old_album      = $this->albums->find($request->input('MoveToAlbumNew'));
-
-//        echo $this_image->album->images_id;
-//        exit;
         
         $old_path       = Helper::getFullPathImage($this_image->id);
         $new_path       = Helper::getUploadPath($new_album->id) . "/" . $this_image->name;

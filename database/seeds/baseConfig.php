@@ -93,7 +93,13 @@ class baseConfig extends Seeder
             'set_desc'  => 'ID Вашего сайта в системе uLogin.ru (требуется только при use_ulogin == yes)',
             'set_sort'  => 13,
         ]);        
-        
+        Settings::create([
+            'set_name'  => 'use_queue', 
+            'set_value' => 'no',
+            'set_desc'  => 'Использовать обработчик очередей',
+            'set_type'  => 1,
+            'set_sort'  => 14,
+        ]);
        
     }
 }

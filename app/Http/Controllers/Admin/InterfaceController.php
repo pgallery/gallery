@@ -76,6 +76,5 @@ class InterfaceController extends Controller
             'albumsArray', 
             'groupsArray'
         ));
-        
     }
 }

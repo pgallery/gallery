@@ -9,14 +9,6 @@ use App\Models\Images;
 
 class StatusController extends Controller
 {
-//    public function __contruct() {
-////        $this->middleware('g2fa',['except' => 'getStatus']);
-////        $this->middleware('g2fa')->except('getStatus');
-//        
-//        $this->middleware('g2fa', ['except' => [
-//            'getStatus'
-//        ]]);
-//    }
     
     public function getStatus() {
         
