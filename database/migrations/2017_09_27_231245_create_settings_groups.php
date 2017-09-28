@@ -51,7 +51,7 @@ class CreateSettingsGroups extends Migration
         $setting_group->setgroup_key  = 'view';
         $setting_group->setgroup_name = 'Отображение';
         $setting_group->setgroup_desc = 'Настройки отображения страниц и фотографий';
-        $setting_group->save();        
+        $setting_group->save();
         
     }
 

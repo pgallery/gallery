@@ -17,17 +17,14 @@ class baseUsers extends Seeder
     public function run()
     {
         
-        User::create([
-            'name'      => 'Admin',
-            'email'     => 'admin@example.com',
-            'password'  => Hash::make('admin'),
-            'method'    => 'thisSite',
-        ]);
+        $user           = new User();
+        $user->name     = 'Admin';
+        $user->email    = 'admin@example.com';
+        $user->password = Hash::make('admin');
+        $user->method   = 'thisSite';
+        $user->save();
         
-        $RoleAdmin = Roles::select('id')->where('name', 'admin')->first();
-        
-        $user = User::find(1);
-        $user->roles()->attach($RoleAdmin->id);
+        $user->roles()->attach(Roles::select('id')->where('name', 'admin')->first());
         
     }
 }
