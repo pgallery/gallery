@@ -59,6 +59,9 @@ class baseConfig extends Seeder
             'set_value'   => '2000',
             'set_desc'    => 'Минимальный год Ваших фотоальбомов',
             'set_group'   => $view,
+            'set_tooltip' => 'Год, с которого начинаются Ваши фотоальбомы в галереи. '
+                . 'Используется для автоматического построения выбора года при '
+                . 'создании альбома.',
             'set_type'    => 'numeric',
         ]);
         Settings::create([
@@ -66,6 +69,9 @@ class baseConfig extends Seeder
             'set_value'   => 'gallery/uploads',
             'set_desc'    => 'Директория для загрузки фотографий галереи',
             'set_group'   => $upload,
+            'set_tooltip' => 'Директория, относительно public, в которую будут '
+                . 'загружаться Ваши фотографии. Web-сервер должен иметь возможность'
+                . 'производить в неё запись.',
             'set_type'    => 'string',
         ]);
         Settings::create([
@@ -73,6 +79,9 @@ class baseConfig extends Seeder
             'set_value'   => 'gallery/thumbs',
             'set_desc'    => 'Директория миниатюр',
             'set_group'   => $upload,
+            'set_tooltip' => 'Директория, в которую будут создаваться миниатюры '
+                . 'фотографий.  Web-сервер должен иметь возможность производить '
+                . 'в неё запись.',
             'set_type'    => 'string',
         ]);
         Settings::create([
@@ -80,6 +89,9 @@ class baseConfig extends Seeder
             'set_value'   => 'gallery/mobile',
             'set_desc'    => 'Директория галереи для мобильных устройств',
             'set_group'   => $upload,
+            'set_tooltip' => 'Директория, в которую будут создаваться уменьшенные'
+                . ' копии фотографий, отображаемые для мобильных устройств.  '
+                . 'Web-сервер должен иметь возможность производить в неё запись.',
             'set_type'    => 'string',
         ]);
         Settings::create([
@@ -87,6 +99,7 @@ class baseConfig extends Seeder
             'set_value'   => '180',
             'set_desc'    => 'Ширина изображений миниатюр',
             'set_group'   => $view,
+            'set_tooltip' => 'Ширина изображений миниатюр',
             'set_type'    => 'numeric',
         ]);
         Settings::create([
@@ -94,6 +107,7 @@ class baseConfig extends Seeder
             'set_value'   => '180',
             'set_desc'    => 'Высота изображений миниатюр',
             'set_group'   => $view,
+            'set_tooltip' => 'Высота изображений миниатюр',
             'set_type'    => 'numeric',
         ]);
         Settings::create([
@@ -101,20 +115,26 @@ class baseConfig extends Seeder
             'set_value'   => '1024',
             'set_desc'    => 'Ширина изображений мобильной версии',
             'set_group'   => $view,
+            'set_tooltip' => 'Ширина изображений мобильной версии',
             'set_type'    => 'numeric',
         ]);        
         Settings::create([
             'set_name'    => 'use_ulogin', 
             'set_value'   => 'no',
-            'set_desc'    => 'Использовать авторизацию через социальные сети (uLogin.ru)',
+            'set_desc'    => 'Авторизация через социальные сети',
             'set_group'   => $auth,
+            'set_tooltip' => 'При включении данной опции на Вашем сайте появится '
+                . 'возможность проходить авторизацию через социальные сети. '
+                . 'Используется сервис uLogin.ru. Требуется указать "ID сайта на uLogin.ru"',
             'set_type'    => 'yesno',
         ]);
         Settings::create([
             'set_name'    => 'ulogin_id', 
             'set_value'   => '0000',
-            'set_desc'    => 'ID Вашего сайта в системе uLogin.ru (требуется только при use_ulogin == yes)',
+            'set_desc'    => 'ID сайта на uLogin.ru',
             'set_group'   => $auth,
+            'set_tooltip' => 'ID Вашегой сайта в системе uLogin.ru. Для работы '
+                . 'авторизации через uLogin.ru требуется включить опцию "Авторизация через социальные сети"',
             'set_type'    => 'string',
         ]);        
 //        Settings::create([
