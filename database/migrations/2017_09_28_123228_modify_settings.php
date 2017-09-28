@@ -70,46 +70,67 @@ class ModifySettings extends Migration
         
         $setting = App\Models\Settings::where('set_name', 'start_year')->update([
             'set_group'   => $view,
+            'set_tooltip' => 'Год, с которого начинаются Ваши фотоальбомы в галереи. '
+                . 'Используется для автоматического построения выбора года при '
+                . 'создании альбома.',
             'set_type'    => 'numeric',
         ]);
         
         $setting = App\Models\Settings::where('set_name', 'upload_dir')->update([
             'set_group'   => $upload,
+            'set_tooltip' => 'Директория, относительно public, в которую будут '
+                . 'загружаться Ваши фотографии. Web-сервер должен иметь возможность'
+                . 'производить в неё запись.',
             'set_type'    => 'string',
         ]);
 
         $setting = App\Models\Settings::where('set_name', 'thumbs_dir')->update([
             'set_group'   => $upload,
+            'set_tooltip' => 'Директория, в которую будут создаваться миниатюры '
+                . 'фотографий.  Web-сервер должен иметь возможность производить '
+                . 'в неё запись.',
             'set_type'    => 'string',
         ]);
         
         $setting = App\Models\Settings::where('set_name', 'mobile_upload_dir')->update([
             'set_group'   => $upload,
+            'set_tooltip' => 'Директория, в которую будут создаваться уменьшенные'
+                . ' копии фотографий, отображаемые для мобильных устройств.  '
+                . 'Web-сервер должен иметь возможность производить в неё запись.',
             'set_type'    => 'string',
         ]);
         
         $setting = App\Models\Settings::where('set_name', 'thumbs_width')->update([
             'set_group'   => $view,
+            'set_tooltip' => 'Ширина изображений миниатюр',
             'set_type'    => 'numeric',
         ]);
         
         $setting = App\Models\Settings::where('set_name', 'thumbs_height')->update([
             'set_group'   => $view,
+            'set_tooltip' => 'Высота изображений миниатюр',
             'set_type'    => 'numeric',
         ]);
         
         $setting = App\Models\Settings::where('set_name', 'mobile_width')->update([
             'set_group'   => $view,
+            'set_tooltip' => 'Ширина изображений мобильной версии',
             'set_type'    => 'numeric',
         ]);
         
         $setting = App\Models\Settings::where('set_name', 'use_ulogin')->update([
             'set_group'   => $auth,
+            'set_tooltip' => 'При включении данной опции на Вашем сайте появится '
+                . 'возможность проходить авторизацию через социальные сети. '
+                . 'Используется сервис uLogin.ru. Требуется указать "ID сайта на uLogin.ru"',
             'set_type'    => 'yesno',
         ]); 
         
         $setting = App\Models\Settings::where('set_name', 'ulogin_id')->update([
             'set_group'   => $auth,
+            'set_tooltip' => 'ID Вашегой сайта в системе uLogin.ru. Для работы '
+                . 'авторизации через uLogin.ru требуется включить опцию '
+                . '"Авторизация через социальные сети"',
             'set_type'    => 'string',
         ]);        
     }
