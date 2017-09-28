@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\SettingsRequest;
+//use App\Http\Requests\SettingsRequest;
 use App\Http\Controllers\Controller;
 
+use App\Models\SettingsGroups;
 use App\Models\Settings;
 
 use Viewer;
@@ -14,12 +15,14 @@ use Cache;
 class SettingsController extends Controller
 {
     protected $settings;
+    protected $settings_groups;
 
-    public function __construct(Settings $settings) {
+    public function __construct(SettingsGroups $settings_groups, Settings $settings) {
         
         $this->middleware('g2fa');
         
-        $this->settings  = $settings;
+        $this->settings         = $settings;
+        $this->settings_groups  = $settings_groups;
     }
     
     /*
@@ -27,10 +30,13 @@ class SettingsController extends Controller
      */
     public function getSettings() {
         
-        $settings = $this->settings->orderBy('set_sort')->get();
+//        $settings = $this->settings->orderBy('set_sort')->get();
         
+//        print_r($this->settings_groups->find(2)->settings());
+//        exit;
         return Viewer::get('admin.settings', [
-            'settings' => $settings,
+            'settings_groups'   => $this->settings_groups->all(),
+            'settings'          => $this->settings->all(),
         ]);
     }
     
@@ -48,15 +54,4 @@ class SettingsController extends Controller
         return redirect()->route('settings');
     }
     
-    /*
-     * Добавление новых настроек
-     */
-    public function postSettings(SettingsRequest $request) {
-        
-        $this->settings->create($request->all());
-        
-        Cache::flush();
-        
-        return redirect()->route('settings');
-    }
 }

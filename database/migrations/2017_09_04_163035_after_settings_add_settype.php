@@ -59,6 +59,9 @@ class AfterSettingsAddSettype extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('settings', function($table) {
+            $table->dropColumn('set_type');
+            $table->dropColumn('set_sort');
+        });
     }
 }

@@ -25,6 +25,8 @@ class AfterImagesAddHeight extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('images', function($table) {
+            $table->dropColumn('width');
+        });
     }
 }

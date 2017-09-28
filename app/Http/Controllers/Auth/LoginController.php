@@ -41,11 +41,29 @@ class LoginController extends Controller
     }
     
     protected function authenticated(Request $request, $user) {
+        
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Authentication passed...
+
+            if ($user->google2fa_enabled) {
             
-        if ($user->google2fa_enabled)
-            return redirect(route('google2fa.auth'));
+                $user->google2fa_ts = null;
+                $user->save();
+                
+                return redirect(route('google2fa.auth'));
             
+            }
+            
+            return redirect()->route('home');
+        }
+        
+        return redirect()->route('login');
+        
     }
+    
+//    public function login(Request $request) {
+//        
+//    }
     
     public function logout(Request $request) {
         

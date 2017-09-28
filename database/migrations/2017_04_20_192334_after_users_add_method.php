@@ -27,6 +27,8 @@ class AfterUsersAddMethod extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function($table) {
+            $table->dropColumn('method');
+        });
     }
 }

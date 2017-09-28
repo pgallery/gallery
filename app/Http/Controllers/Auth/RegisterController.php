@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+use App\Models\Roles;
+
 use Viewer;
 
 class RegisterController extends Controller
@@ -30,7 +32,7 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/profile';
-
+    
     /**
      * Create a new controller instance.
      *
@@ -50,9 +52,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|string|email|max:255|unique:users',
+            'password'  => 'required|string|min:6|confirmed',
         ]);
     }
 
@@ -64,12 +66,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name'      => $data['name'],
-            'email'     => $data['email'],
-            'password'  => bcrypt($data['password']),
-            'method'    => 'thisSite',
-        ]);
+        $user           = new User();
+        $user->name     = $data['name'];
+        $user->email    = $data['email'];
+        $user->password = \Hash::make($data['password']);
+        $user->method   = 'thisSite'; 
+        $user->save();
+        
+        $user->roles()->attach(Roles::select('id')->where('name', 'guest')->first());
+        
+        return $user;
     }
     
     public function showRegistrationForm() {

@@ -18,7 +18,7 @@ class baseConfig extends Seeder
             'set_value' => 'My Gallery',
             'set_desc'  => 'Название галереи',
             'set_sort'  => 1,
-        ]);        
+        ]);
         Settings::create([
             'set_name'  => 'use_ssl', 
             'set_value' => 'no',
@@ -31,7 +31,7 @@ class baseConfig extends Seeder
             'set_value' => '3600',
             'set_desc'  => 'Время жизни (TTL) кэша страниц',
             'set_sort'  => 3,
-        ]);        
+        ]);
         Settings::create([
             'set_name'  => 'count_images', 
             'set_value' => '24',

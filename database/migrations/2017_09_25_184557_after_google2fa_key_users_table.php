@@ -16,11 +16,11 @@ class AfterGoogle2faKeyUsersTable extends Migration
      */
     public function up()
     {
-	    Schema::table('users', function (Blueprint $table) {
-	    	$table->boolean('google2fa_enabled')->default(false)->after('method');
-	    	$table->timestamp('google2fa_ts')->nullable()->after('google2fa_enabled');
-		$table->string('google2fa_secret')->nullable()->after('google2fa_ts');
-	    });
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('google2fa_enabled')->default(false)->after('method');
+            $table->timestamp('google2fa_ts')->nullable()->after('google2fa_enabled');
+            $table->string('google2fa_secret')->nullable()->after('google2fa_ts');
+        });
 
     }
 
@@ -31,6 +31,10 @@ class AfterGoogle2faKeyUsersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('google2fa_enabled');
+            $table->dropColumn('google2fa_ts');
+            $table->dropColumn('google2fa_secret');
+        });
     }
 }

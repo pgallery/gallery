@@ -25,6 +25,8 @@ class AfterRolesAddTopanel extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('roles', function($table) {
+            $table->dropColumn('topanel', array('Y', 'N'));
+        });
     }
 }

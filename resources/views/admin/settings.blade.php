@@ -1,7 +1,7 @@
 @extends('template.header')
 
 @section('content')
-      
+
 <div class="page-header">
   <h2>Изменение настроек</h2>
 </div>
@@ -10,72 +10,87 @@
         'route'     => 'save-settings',
         'class'     => 'form-horizontal',
         'method'    => 'POST'
-    ]) !!}     
-    
-    @foreach($settings as $setting)
-        
-        <div class="form-group">
-            <label class="col-sm-6 control-label">{{ $setting['set_desc'] }}:</label>
-            <div class="col-sm-4"> 
-                @if( $setting['set_type'] == '1')
-                    {!! Form::select("newSetting[$setting[set_name]]", [
-                        'yes'   => 'Включено',
-                        'no'    => 'Отключено'
-                    ], $setting['set_value'], array('class' => 'form-control')) !!}   
-                @else
-                    {!! Form::text("newSetting[$setting[set_name]]", $setting['set_value'], array('class' => 'form-control', 'required')) !!}
-                @endif
-                
-            </div>
-            <p class="help-block">{{ $setting['set_name'] }}</p>
-        </div>    
+    ]) !!}  
 
-    @endforeach
+<ul class="nav nav-tabs">
+  @foreach($settings_groups as $setting_group)
+  <li
+  @if($setting_group->setgroup_key == 'base')
+    class="active"
+  @endif
+  >
+      <a
+      @if($setting_group->setgroup_key == 'base')
+         data-toggle="tab"
+      @endif      
+      data-toggle="tab" href="#{{ $setting_group->setgroup_key }}">
+          {{ $setting_group->setgroup_name }} ({{ $setting_group->settingsCount() }})
+      </a>
+  </li>
+  
+  @endforeach
+
+  
+</ul>
+
+<div class="tab-content">
+    
+  @foreach($settings_groups as $setting_group)
+
+    <div id="{{ $setting_group->setgroup_key }}"
+      @if($setting_group->setgroup_key == 'base')
+            class="tab-pane fade in active"
+      @else
+            class="tab-pane fade"
+      @endif         
+    >
+      
+        <div class="page-header">
+            <h6>{{ $setting_group->setgroup_desc }}</h6>
+        </div>
+
+
+        @foreach($setting_group->settings() as $setting)
+
+            <div class="form-group">
+                <label class="col-sm-6 control-label">{{ $setting->set_desc }}:</label>
+                <div class="col-sm-4"> 
+                    @if($setting->set_type == 'yesno')
+                        {!! Form::select("newSetting[$setting->set_name]", [
+                            'yes'   => 'Включено',
+                            'no'    => 'Отключено'
+                        ], $setting['set_value'], array('class' => 'form-control')) !!}   
+                    @else
+                        {!! Form::text("newSetting[$setting->set_name]", $setting->set_value, array('class' => 'form-control', 'required')) !!}
+                    @endif
+
+                </div>
+                @if($setting->set_tooltip)
+                <!--<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="{{ $setting->set_tooltip }}">-->
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="{{ $setting->set_tooltip }}"></span>
+                <!--</button>-->
+                @endif
+            </div>    
+
+        @endforeach
+        
+    </div>  
+  
+  @endforeach    
+  
+</div>
+
     <hr>
     <center>
         {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
     </center>
     
     {!! Form::close() !!}   
-
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
-<div class="page-header">
-  <h2>Добавление параметра</h2>
-</div>
-
-    {!! Form::open([
-        'route'     => 'create-settings',
-        'class'     => 'form-horizontal',
-        'method'    => 'POST'
-    ]) !!}  
-        <div class="form-group">
-            <div class="col-xs-6">
-                Наименование ключа:
-                {!! Form::text('set_name', null, array('class' => 'form-control', 'required')) !!}
-            </div>
-            <div class="col-xs-6">
-                Значение:
-                {!! Form::text('set_value', null, array('class' => 'form-control', 'required')) !!}
-            </div>
-            <div class="col-xs-12">
-                Описание:
-                {!! Form::text('set_desc', null, array('class' => 'form-control', 'required')) !!}
-            </div>
-        </div>
-        <center>
-            {!! Form::submit('Добавить', array('class' => 'btn btn-primary')) !!}
-        </center>
-    
-    {!! Form::close() !!}
     
 @endsection
-    
+
+@section('js-top')
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+@endsection

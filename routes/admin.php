@@ -70,11 +70,6 @@ Route::post('/settings/save/', [
     'uses'          => 'SettingsController@putSettings',
     'middleware'    => 'role:admin'
 ]);
-Route::post('/settings/create/', [
-    'as'            => 'create-settings', 
-    'uses'          => 'SettingsController@postSettings',
-    'middleware'    => 'role:admin'
-]);
 
 // Управление пользователями
 Route::get('/users/', [
