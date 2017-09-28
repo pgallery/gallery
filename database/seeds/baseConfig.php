@@ -14,37 +14,11 @@ class baseConfig extends Seeder
      */
     public function run()
     {
-        $setting_group = new SettingsGroups();
-        $setting_group->setgroup_key = 'base';
-        $setting_group->setgroup_name = 'Общие';
-        $setting_group->setgroup_desc = 'Общие настройки галереи';
-        $setting_group->save();
-
-        $base   = $setting_group->id;
-
-        $setting_group = new SettingsGroups();
-        $setting_group->setgroup_key  = 'auth';
-        $setting_group->setgroup_name = 'Авторизация';
-        $setting_group->setgroup_desc = 'Настройки авторизации и регистрации пользователей';
-        $setting_group->save();
+        $base   = SettingsGroups::where('setgroup_key', 'base')->first()->id;
+        $auth   = SettingsGroups::where('setgroup_key', 'auth')->first()->id;
+        $view   = SettingsGroups::where('setgroup_key', 'view')->first()->id;
+        $upload = SettingsGroups::where('setgroup_key', 'upload')->first()->id;
         
-        $auth   = $setting_group->id;
-        
-        $setting_group = new SettingsGroups();
-        $setting_group->setgroup_key  = 'upload';
-        $setting_group->setgroup_name = 'Загрузка';
-        $setting_group->setgroup_desc = 'Настройки загрузки изображений';
-        $setting_group->save();
-
-        $upload = $setting_group->id;   
-        
-        $setting_group = new SettingsGroups();
-        $setting_group->setgroup_key  = 'view';
-        $setting_group->setgroup_name = 'Отображение';
-        $setting_group->setgroup_desc = 'Настройки отображения страниц и фотографий';
-        $setting_group->save();        
-        
-        $view   = $setting_group->id;
         
         Settings::create([
             'set_name'    => 'gallery_name', 
@@ -143,28 +117,28 @@ class baseConfig extends Seeder
             'set_group'   => $auth,
             'set_type'    => 'string',
         ]);        
-        Settings::create([
-            'set_name'    => 'use_queue', 
-            'set_value'   => 'no',
-            'set_desc'    => 'Использовать обработчик очередей',
-            'set_group'   => $base,
-            'set_tooltip' => 'При включении данной опции все задачи по '
-                . 'обработке изображений, такие как создание миниатюр и прочие, '
-                . 'будут отправляться в менеджер очередей. Для обработки подобных '
-                . 'очередей необходимо произвести дополнительную настройку галереи '
-                . 'и запустить воркер (см. Документацию)',
-            'set_type'    => 'yesno',
-        ]);                
-        Settings::create([
-            'set_name'    => 'registration', 
-            'set_value'   => 'no',
-            'set_desc'    => 'Разрешить регистрацию на сайте',
-            'set_group'   => $auth,
-            'set_tooltip' => 'Включение данной опции позволит Вашим посетителям '
-                . 'регистрироваться на сайте. При регистрации пользователь получает'
-                . 'права "Гость"',
-            'set_type'    => 'yesno',
-        ]);
+//        Settings::create([
+//            'set_name'    => 'use_queue', 
+//            'set_value'   => 'no',
+//            'set_desc'    => 'Использовать обработчик очередей',
+//            'set_group'   => $base,
+//            'set_tooltip' => 'При включении данной опции все задачи по '
+//                . 'обработке изображений, такие как создание миниатюр и прочие, '
+//                . 'будут отправляться в менеджер очередей. Для обработки подобных '
+//                . 'очередей необходимо произвести дополнительную настройку галереи '
+//                . 'и запустить воркер (см. Документацию)',
+//            'set_type'    => 'yesno',
+//        ]);                
+//        Settings::create([
+//            'set_name'    => 'registration', 
+//            'set_value'   => 'no',
+//            'set_desc'    => 'Разрешить регистрацию на сайте',
+//            'set_group'   => $auth,
+//            'set_tooltip' => 'Включение данной опции позволит Вашим посетителям '
+//                . 'регистрироваться на сайте. При регистрации пользователь получает'
+//                . 'права "Гость"',
+//            'set_type'    => 'yesno',
+//        ]);
 
     }
 }
