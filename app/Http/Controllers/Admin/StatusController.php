@@ -23,11 +23,14 @@ class StatusController extends Controller
         $result = '';
         
         if($rebuild > 0){
-            $run = exec("ps ax|grep -v grep|grep -v '/bin/sh'|grep -c 'artisan schedule:run'");
-        
-            if($run > 0)
-                $result .= 'Фоновых процессов: ' . $run . '. ';
-        
+            
+            if(Setting::get('use_queue')) {
+                $run = exec("ps ax|grep -v grep|grep -v '/bin/sh'|grep -c 'artisan schedule:run'");
+
+                if($run > 0)
+                    $result .= 'Фоновых процессов: ' . $run . '. ';
+            }
+            
             $result .= 'Изображений в очереди: ' . $rebuild . '. ';
         }
         
