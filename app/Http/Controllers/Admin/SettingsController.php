@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-//use App\Http\Requests\SettingsRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\SettingsGroups;
@@ -30,10 +29,6 @@ class SettingsController extends Controller
      */
     public function getSettings() {
         
-//        $settings = $this->settings->orderBy('set_sort')->get();
-        
-//        print_r($this->settings_groups->find(2)->settings());
-//        exit;
         return Viewer::get('admin.settings', [
             'settings_groups'   => $this->settings_groups->all(),
             'settings'          => $this->settings->all(),
