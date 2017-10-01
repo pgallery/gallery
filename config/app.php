@@ -192,7 +192,8 @@ return [
         // Google 2FA
         PragmaRX\Google2FALaravel\ServiceProvider::class,
 
-        
+        // Zipper
+        Chumper\Zipper\ZipperServiceProvider::class,
     ],
 
     /*
@@ -262,6 +263,9 @@ return [
         
         // Google 2FA
         'Google2FA' => PragmaRX\Google2FALaravel\Facade::class,
+        
+        // Zipper
+        'Zipper' => Chumper\Zipper\Zipper::class,
     ],
 
 ];

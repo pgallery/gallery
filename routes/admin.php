@@ -175,7 +175,12 @@ Route::get('/album/uploads/{id}', [
     'as'            => 'uploads-album',
     'uses'          => 'AlbumsController@getUploads',
     'middleware'    => 'role:admin|moderator'
-])->where(['id' => '[0-9]+']);        
+])->where(['id' => '[0-9]+']);
+Route::get('/album/zip/{id}', [
+    'as'            => 'zip-album',
+    'uses'          => 'AlbumsController@getZip',
+    'middleware'    => 'role:admin|moderator'
+])->where(['id' => '[0-9]+']);
 Route::post('/album/create/', [
     'as'            => 'create-album', 
     'uses'          => 'AlbumsController@postCreateAlbum',

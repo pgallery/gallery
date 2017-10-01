@@ -16,7 +16,8 @@
         "pragmarx/google2fa-laravel": "^0.1.2",
         "pragmarx/recovery": "^0.1.0",
         "bacon/bacon-qr-code":"~1.0",
-        "predis/predis":"~1.0"
+        "predis/predis":"~1.0",
+        "chumper/zipper": "1.0.x"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

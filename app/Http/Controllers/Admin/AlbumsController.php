@@ -8,16 +8,19 @@ use App\Http\Requests\AlbumsRequest;
 use App\Http\Requests\AlbumsDirectoryRequest;
 use App\Http\Requests\AlbumsEditRequest;
 use App\Http\Controllers\Controller;
+
 use App\Models\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
+
 use Auth;
 use Helper;
 use Setting;
 use Viewer;
 use File;
 use Cache;
+use Zipper;
 
 use App\Jobs\BuildImagesJob;
 
@@ -287,4 +290,15 @@ class AlbumsController extends Controller {
         return redirect()->route('admin');
     }
 
+    /*
+     * Архивация альбома
+     */
+    public function getZip(Router $router) {
+//        echo $router->input('id');
+//        $album = $this->albums->find($router->input('id'));
+        $files = glob(Helper::getUploadPath($router->input('id')) . '/*');
+//        print_r($files);
+        Zipper::make('archives/album_' . $router->input('id') . '.zip')->add($files)->close();
+        return response()->download('archives/album_' . $router->input('id') . '.zip');
+    }
 }
