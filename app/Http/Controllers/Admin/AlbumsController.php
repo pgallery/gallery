@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
+use App\Models\Archives;
 
 use Auth;
 use Helper;
@@ -20,7 +21,6 @@ use Setting;
 use Viewer;
 use File;
 use Cache;
-use Zipper;
 
 use App\Jobs\BuildImagesJob;
 
@@ -33,14 +33,16 @@ class AlbumsController extends Controller {
     protected $groups;
     protected $albums;
     protected $images;
+    protected $archives;
 
-    public function __construct(User $users, Groups $groups, Albums $albums, Images $images) {
+    public function __construct(User $users, Groups $groups, Albums $albums, Images $images, Archives $archives) {
         $this->middleware('g2fa');
 
-        $this->users = $users;
-        $this->groups = $groups;
-        $this->albums = $albums;
-        $this->images = $images;
+        $this->users    = $users;
+        $this->groups   = $groups;
+        $this->albums   = $albums;
+        $this->images   = $images;
+        $this->archives = $archives;
     }
 
     /*
@@ -294,11 +296,9 @@ class AlbumsController extends Controller {
      * Архивация альбома
      */
     public function getZip(Router $router) {
-//        echo $router->input('id');
-//        $album = $this->albums->find($router->input('id'));
-        $files = glob(Helper::getUploadPath($router->input('id')) . '/*');
-//        print_r($files);
-        Zipper::make('archives/album_' . $router->input('id') . '.zip')->add($files)->close();
-        return response()->download('archives/album_' . $router->input('id') . '.zip');
+
+        $archive = $this->archives->createWithZipper($router->input('id'));
+        
+        return response()->download($archive);
     }
 }
