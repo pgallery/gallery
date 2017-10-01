@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\Images;
-
 class Albums extends Model
 {
     
@@ -87,5 +85,4 @@ class Albums extends Model
         $album->forceDelete();
         
     }
-    
 }

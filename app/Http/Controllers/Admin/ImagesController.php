@@ -31,7 +31,7 @@ class ImagesController extends Controller
         
         $this->albums  = $albums;
         $this->images  = $images;
-    }    
+    }
     
     /*
      * Загрузка (создание) изображений
@@ -63,17 +63,34 @@ class ImagesController extends Controller
                 if(!$validator->fails()) {
 
                     $upload_file_name = $f->getClientOriginalName();
-
+                    
+                    if($request->input('replace') and File::exists($upload_path . "/" . $upload_file_name))
+                        File::delete($upload_path . "/" . $upload_file_name);
+                    
                     if (!File::exists($upload_path . "/" . $upload_file_name)) {
                         // Загружаем оригинал
                         Image::make($f)->save($upload_path . "/" . $upload_file_name);
                         
-                        $image = new Images();
-                        $image->name = $f->getClientOriginalName();
-                        $image->albums_id = $request->album_id;
-                        $image->users_id = Auth::user()->id;
-                        $image->is_rebuild = 1;
-                        $image->save();
+                        if($request->input('replace') 
+                            and 
+                            $this->images
+                                ->where('albums_id', $request->album_id)
+                                ->where('name', $f->getClientOriginalName())
+                                ->first()
+                        )
+                            $image = $this->images
+                                ->where('albums_id', $request->album_id)
+                                ->where('name', $f->getClientOriginalName())
+                                ->first();
+                            
+                        else
+                        
+                            $image             = new Images();
+                            $image->name       = $f->getClientOriginalName();
+                            $image->albums_id  = $request->album_id;
+                            $image->users_id   = Auth::user()->id;
+                            $image->is_rebuild = 1;
+                            $image->save();
                         
                         if(Setting::get('use_queue'))
                             BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
@@ -86,8 +103,12 @@ class ImagesController extends Controller
         // Проверяем альбом на наличие миниатюры
         if($album->images_id == 0) {
             
-            $Images = $this->images->where('albums_id', $album->id)->first();
-            $this->albums->find($album->id)->update(['images_id' => $Images->id]);
+//            $Images = $this->images->where('albums_id', $album->id)->first();
+            $this->albums
+                ->find($album->id)
+                ->update([
+                    'images_id' => $this->images->where('albums_id', $album->id)->first()->id
+                ]);
             
         }
         
