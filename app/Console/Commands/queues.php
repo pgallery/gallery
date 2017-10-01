@@ -7,21 +7,21 @@ use Illuminate\Console\Command;
 use App\Models\Settings;
 use Setting;
 
-class EnableQueues extends Command
+class queues extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'Queues:Enable';
+    protected $signature = 'queues {status}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Включает использование обработчика очередей';
+    protected $description = 'Включение и отключение двухфакторной авторизации';
 
     /**
      * Create a new command instance.

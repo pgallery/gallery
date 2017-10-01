@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\EnableQueues::class,
+        Commands\queues::class,
+        Commands\go2fa::class,
     ];
 
     /**
@@ -28,7 +29,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
         
         $schedule->call(function () {
            
@@ -43,8 +43,7 @@ class Kernel extends ConsoleKernel
                 });
            
         })->everyMinute();        
-        
-        
+           
     }
 
     /**

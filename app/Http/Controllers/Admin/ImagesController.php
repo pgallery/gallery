@@ -101,16 +101,12 @@ class ImagesController extends Controller
         }
         
         // Проверяем альбом на наличие миниатюры
-        if($album->images_id == 0) {
-            
-//            $Images = $this->images->where('albums_id', $album->id)->first();
+        if($album->images_id == 0)
             $this->albums
                 ->find($album->id)
                 ->update([
                     'images_id' => $this->images->where('albums_id', $album->id)->first()->id
                 ]);
-            
-        }
         
         Cache::flush();
         
