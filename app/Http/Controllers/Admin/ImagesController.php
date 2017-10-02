@@ -137,7 +137,10 @@ class ImagesController extends Controller
                 'name'          => $request->input('newName'),
                 'is_rebuild'    => 1,
             ]);
-
+            
+            if(Setting::get('use_queue'))
+                BuildImagesJob::dispatch($request->input('id'))->onQueue('BuildImage');
+            
             Cache::flush();
         }
         
@@ -184,7 +187,7 @@ class ImagesController extends Controller
         $image->save();
 
         if(Setting::get('use_queue'))
-            BuildImagesJob::dispatch($router->input('id'))->onQueue('BuildImage');        
+            BuildImagesJob::dispatch($router->input('id'))->onQueue('BuildImage');
         
         return back();
         
