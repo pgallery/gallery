@@ -26,14 +26,19 @@ class Archives extends Model
             $files = glob(\Helper::getUploadPath($album->id) . '/*');
             Zipper::make($archive_name)->add($files)->close();
 
-            self::create([
+            $archive = self::create([
                 'name'      => $archive_name,
                 'size'      => \File::size($archive_name),
                 'users_id'  => \Illuminate\Support\Facades\Auth::user()->id,
                 'albums_id' => $album_id,
             ]);
+        } else {
+            
+            $archive = self::where('name', $archive_name)->first();
+            
         }
-        return $archive_name;
+        
+        return $archive;
     }
     
     public static function destroyWithZipper($id) {

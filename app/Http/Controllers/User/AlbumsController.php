@@ -15,6 +15,9 @@ use Helper;
 use Setting;
 use Viewer;
 use Cache;
+use Carbon\Carbon;
+
+use App\Jobs\ArchivesCleanJob;
 
 class AlbumsController extends Controller
 {
@@ -97,7 +100,12 @@ class AlbumsController extends Controller
         
         $archive = $this->archives->createWithZipper($router->input('id'));
         
-        return response()->download($archive);
+        if(Setting::get('use_queue'))
+            ArchivesCleanJob::dispatch($archive->id)
+                ->onQueue('ArchivesClean')
+                ->delay(Carbon::now()->addHours(Setting::get('archive_save')));
+        
+        return response()->download($archive->name);
 
     }    
     
