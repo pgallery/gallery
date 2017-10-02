@@ -296,7 +296,7 @@ class AlbumsController extends Controller {
      * Архивация альбома
      */
     public function getZip(Router $router) {
-
+        
         $archive = $this->archives->createWithZipper($router->input('id'));
         
         return response()->download($archive);

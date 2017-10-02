@@ -34,4 +34,8 @@ class Archives extends Model
         
         return $archive_name;
     }
+    
+    public function destroyWithZipper($id) {
+        self::destroy($id);
+    }
 }
