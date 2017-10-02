@@ -25,7 +25,7 @@ class ArchivesCleanJob implements ShouldQueue
      */
     public function __construct($archive)
     {
-        $this->$archive = $archive;
+        $this->archive = $archive;
     }
 
     /**
