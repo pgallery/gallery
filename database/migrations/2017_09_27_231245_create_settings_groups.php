@@ -24,7 +24,7 @@ class CreateSettingsGroups extends Migration
         Schema::table('settings', function($table) {
             $table->dropColumn('set_sort');
             $table->integer('set_group')->default('1')->after('set_value');
-            $table->mediumText('set_tooltip')->after('set_desc');
+            $table->mediumText('set_tooltip')->nullable()->after('set_desc');
         });        
         
         DB::statement("ALTER TABLE `settings` MODIFY COLUMN `set_type` enum('string', 'numeric', 'yesno') NOT NULL DEFAULT 'string';");
