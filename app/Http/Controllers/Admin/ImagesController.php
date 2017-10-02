@@ -119,13 +119,13 @@ class ImagesController extends Controller
      */
     public function putRename(Request $request) {
         
-        $oldName = $this->images->find($request->input('id'));
+        $image = $this->images->find($request->input('id'));
         
-        $mobile_image = Helper::getFullPathMobileImage($request->input('id'));
-        $thumb_image  = Helper::getFullPathThumbImage($request->input('id'));
-        $upload_dir   = Helper::getUploadPath($oldName->albums_id);
+        $mobile_image = Helper::getFullPathMobileImage($image->id);
+        $thumb_image  = Helper::getFullPathThumbImage($image->id);
+        $upload_dir   = Helper::getUploadPath($image->albums_id);
         
-        if(File::move($upload_dir . "/" . $oldName->name, $upload_dir . "/" . $request->input('newName'))) {
+        if(File::move($upload_dir . "/" . $image->name, $upload_dir . "/" . $request->input('newName'))) {
             
             if (File::exists($mobile_image))
                 File::delete($mobile_image);
@@ -133,14 +133,14 @@ class ImagesController extends Controller
             if (File::exists($thumb_image))
                 File::delete($thumb_image);            
             
-            $this->images->where('id', $request->input('id'))->update([
+            $image->update([
                 'name'          => $request->input('newName'),
                 'is_rebuild'    => 1,
             ]);
             
-            if(Setting::get('use_queue') == 'yes')
-                BuildImagesJob::dispatch($request->input('id'))->onQueue('BuildImage');
-            
+            if(Setting::get('use_queue') == 'yes') {
+                BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
+            }
             
             Cache::flush();
         }
