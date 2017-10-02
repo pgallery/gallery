@@ -27,7 +27,11 @@ class CreateSettingsGroups extends Migration
             $table->mediumText('set_tooltip')->nullable()->after('set_desc');
         });        
         
-        DB::statement("ALTER TABLE `settings` MODIFY COLUMN `set_type` enum('string', 'numeric', 'yesno') NOT NULL DEFAULT 'string';");
+//        DB::statement("ALTER TABLE `settings` MODIFY COLUMN `set_type` enum('string', 'numeric', 'yesno') NOT NULL DEFAULT 'string';");
+        
+        Schema::table('settings', function (Blueprint $table) {
+            $table->enum('set_type', array('string', 'numeric', 'yesno'))->default('string')->change();
+        });
         
         $setting_group = new App\Models\SettingsGroups();
         $setting_group->setgroup_key = 'base';
