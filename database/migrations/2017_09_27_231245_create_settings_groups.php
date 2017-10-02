@@ -27,10 +27,12 @@ class CreateSettingsGroups extends Migration
             $table->mediumText('set_tooltip')->nullable()->after('set_desc');
         });        
         
-//        DB::statement("ALTER TABLE `settings` MODIFY COLUMN `set_type` enum('string', 'numeric', 'yesno') NOT NULL DEFAULT 'string';");
+        Schema::table('settings', function($table) {
+            $table->dropColumn('set_type');
+        });
         
         Schema::table('settings', function (Blueprint $table) {
-            $table->enum('set_type', array('string', 'numeric', 'yesno'))->default('string')->change();
+            $table->enum('set_type', array('string', 'numeric', 'yesno'))->default('string');
         });
         
         $setting_group = new App\Models\SettingsGroups();
@@ -72,9 +74,12 @@ class CreateSettingsGroups extends Migration
             $table->integer('set_sort')->default('0')->after('set_type');
             $table->dropColumn('set_group');
             $table->dropColumn('set_tooltip');
+            $table->dropColumn('set_type');
         });
         
-        DB::statement("ALTER TABLE `settings` CHANGE `set_type` `set_type` INT(10) NULL DEFAULT NULL;");
+        Schema::table('settings', function($table) {
+            $table->integer('set_type')->default('0')->after('set_desc');
+        });        
         
     }
 }
