@@ -7,6 +7,6 @@
 
 Полно багов, многое не работает, находится в разработке.
 
+[Сайт](https://pgallery.ru/)
 [Документация](https://pgallery.ru/docs/)
-
 [Скриншоты](https://pgallery.ru/screenshot/)

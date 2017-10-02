@@ -35,6 +35,6 @@ class ArchivesCleanJob implements ShouldQueue
      */
     public function handle()
     {
-        Archives::destroyWithZipper($this->$archive);
+        Archives::destroyWithZipper($this->archive);
     }
 }
