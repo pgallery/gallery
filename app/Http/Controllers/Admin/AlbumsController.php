@@ -13,7 +13,6 @@ use App\Models\User;
 use App\Models\Groups;
 use App\Models\Albums;
 use App\Models\Images;
-use App\Models\Archives;
 
 use Auth;
 use Helper;
@@ -33,16 +32,14 @@ class AlbumsController extends Controller {
     protected $groups;
     protected $albums;
     protected $images;
-    protected $archives;
 
-    public function __construct(User $users, Groups $groups, Albums $albums, Images $images, Archives $archives) {
+    public function __construct(User $users, Groups $groups, Albums $albums, Images $images) {
         $this->middleware('g2fa');
 
-        $this->users    = $users;
-        $this->groups   = $groups;
-        $this->albums   = $albums;
-        $this->images   = $images;
-        $this->archives = $archives;
+        $this->users  = $users;
+        $this->groups = $groups;
+        $this->albums = $albums;
+        $this->images = $images;
     }
 
     /*
@@ -290,15 +287,5 @@ class AlbumsController extends Controller {
         }
 
         return redirect()->route('admin');
-    }
-
-    /*
-     * Архивация альбома
-     */
-    public function getZip(Router $router) {
-        
-        $archive = $this->archives->createWithZipper($router->input('id'));
-        
-        return response()->download($archive);
     }
 }

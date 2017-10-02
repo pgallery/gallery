@@ -68,7 +68,6 @@ Route::group(['middleware' => 'auth'], function () {
         'as'            => 'disabled2fa-profile', 
         'uses'          => 'User\ProfileController@getDisable2FA',
     ]);
-    
     Route::get('/google2fa/authenticate', [
         'as'            => 'google2fa.auth', 
         'uses'          => 'User\Google2FAController@g2faAuth'
@@ -78,4 +77,9 @@ Route::group(['middleware' => 'auth'], function () {
         'uses'          => 'User\Google2FAController@g2faAuth'
     ]);    
     
+    // Скачивание архива альбома
+    Route::get('/downloads/{id}', [
+        'as'            => 'zip-album',
+        'uses'          => 'User\AlbumsController@getZip',
+    ])->where(['id' => '[0-9]+']);
 });

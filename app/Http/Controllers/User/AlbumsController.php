@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Albums;
 use App\Models\Images;
+use App\Models\Archives;
 
 use Auth;
 use Helper;
@@ -19,10 +20,12 @@ class AlbumsController extends Controller
 {
     protected $albums;
     protected $images;
-
-    public function __construct(Albums $albums, Images $images) {
-        $this->albums  = $albums;
-        $this->images  = $images;
+    protected $archives;
+    
+    public function __construct(Albums $albums, Images $images, Archives $archives) {
+        $this->albums   = $albums;
+        $this->images   = $images;
+        $this->archives = $archives;        
     }
     
     public function getShow(Router $router) {
@@ -86,6 +89,17 @@ class AlbumsController extends Controller
         return Viewer::get('pages.albums', $resultData);
 
     }
+    
+    /*
+     * Архивация альбома
+     */
+    public function getZip(Router $router) {
+        
+        $archive = $this->archives->createWithZipper($router->input('id'));
+        
+        return response()->download($archive);
+
+    }    
     
     public function getNoAccess() {
         

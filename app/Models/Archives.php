@@ -22,20 +22,27 @@ class Archives extends Model
         
         $archive_name = public_path() . "/" . \Setting::get('archive_dir') . "/" . $album->id . ".zip";
         
-        $files = glob(\Helper::getUploadPath($album->id) . '/*');
-        Zipper::make($archive_name)->add($files)->close();
-        
-        $this->create([
-            'name'      => $archive_name,
-            'size'      => \File::size($archive_name),
-            'users_id'  => \Illuminate\Support\Facades\Auth::user()->id,
-            'albums_id' => $album_id,
-        ]);
-        
+        if (!\File::exists($archive_name)) {
+            $files = glob(\Helper::getUploadPath($album->id) . '/*');
+            Zipper::make($archive_name)->add($files)->close();
+
+            self::create([
+                'name'      => $archive_name,
+                'size'      => \File::size($archive_name),
+                'users_id'  => \Illuminate\Support\Facades\Auth::user()->id,
+                'albums_id' => $album_id,
+            ]);
+        }
         return $archive_name;
     }
     
     public function destroyWithZipper($id) {
+        $archive = self::find($id);
+//        echo $archive->name;
+        
+        if (\File::exists($archive->name))
+            \File::delete($archive->name);
+        
         self::destroy($id);
     }
 }

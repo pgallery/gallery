@@ -12,7 +12,7 @@
 
 @section('content')
 <div class="page-header">
-  <h2>{{ $thisAlbum->name }} </h2>
+  <h2>{{ $thisAlbum->name }}  @if(Auth::check())<a href="{{ route('zip-album', ['id' => $thisAlbum->id]) }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>@endif</h2>
   <small>{{ $thisAlbum->desc }}</small>
 </div>
 
