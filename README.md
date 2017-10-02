@@ -9,3 +9,4 @@
 
 [Документация](https://pgallery.ru/docs/)
 
+[Скриншоты](https://pgallery.ru/screenshot/)
