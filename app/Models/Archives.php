@@ -36,9 +36,8 @@ class Archives extends Model
         return $archive_name;
     }
     
-    public function destroyWithZipper($id) {
+    public static function destroyWithZipper($id) {
         $archive = self::find($id);
-//        echo $archive->name;
         
         if (\File::exists($archive->name))
             \File::delete($archive->name);

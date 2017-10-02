@@ -3,11 +3,14 @@
 namespace App\Console;
 
 use App\Models\Images;
+use App\Models\Archives;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use Setting;
 use BuildImage;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -42,8 +45,21 @@ class Kernel extends ConsoleKernel
                     return false;
                 });
            
-        })->everyMinute();        
-           
+        })->everyMinute();
+        
+        $schedule->call(function () {
+            
+            Archives::select('id')->where('created_at', '<=', Carbon::now()->subHours(Setting::get('archive_save')))->chunk(50, function($archives)
+                {
+                    foreach ($archives as $archive)
+                    {
+                        Archives::destroyWithZipper($archive->id);
+                    }
+                    
+                    return false;
+                });
+            
+        })->hourly();
     }
 
     /**
