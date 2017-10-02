@@ -194,7 +194,7 @@ class AlbumsController extends Controller {
                     $image->is_rebuild = 1;
                     $image->save();
 
-                    if (Setting::get('use_queue'))
+                    if (Setting::get('use_queue') == 'yes')
                         BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
                 }
             }
@@ -220,7 +220,7 @@ class AlbumsController extends Controller {
             'is_rebuild' => 1,
         ]);
 
-        if (Setting::get('use_queue')) {
+        if (Setting::get('use_queue') == 'yes') {
             $album = $this->albums->find($router->input('id'));
             $album_images = $album->images;
 

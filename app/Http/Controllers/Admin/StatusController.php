@@ -24,7 +24,7 @@ class StatusController extends Controller
         
         if($rebuild > 0){
             
-            if(Setting::get('use_queue')) {
+            if(Setting::get('use_queue') != 'yes') {
                 $run = exec("ps ax|grep -v grep|grep -v '/bin/sh'|grep -c 'artisan schedule:run'");
 
                 if($run > 0)

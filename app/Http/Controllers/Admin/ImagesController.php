@@ -92,7 +92,7 @@ class ImagesController extends Controller
                             $image->is_rebuild = 1;
                             $image->save();
                         
-                        if(Setting::get('use_queue'))
+                        if(Setting::get('use_queue') == 'yes')
                             BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
 
                     }
@@ -138,8 +138,9 @@ class ImagesController extends Controller
                 'is_rebuild'    => 1,
             ]);
             
-            if(Setting::get('use_queue'))
+            if(Setting::get('use_queue') == 'yes')
                 BuildImagesJob::dispatch($request->input('id'))->onQueue('BuildImage');
+            
             
             Cache::flush();
         }
@@ -157,7 +158,7 @@ class ImagesController extends Controller
         $image->is_rebuild = 1;
         $image->save();
 
-        if(Setting::get('use_queue'))
+        if(Setting::get('use_queue') == 'yes')
             BuildImagesJob::dispatch($router->input('id'))->onQueue('BuildImage');
         
         return back();
@@ -186,7 +187,7 @@ class ImagesController extends Controller
         $image->is_rebuild = 1;
         $image->save();
 
-        if(Setting::get('use_queue'))
+        if(Setting::get('use_queue') == 'yes')
             BuildImagesJob::dispatch($router->input('id'))->onQueue('BuildImage');
         
         return back();

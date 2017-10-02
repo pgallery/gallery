@@ -100,7 +100,7 @@ class AlbumsController extends Controller
         
         $archive = $this->archives->createWithZipper($router->input('id'));
         
-        if(Setting::get('use_queue'))
+        if(Setting::get('use_queue') == 'yes')
             ArchivesCleanJob::dispatch($archive->id)
                 ->onQueue('ArchivesClean')
                 ->delay(Carbon::now()->addHours(Setting::get('archive_save')));
