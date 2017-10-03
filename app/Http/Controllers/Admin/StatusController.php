@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Images;
 
+use Setting;
+
 class StatusController extends Controller
 {
     
@@ -15,11 +17,7 @@ class StatusController extends Controller
         \Debugbar::disable();
         
         $rebuild =  Images::where('is_rebuild', 1)->count();
-        
-        $output = [
-            'rebuild' => $rebuild,            
-        ];
-        
+                
         $result = '';
         
         if($rebuild > 0){
