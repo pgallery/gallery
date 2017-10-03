@@ -112,7 +112,7 @@
                         @if($album->imagesCount() != 0)
                             <li><a href="{{ route('show-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-open" aria-hidden="true"></span> Просмотреть фотографии</a></li>
                             <li><a href="{{ route('rebuild-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Пересоздать все миниатюры</a></li>
-                            <li><a href="{{ route('zip-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Скачать альбом</a></li>
+                            <li><a href="{{ route('zip-album', ['url' => $album->url]) }}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Скачать альбом</a></li>
                         @endif
                         <li><a href="{{ route('uploads-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-paste" aria-hidden="true"></span> Загрузить фотографии</a></li>
                         @if(Helper::isAdmin(Auth::user()->id))

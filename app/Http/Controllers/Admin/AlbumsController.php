@@ -98,11 +98,10 @@ class AlbumsController extends Controller {
             'users_id' => $request->input('ChangeOwnerAlbumNew'),
         ]);
 
-        if ($request->input('ChangeOwnerAlbumRecursion')) {
+        if ($request->input('ChangeOwnerAlbumRecursion'))
             $this->images->where('albums_id', $request->input('id'))->update([
                 'users_id' => $request->input('ChangeOwnerAlbumNew'),
             ]);
-        }
 
         Cache::flush();
 
@@ -131,8 +130,8 @@ class AlbumsController extends Controller {
             $albumsArray = $this->albums->pluck('name', 'id');
 
             $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {
-                    return $thisAlbum->images()->paginate(Setting::get('count_images'));
-                });
+                return $thisAlbum->images()->paginate(Setting::get('count_images'));
+            });
         }
 
         return Viewer::get('admin.show_album', compact(
@@ -201,10 +200,12 @@ class AlbumsController extends Controller {
         }
 
         // Проверяем альбом на наличие миниатюры
-        if ($album->images_id == 0) {
-            $Images = $this->images->where('albums_id', $album->id)->first();
-            $this->albums->find($album->id)->update(['images_id' => $Images->id]);
-        }
+        if ($album->images_id == 0)
+            $this->albums
+                    ->find($album->id)
+                    ->update([
+                        'images_id' => $this->images->where('albums_id', $album->id)->first()->id
+                    ]);
 
         Cache::flush();
 
@@ -237,12 +238,12 @@ class AlbumsController extends Controller {
      */
     public function getUploads(Router $router) {
 
-        $Album = $this->albums->find($router->input('id'));
+        $album = $this->albums->find($router->input('id'));
 
         return Viewer::get('admin.album_uploads', [
-                    'type' => 'thisAlbum',
-                    'album_id' => $Album->id,
-                    'album_name' => $Album->name,
+            'type'       => 'thisAlbum',
+            'album_id'   => $album->id,
+            'album_name' => $album->name,
         ]);
     }
 
@@ -254,7 +255,7 @@ class AlbumsController extends Controller {
         $thisAlbum = $this->albums->find($router->input('id'));
 
         return Viewer::get('admin.album_renamedir', compact(
-                                'thisAlbum'
+            'thisAlbum'
         ));
     }
 
@@ -262,12 +263,12 @@ class AlbumsController extends Controller {
      * Переименование директории
      */
     public function putRenameDir(Router $router, AlbumsDirectoryRequest $request) {
-
+        
         $album = $this->albums->find($router->input('id'));
 
-        $upload_path = Helper::getUploadPath($router->input('id'));
-        $mobile_path = Helper::getFullPathMobile($router->input('id'));
-        $thumb_path = Helper::getFullPathThumb($router->input('id'));
+        $upload_path = Helper::getUploadPath($album->id);
+        $mobile_path = Helper::getFullPathMobile($album->id);
+        $thumb_path  = Helper::getFullPathThumb($album->id);
 
         if (File::move($upload_path, public_path() . "/" . Setting::get('upload_dir') . "/" . $request->input('directory'))) {
 
@@ -277,12 +278,21 @@ class AlbumsController extends Controller {
             if (\File::isDirectory($thumb_path))
                 \File::deleteDirectory($thumb_path);
 
-            $this->albums->find($router->input('id'))->update($request->all());
-
-            $this->images->where('albums_id', $router->input('id'))->update([
-                'is_rebuild' => 1,
+            $album->update([
+                'directory' => $request->input('directory'),
             ]);
 
+            $this->images->where('albums_id', $album->id)->update([
+                'is_rebuild' => 1,
+            ]);
+            
+            if (Setting::get('use_queue') == 'yes') {
+                $album_images = $album->images;
+
+                foreach ($album_images as $image) {
+                    BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
+                }
+            }
             Cache::flush();
         }
 

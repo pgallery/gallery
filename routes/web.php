@@ -78,8 +78,8 @@ Route::group(['middleware' => 'auth'], function () {
     ]);    
     
     // Скачивание архива альбома
-    Route::get('/downloads/{id}', [
+    Route::get('/downloads/{url}', [
         'as'            => 'zip-album',
         'uses'          => 'User\AlbumsController@getZip',
-    ])->where(['id' => '[0-9]+']);
+    ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
 });

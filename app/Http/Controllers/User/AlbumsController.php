@@ -98,7 +98,7 @@ class AlbumsController extends Controller
      */
     public function getZip(Router $router) {
         
-        $archive = $this->archives->createWithZipper($router->input('id'));
+        $archive = $this->archives->createWithZipper($router->input('url'));
         
         if(Setting::get('use_queue') == 'yes')
             ArchivesCleanJob::dispatch($archive->id)
