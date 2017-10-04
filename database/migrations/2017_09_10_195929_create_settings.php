@@ -16,9 +16,12 @@ class CreateSettings extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->string('set_name')->unique();
             $table->string('set_value');
+            $table->integer('set_group')->default('1');
             $table->string('set_desc');
+            $table->mediumText('set_tooltip')->nullable();
+            $table->enum('set_type', array('string', 'numeric', 'yesno'))->default('string');
             $table->timestamps();
-        });  
+        });
     }
 
     /**

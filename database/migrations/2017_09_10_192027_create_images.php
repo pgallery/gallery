@@ -17,6 +17,8 @@ class CreateImages extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->bigInteger('size')->default('0');
+            $table->integer('height')->default('0');
+            $table->integer('width')->default('0');
             $table->bigInteger('thumbs_size')->default('0');
             $table->bigInteger('modile_size')->default('0');
             $table->bigInteger('albums_id');

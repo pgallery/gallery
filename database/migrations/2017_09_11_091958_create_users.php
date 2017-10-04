@@ -19,8 +19,13 @@ class CreateUsers extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('method')->default('NULL');
+            $table->boolean('google2fa_enabled')->default(false);
+            $table->timestamp('google2fa_ts')->nullable();
+            $table->string('google2fa_secret')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }

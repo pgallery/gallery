@@ -20,45 +20,6 @@ class CreateSettingsGroups extends Migration
             $table->string('setgroup_desc');
             $table->timestamps();
         });
-        
-        Schema::table('settings', function($table) {
-            $table->dropColumn('set_sort');
-            $table->integer('set_group')->default('1')->after('set_value');
-            $table->mediumText('set_tooltip')->nullable()->after('set_desc');
-        });        
-        
-        Schema::table('settings', function($table) {
-            $table->dropColumn('set_type');
-        });
-        
-        Schema::table('settings', function (Blueprint $table) {
-            $table->enum('set_type', array('string', 'numeric', 'yesno'))->default('string');
-        });
-        
-        $setting_group = new App\Models\SettingsGroups();
-        $setting_group->setgroup_key = 'base';
-        $setting_group->setgroup_name = 'Общие';
-        $setting_group->setgroup_desc = 'Общие настройки галереи';
-        $setting_group->save();
-
-        $setting_group = new App\Models\SettingsGroups();
-        $setting_group->setgroup_key  = 'auth';
-        $setting_group->setgroup_name = 'Авторизация';
-        $setting_group->setgroup_desc = 'Настройки авторизации и регистрации пользователей';
-        $setting_group->save();
-        
-        $setting_group = new App\Models\SettingsGroups();
-        $setting_group->setgroup_key  = 'upload';
-        $setting_group->setgroup_name = 'Загрузка';
-        $setting_group->setgroup_desc = 'Настройки загрузки изображений';
-        $setting_group->save();
-        
-        $setting_group = new App\Models\SettingsGroups();
-        $setting_group->setgroup_key  = 'view';
-        $setting_group->setgroup_name = 'Отображение';
-        $setting_group->setgroup_desc = 'Настройки отображения страниц и фотографий';
-        $setting_group->save();
-        
     }
 
     /**
@@ -69,17 +30,5 @@ class CreateSettingsGroups extends Migration
     public function down()
     {
         Schema::dropIfExists('settings_groups');
-        
-        Schema::table('settings', function($table) {
-            $table->integer('set_sort')->default('0')->after('set_type');
-            $table->dropColumn('set_group');
-            $table->dropColumn('set_tooltip');
-            $table->dropColumn('set_type');
-        });
-        
-        Schema::table('settings', function($table) {
-            $table->integer('set_type')->default('0')->after('set_desc');
-        });        
-        
     }
 }

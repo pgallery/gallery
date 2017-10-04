@@ -14,11 +14,46 @@ class baseConfig extends Seeder
      */
     public function run()
     {
-        $base   = SettingsGroups::where('setgroup_key', 'base')->first()->id;
-        $auth   = SettingsGroups::where('setgroup_key', 'auth')->first()->id;
-        $view   = SettingsGroups::where('setgroup_key', 'view')->first()->id;
-        $upload = SettingsGroups::where('setgroup_key', 'upload')->first()->id;
         
+        $setting_group = new SettingsGroups();
+        $setting_group->setgroup_key = 'base';
+        $setting_group->setgroup_name = 'Общие';
+        $setting_group->setgroup_desc = 'Общие настройки галереи';
+        $setting_group->save();
+        
+        $base   = $setting_group->id;
+        
+        $setting_group = new SettingsGroups();
+        $setting_group->setgroup_key  = 'auth';
+        $setting_group->setgroup_name = 'Авторизация';
+        $setting_group->setgroup_desc = 'Настройки авторизации и регистрации пользователей';
+        $setting_group->save();
+        
+        $auth = $setting_group->id;
+        
+        $setting_group = new SettingsGroups();
+        $setting_group->setgroup_key  = 'upload';
+        $setting_group->setgroup_name = 'Загрузка';
+        $setting_group->setgroup_desc = 'Настройки загрузки изображений';
+        $setting_group->save();
+        
+        $upload = $setting_group->id;
+        
+        $setting_group = new SettingsGroups();
+        $setting_group->setgroup_key  = 'view';
+        $setting_group->setgroup_name = 'Отображение';
+        $setting_group->setgroup_desc = 'Настройки отображения страниц и фотографий';
+        $setting_group->save();        
+        
+        $view = $setting_group->id;
+        
+        $setting_group = new SettingsGroups();
+        $setting_group->setgroup_key = 'archive';
+        $setting_group->setgroup_name = 'Архивация';
+        $setting_group->setgroup_desc = 'Настройки архивации фотоальбомов';
+        $setting_group->save();
+        
+        $archive = $setting_group->id;
         
         Settings::create([
             'set_name'    => 'gallery_name', 
@@ -139,5 +174,49 @@ class baseConfig extends Seeder
             'set_type'    => 'string',
         ]);        
 
+        $setting = new App\Models\Settings();
+        $setting->set_name    = 'use_queue';
+        $setting->set_value   = 'no';
+        $setting->set_group   = $base;
+        $setting->set_desc    = 'Использовать обработчик очередей';
+        $setting->set_tooltip = 'При включении данной опции все задачи по '
+                . 'обработке изображений, такие как создание миниатюр и прочие, '
+                . 'будут отправляться в менеджер очередей. Для обработки подобных '
+                . 'очередей необходимо произвести дополнительную настройку галереи '
+                . 'и запустить воркер (см. Документацию)';
+        $setting->set_type    = 'yesno';
+        $setting->save();
+
+        $setting = new App\Models\Settings();
+        $setting->set_name    = 'registration';
+        $setting->set_value   = 'no';
+        $setting->set_group   = $auth;
+        $setting->set_desc    = 'Разрешить регистрацию на сайте';
+        $setting->set_tooltip =  'Включение данной опции позволит Вашим посетителям '
+                . 'регистрироваться на сайте. При регистрации пользователь получает'
+                . 'права "Гость"';
+        $setting->set_type    = 'yesno';
+        $setting->save();             
+        
+        $setting = new App\Models\Settings();
+        $setting->set_name    = 'archive_dir';
+        $setting->set_value   = 'gallery/archives';
+        $setting->set_group   = $archive;
+        $setting->set_desc    = 'Директория для сохранения архивов';
+        $setting->set_tooltip = 'Директория, в которую сохраняются архивы, '
+                . 'предоставляемые для скачивания.';
+        $setting->set_type    = 'string';
+        $setting->save();
+        
+        $setting = new App\Models\Settings();
+        $setting->set_name    = 'archive_save';
+        $setting->set_value   = '12';
+        $setting->set_group   = $archive;
+        $setting->set_desc    = 'Время хранения архивов';
+        $setting->set_tooltip = 'Время, в часах, на которое сохраняется временный '
+                . 'архив фотоальбома.';
+        $setting->set_type    = 'numeric';
+        $setting->save();        
+        
     }
 }
