@@ -57,7 +57,7 @@
             @if(Helper::isAdminMenu(Auth::user()->id))
             
                 <li><a href="{{ route('admin') }}">Список</a></li>
-                
+                <li><a href="{{ route('statistics') }}">Статистика</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Управление <span class="caret"></span></a>
                   <ul class="dropdown-menu">

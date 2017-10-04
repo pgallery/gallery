@@ -142,7 +142,7 @@
                     @endif
                 </td>
                 <td>{{ $album->imagesCount() }}</td>
-                <td>{{ round(($album->imagesSumSize() / 1024 / 1024)) }} Mb</td>
+                <td>{{ $album->imagesSumSize() }}</td>
                 <td>{{ $album->group()->name }}</td>
                 <td>{{ $album->year }}</td>
                 <td>{{ ($album->permission == 'All' ? "Всем" : "По ссылке") }}</td>

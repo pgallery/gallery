@@ -186,11 +186,11 @@ class AlbumsController extends Controller {
             if (in_array($mimeType, $accessType)) {
                 if ($this->images->where('name', $base_filename)->where('albums_id', $album->id)->count() == 0) {
 
-                    $image = new Images();
-                    $image->name = $base_filename;
-                    $image->albums_id = $album->id;
-                    $image->users_id = Auth::user()->id;
-                    $image->is_rebuild = 1;
+                    $image              = new Images();
+                    $image->name        = $base_filename;
+                    $image->albums_id   = $album->id;
+                    $image->users_id    = Auth::user()->id;
+                    $image->is_rebuild  = 1;
                     $image->save();
 
                     if (Setting::get('use_queue') == 'yes')

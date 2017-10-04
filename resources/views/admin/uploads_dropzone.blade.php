@@ -12,7 +12,7 @@
     </div>
 
     <div class="dz-message needsclick">
-        Перетащите фотографии в эту область или нажмите на неё для их выбора.<br />
+        <h4 style="text-align: center;color:#428bca;">Перетащите фотографии в эту область или нажмите на неё для их выбора  <span class="glyphicon glyphicon-hand-down"></span></h4>
     </div>
 
     {!! Form::close() !!}

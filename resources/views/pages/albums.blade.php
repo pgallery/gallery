@@ -15,7 +15,7 @@
                 <p>
                     <span class="glyphicon glyphicon-camera" aria-hidden="true"></span> {{ $album->year }}
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> {{ $album->imagesCount() }}
-                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> {{ round(($album->imagesSumSize() / 1024 / 1024)) }} Mb
+                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> {{ $album->imagesSumSize() }}
                 </p>
             </div>
 

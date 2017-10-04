@@ -35,6 +35,13 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
+// Статус фоновых задач
+Route::get('/statistics/', [
+    'as'            => 'statistics', 
+    'uses'          => 'StatisticsController@getStatistics',
+    'middleware'    => 'role:admin|moderator'
+]);
+
 // Корзина мусора
 Route::get('/trash/empty/', [
     'as'            => 'empty-trash', 

@@ -69,7 +69,7 @@
 
     <div class="container">
 
-        @if(Auth::check() && Helper::isAdmin(Auth::user()->id))
+        @if(Auth::check() && Helper::isAdmin(Auth::user()->id))        
             <div id="showStatus">
                 
             </div>
@@ -115,21 +115,30 @@
         
         
         @if (Auth::check() && Helper::isAdmin(Auth::user()->id))
+            
         function showStatus()  
             {      
                 $.ajax({
                     type: "GET", 
                     url: "/admin/status", 
                     cache: false,
-                    dataType: "text", 
+                    dataType: "json", 
                     error: function(xhr) {
-                        console.log('Ошибка!'+xhr.status+' '+xhr.statusText); 
+                        document.getElementById("showStatus").innerHTML='';
                     },
                     success: function(a) {
-                        document.getElementById("showStatus").innerHTML=a;
+                        var status = '';
+                        if(a['run'] > 0) {
+                            status += 'Фоновых процессов: ' + a['run'] + '. ';
+                        }
+                        if(a['rebuild'] > 0) {
+                            status += 'Изображений в очереди: ' + a['rebuild'] + '. ';
+                        }
+                        document.getElementById("showStatus").innerHTML="<div class='alert alert-success' role='alert'>" + status + "</div>";
                     }  
                 });
             }
+            
         @endif
         
         $(document).ready(function() { 
