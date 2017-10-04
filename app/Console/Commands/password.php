@@ -6,21 +6,21 @@ use Illuminate\Console\Command;
 
 use App\Models\User;
 
-class go2fa extends Command
+class password extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'go2fa {user} {status}';
+    protected $signature = 'password {user} {passwd}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Включение и отключение двухфакторной авторизации пользователю';
+    protected $description = 'Изменение пароля пользователя';
 
     /**
      * Create a new command instance.
@@ -40,7 +40,7 @@ class go2fa extends Command
     public function handle()
     {
         User::where('email', $this->argument('user'))->update([
-            'google2fa_enabled' => (($this->argument('status') == 'enabled') ? true : false),
+            'password' => \Hash::make($this->argument('passwd')),
         ]);
     }
 }

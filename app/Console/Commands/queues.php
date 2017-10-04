@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Models\Settings;
-use Setting;
 
 class queues extends Command
 {
@@ -21,7 +20,7 @@ class queues extends Command
      *
      * @var string
      */
-    protected $description = 'Включение и отключение двухфакторной авторизации';
+    protected $description = 'Включение и отключение использования обработчика очередей';
 
     /**
      * Create a new command instance.
@@ -40,9 +39,8 @@ class queues extends Command
      */
     public function handle()
     {
-        if(Setting::get('use_queue') == 'no')
-            $setting = Settings::where('set_name', 'use_queue')->update([
-                'set_value'   => 'yes',
-            ]);
+        Settings::where('set_name', 'use_queue')->update([
+            'set_value'   => (($this->argument('status') == 'enabled') ? 'yes' : 'no'),
+        ]);
     }
 }
