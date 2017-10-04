@@ -174,49 +174,46 @@ class baseConfig extends Seeder
             'set_type'    => 'string',
         ]);        
 
-        $setting = new App\Models\Settings();
-        $setting->set_name    = 'use_queue';
-        $setting->set_value   = 'no';
-        $setting->set_group   = $base;
-        $setting->set_desc    = 'Использовать обработчик очередей';
-        $setting->set_tooltip = 'При включении данной опции все задачи по '
+        Settings::create([
+            'set_name'    => 'use_queue', 
+            'set_value'   => 'no',
+            'set_desc'    => 'Использовать обработчик очередей',
+            'set_group'   => $base,
+            'set_tooltip' => 'При включении данной опции все задачи по '
                 . 'обработке изображений, такие как создание миниатюр и прочие, '
                 . 'будут отправляться в менеджер очередей. Для обработки подобных '
                 . 'очередей необходимо произвести дополнительную настройку галереи '
-                . 'и запустить воркер (см. Документацию)';
-        $setting->set_type    = 'yesno';
-        $setting->save();
-
-        $setting = new App\Models\Settings();
-        $setting->set_name    = 'registration';
-        $setting->set_value   = 'no';
-        $setting->set_group   = $auth;
-        $setting->set_desc    = 'Разрешить регистрацию на сайте';
-        $setting->set_tooltip =  'Включение данной опции позволит Вашим посетителям '
+                . 'и запустить воркер (см. Документацию)',
+            'set_type'    => 'yesno',
+        ]);
+        Settings::create([
+            'set_name'    => 'registration', 
+            'set_value'   => 'no',
+            'set_desc'    => 'Разрешить регистрацию на сайте',
+            'set_group'   => $auth,
+            'set_tooltip' => 'Включение данной опции позволит Вашим посетителям '
                 . 'регистрироваться на сайте. При регистрации пользователь получает'
-                . 'права "Гость"';
-        $setting->set_type    = 'yesno';
-        $setting->save();             
-        
-        $setting = new App\Models\Settings();
-        $setting->set_name    = 'archive_dir';
-        $setting->set_value   = 'gallery/archives';
-        $setting->set_group   = $archive;
-        $setting->set_desc    = 'Директория для сохранения архивов';
-        $setting->set_tooltip = 'Директория, в которую сохраняются архивы, '
-                . 'предоставляемые для скачивания.';
-        $setting->set_type    = 'string';
-        $setting->save();
-        
-        $setting = new App\Models\Settings();
-        $setting->set_name    = 'archive_save';
-        $setting->set_value   = '12';
-        $setting->set_group   = $archive;
-        $setting->set_desc    = 'Время хранения архивов';
-        $setting->set_tooltip = 'Время, в часах, на которое сохраняется временный '
-                . 'архив фотоальбома.';
-        $setting->set_type    = 'numeric';
-        $setting->save();        
+                . 'права "Гость"',
+            'set_type'    => 'yesno',
+        ]);
+        Settings::create([
+            'set_name'    => 'archive_dir', 
+            'set_value'   => 'gallery/archives',
+            'set_desc'    => 'Директория для сохранения архивов',
+            'set_group'   => $archive,
+            'set_tooltip' => 'Директория, в которую сохраняются архивы, '
+                . 'предоставляемые для скачивания.',
+            'set_type'    => 'string',
+        ]);
+        Settings::create([
+            'set_name'    => 'archive_save', 
+            'set_value'   => '12',
+            'set_desc'    => 'Время хранения архивов',
+            'set_group'   => $archive,
+            'set_tooltip' => 'Время, в часах, на которое сохраняется временный '
+                . 'архив фотоальбома.',
+            'set_type'    => 'numeric',
+        ]);
         
     }
 }
