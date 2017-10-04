@@ -144,7 +144,7 @@ class ImagesController extends Controller
                 ->update([
                     'images_id' => $image->id,
                 ]);
-        }        
+        }
         
         Cache::flush();
         
