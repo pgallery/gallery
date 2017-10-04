@@ -22,7 +22,8 @@
     @if (Auth::check())    
     
     <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
-
+    <link href="/css/dropzone.css" rel="stylesheet">
+    
     @endif
     
     <script src="//ulogin.ru/js/ulogin.js"></script>    
@@ -102,6 +103,7 @@
     <script src="/js/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables.bootstrap.min.js"></script>
     <script src="/js/bootstrap-confirmation.js"></script>
+    <script src="/js/dropzone.js"></script>
 
     <script type="text/javascript" src="/js/bootstrap-filestyle.min.js"> </script>
     

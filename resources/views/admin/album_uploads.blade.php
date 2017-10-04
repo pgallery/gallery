@@ -6,7 +6,7 @@
       <h2>Загрузка изображений в альбом: {{ $album_name }} </h2>
     </div>
 
-      @include('admin.uploads_images')
+      @include('admin.uploads_dropzone')
    
 @endsection
 
@@ -16,5 +16,6 @@
             input: false,
             buttonText: 'Выберите файлы'
         });
+
         
-@endsection   
+@endsection

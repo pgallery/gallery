@@ -228,3 +228,8 @@ Route::post('/image/uploads/', [
     'uses'          => 'ImagesController@postCreateImage',
     'middleware'    => 'role:admin|moderator'
 ]);
+Route::post('/image/uploads-dropzone/', [
+    'as'            => 'uploads-dropzone', 
+    'uses'          => 'ImagesController@postCreateImageDropZone',
+    'middleware'    => 'role:admin|moderator'
+]);

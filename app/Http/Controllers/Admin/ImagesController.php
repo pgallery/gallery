@@ -101,18 +101,59 @@ class ImagesController extends Controller
         }
         
         // Проверяем альбом на наличие миниатюры
-        if($album->images_id == 0)
+        if($album->images_id == 0) {
+            $image = $this->images->where('albums_id', $album->id)->first();
             $this->albums
                 ->find($album->id)
                 ->update([
-                    'images_id' => $this->images->where('albums_id', $album->id)->first()->id
+                    'images_id' => $image->id,
                 ]);
+        }
         
         Cache::flush();
         
         return back();
         
-    }    
+    }
+    
+    public function postCreateImageDropZone(Request $request) {
+        
+        $album = $this->albums->find($request->input('album_id'));
+        
+        $upload_path        = Helper::getUploadPath($album->id);
+        $upload_file        = $request->file('file');
+        $upload_file_name   = $upload_file->getClientOriginalName();
+        
+        Image::make($upload_file)->save($upload_path . "/" . $upload_file_name);
+        
+        $image             = new Images();
+        $image->name       = $upload_file_name;
+        $image->albums_id  = $album->id;
+        $image->users_id   = Auth::user()->id;
+        $image->is_rebuild = 1;
+        $image->save();
+        
+        if(Setting::get('use_queue') == 'yes')
+            BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');  
+        
+        // Проверяем альбом на наличие миниатюры
+        if($album->images_id == 0) {
+            $image = $this->images->where('albums_id', $album->id)->first();
+            $this->albums
+                ->find($album->id)
+                ->update([
+                    'images_id' => $image->id,
+                ]);
+        }        
+        
+        Cache::flush();
+        
+        return \Response::json([
+            'error' => false,
+            'code'  => 200
+        ], 200);
+        
+    }
     
     /*
      * Переименовывание изображения
