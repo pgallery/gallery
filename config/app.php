@@ -255,6 +255,7 @@ return [
         'Helper' => App\Helpers\Helper::class,
         'Setting' => App\Helpers\Setting::class,
         'Viewer' => App\Helpers\Viewer::class,
+        'Transliterate' => App\Helpers\Transliterate::class,
         'BuildImage' => App\Helpers\BuildImage::class,
         
         // Forms & HTML

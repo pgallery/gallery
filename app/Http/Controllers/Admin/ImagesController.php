@@ -14,6 +14,7 @@ use File;
 use Auth;
 use Helper;
 use Setting;
+use Transliterate;
 use Cache;
 use BuildImage;
 use Validator;
@@ -40,11 +41,13 @@ class ImagesController extends Controller
         
         $image = $this->images->find($request->input('id'));
         
+        $new_name     = Transliterate::get($request->input('newName'));
+        
         $mobile_image = Helper::getFullPathMobileImage($image->id);
         $thumb_image  = Helper::getFullPathThumbImage($image->id);
         $upload_dir   = Helper::getUploadPath($image->albums_id);
         
-        if(File::move($upload_dir . "/" . $image->name, $upload_dir . "/" . $request->input('newName'))) {
+        if(File::move($upload_dir . "/" . $image->name, $upload_dir . "/" . $new_name)) {
             
             if (File::exists($mobile_image))
                 File::delete($mobile_image);
@@ -53,7 +56,7 @@ class ImagesController extends Controller
                 File::delete($thumb_image);            
             
             $image->update([
-                'name'          => $request->input('newName'),
+                'name'          => $new_name,
                 'is_rebuild'    => 1,
             ]);
             

@@ -14,6 +14,7 @@ use File;
 use Auth;
 use Helper;
 use Setting;
+use Transliterate;
 use Cache;
 use BuildImage;
 use Validator;
@@ -83,7 +84,7 @@ class UploadsController extends Controller
         $album = $this->albums->find($album_id);
         
         $upload_path        = Helper::getUploadPath($album->id);
-        $upload_file_name   = $upload_file->getClientOriginalName();
+        $upload_file_name   = Transliterate::get($upload_file->getClientOriginalName());
         
         if(!File::isDirectory($upload_path))
             File::makeDirectory($upload_path, 0755, true);

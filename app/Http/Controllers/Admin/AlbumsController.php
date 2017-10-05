@@ -18,6 +18,7 @@ use Auth;
 use Helper;
 use Setting;
 use Viewer;
+use Transliterate;
 use File;
 use Cache;
 
@@ -72,14 +73,15 @@ class AlbumsController extends Controller {
      */
     public function postCreateAlbum(AlbumsRequest $request) {
 
-        $input = $request->all();
-        $input['url'] = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
-        $input['desc'] = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
-        $input['users_id'] = Auth::user()->id;
+        $input               = $request->all();
+        $input['url']        = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
+        $input['desc']       = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
+        $input['users_id']   = Auth::user()->id;
+        $input['directory']  = Transliterate::get($request->input('directory'));
 
         $this->albums->create($input);
 
-        $album_directory = Setting::get('upload_dir') . "/" . $request->input('directory');
+        $album_directory = Setting::get('upload_dir') . "/" . $input['directory'];
 
         if (!File::isDirectory($album_directory))
             File::makeDirectory($album_directory, 0755, true);
@@ -269,8 +271,9 @@ class AlbumsController extends Controller {
         $upload_path = Helper::getUploadPath($album->id);
         $mobile_path = Helper::getFullPathMobile($album->id);
         $thumb_path  = Helper::getFullPathThumb($album->id);
-
-        if (File::move($upload_path, public_path() . "/" . Setting::get('upload_dir') . "/" . $request->input('directory'))) {
+        $directory   = Transliterate::get($request->input('directory'));
+        
+        if (File::move($upload_path, public_path() . "/" . Setting::get('upload_dir') . "/" . $directory)) {
 
             if (\File::isDirectory($mobile_path))
                 \File::deleteDirectory($mobile_path);
@@ -279,7 +282,7 @@ class AlbumsController extends Controller {
                 \File::deleteDirectory($thumb_path);
 
             $album->update([
-                'directory' => $request->input('directory'),
+                'directory' => $directory,
             ]);
 
             $this->images->where('albums_id', $album->id)->update([
