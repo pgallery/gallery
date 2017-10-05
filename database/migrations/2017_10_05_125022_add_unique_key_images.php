@@ -26,7 +26,7 @@ class AddUniqueKeyImages extends Migration
     public function down()
     {
         Schema::table('images', function($table) {
-            $table->unique(['name', 'albums_id']);
+            $table->dropUnique('images_name_albums_id_unique');
         });
     }
 }
