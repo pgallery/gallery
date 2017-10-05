@@ -1,4 +1,4 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('content')
 
@@ -168,7 +168,7 @@
 
       <div class="modal-body">
           
-         @include('admin.group_form')
+         @include('default.admin.group.create_form')
             
       </div>
           
@@ -189,7 +189,7 @@
 
       <div class="modal-body">
           
-            @include('admin.album_form')
+            @include('default.admin.album.create_form')
             
       </div>
           

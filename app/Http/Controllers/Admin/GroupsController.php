@@ -65,7 +65,7 @@ class GroupsController extends Controller
         
         $group = $this->groups->find($router->input('id'));
         
-        return Viewer::get('admin.group_edit', [
+        return Viewer::get('admin.group.edit', [
             'type'            => 'edit',
             'group'           => $group,
         ]);

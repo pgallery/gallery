@@ -1,10 +1,10 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('content')
+
     <div class="page-header">
       <h2>{{ $thisAlbum->group()->name }} > {{ $thisAlbum->name }} > Фотографии <a href="" data-toggle="modal" data-target="#uploadsModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h2>
     </div>
-
 
 {{ $listImages->links() }}
 
@@ -96,16 +96,13 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="uploadsModalLabel">Загрузить изображения</h4>
       </div>
-        
-         
+      
       <div class="modal-body">
                       
-            @include('admin.uploads_images')
+            @include('default.admin.upload.index')
             
       </div>
 
-
-          
     </div>
   </div>
 </div>

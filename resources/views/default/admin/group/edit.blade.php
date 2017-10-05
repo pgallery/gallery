@@ -1,4 +1,4 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('content')
       
@@ -6,6 +6,6 @@
       <h2>Редактирование группы </h2>
     </div>
 
-      @include('admin.group_form')
+      @include('default.admin.group.create_form')
    
 @endsection

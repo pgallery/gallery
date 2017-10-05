@@ -1,4 +1,4 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('content')
     <div class="page-header">
@@ -28,7 +28,7 @@
     </dt>
   <dd>
       
-      @include('admin.group_form')
+      @include('default.admin.group.create_form')
            
     <hr>
   </dd>
@@ -44,7 +44,7 @@
       </dt>
   <dd>
       
-      @include('admin.album_form')
+      @include('default.admin.album.create_form')
    
     <hr>            
   </dd>
@@ -61,7 +61,7 @@
   <dd>
       
       
-      @include('admin.uploads_images')
+      @include('default.admin.upload.index')
       
 
 

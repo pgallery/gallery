@@ -60,7 +60,7 @@ class AlbumsController extends Controller {
         $album = $this->albums->find($router->input('id'));
         $groupsArray = $this->groups->pluck('name', 'id');
 
-        return Viewer::get('admin.album_edit', [
+        return Viewer::get('admin.album.edit', [
                     'type' => 'edit',
                     'album' => $album,
                     'groupsArray' => $groupsArray,
@@ -134,7 +134,7 @@ class AlbumsController extends Controller {
             });
         }
 
-        return Viewer::get('admin.show_album', compact(
+        return Viewer::get('admin.album.index', compact(
             'upload_dir', 
             'mobile_dir', 
             'thumbs_dir', 
@@ -240,7 +240,7 @@ class AlbumsController extends Controller {
 
         $album = $this->albums->find($router->input('id'));
 
-        return Viewer::get('admin.album_uploads', [
+        return Viewer::get('admin.album.uploads', [
             'type'       => 'thisAlbum',
             'album_id'   => $album->id,
             'album_name' => $album->name,
@@ -254,7 +254,7 @@ class AlbumsController extends Controller {
 
         $thisAlbum = $this->albums->find($router->input('id'));
 
-        return Viewer::get('admin.album_renamedir', compact(
+        return Viewer::get('admin.album.renamedir', compact(
             'thisAlbum'
         ));
     }

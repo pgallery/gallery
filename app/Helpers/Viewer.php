@@ -67,7 +67,7 @@ class Viewer
         else
             $result = array_merge($data, $static);
         
-        return view($page, $result);
+        return view('default/' . $page, $result);
         
     }
     

@@ -1,4 +1,4 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('content')
 
@@ -6,7 +6,7 @@
       <h2>Загрузка изображений в альбом: {{ $album_name }} </h2>
     </div>
 
-      @include('admin.uploads_dropzone')
+    @include('default.admin.upload.dropzone')
    
 @endsection
 

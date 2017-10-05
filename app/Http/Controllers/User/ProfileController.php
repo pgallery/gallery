@@ -28,7 +28,7 @@ class ProfileController extends Controller
         
         $user = Auth::user();
 
-        return Viewer::get('pages.profile', compact('user'));
+        return Viewer::get('user.profile.index', compact('user'));
         
     }
     
@@ -87,7 +87,7 @@ class ProfileController extends Controller
             200
         );
         
-        return Viewer::get('google2fa.enable', compact('user', 'imageDataUri', 'secret'));
+        return Viewer::get('auth.google2fa.enable', compact('user', 'imageDataUri', 'secret'));
         
     }
     
@@ -97,7 +97,7 @@ class ProfileController extends Controller
     public function getDisable2FA(Request $request) {
         
         if ($request->isMethod('get'))
-            return Viewer::get('google2fa.disabled');
+            return Viewer::get('auth.google2fa.disabled');
         
         $user = Auth::user();
         

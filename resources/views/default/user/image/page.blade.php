@@ -11,7 +11,7 @@
         
         @if ($show_admin_panel == 1)
 
-            @include('pages.images_admin_menu')
+            @include('default.layouts.image_admin_menu')
                
         @endif
    

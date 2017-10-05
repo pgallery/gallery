@@ -1,7 +1,6 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('content')
-
 
     <div class="page-header">
       <h2>Отключение двухфакторной авторизации </h2>
@@ -12,7 +11,6 @@
     'class'     => 'form-horizontal',
     'method'    => 'POST'
 ]) !!}
-
 
     <center>
         {!! Form::submit('Отключить', array('class' => 'btn btn-primary')) !!}

@@ -89,7 +89,7 @@ class AlbumsController extends Controller
             Cache::add($CacheKey, $resultData, Setting::get('cache_ttl'));
         }
         
-        return Viewer::get('pages.albums', $resultData);
+        return Viewer::get('user.album.index', $resultData);
 
     }
     

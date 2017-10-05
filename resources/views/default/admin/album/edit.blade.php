@@ -1,9 +1,9 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('content')
     <div class="page-header">
       <h2>Редактирование альбома </h2>
     </div>
-      @include('admin.album_form')
+      @include('default.admin.album.create_form')
    
 @endsection

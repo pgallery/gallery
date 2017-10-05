@@ -26,7 +26,7 @@ class Google2FAController extends Controller
     public function g2faAuth(Request $request) {
         
         if ($request->isMethod('get'))
-            return Viewer::get('google2fa.index');
+            return Viewer::get('auth.google2fa.index');
         
         $user = Auth::user();
         

@@ -49,7 +49,7 @@ class InterfaceController extends Controller
         
         $usersArray = User::pluck('name','id');
         
-        return Viewer::get('admin.show', compact(
+        return Viewer::get('admin.page.index', compact(
             'groupsArray',
             'thumbs_dir',
             'albums', 
@@ -72,7 +72,7 @@ class InterfaceController extends Controller
             return Albums::orderBy('name')->pluck('name','id');
         });
         
-        return Viewer::get('admin.create', compact(
+        return Viewer::get('admin.page.create', compact(
             'albumsArray', 
             'groupsArray'
         ));

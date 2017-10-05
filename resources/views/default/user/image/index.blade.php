@@ -1,4 +1,4 @@
-@extends('template.header')
+@extends('default.layouts.app')
 
 @section('css')
         .back-to-top {
@@ -20,7 +20,7 @@
     <div id="allImages">
         
         
-        @include('pages.images_page')
+        @include('default.user.image.page')
         
 
     </div>

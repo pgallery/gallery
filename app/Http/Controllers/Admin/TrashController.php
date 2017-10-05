@@ -70,7 +70,7 @@ class TrashController extends Controller
         
         $groups = $this->groups->onlyTrashed()->get();
         
-        return Viewer::get('admin.show_trashed', [
+        return Viewer::get('admin.trashed.index', [
             'groups'    => $groups,
         ]);        
         

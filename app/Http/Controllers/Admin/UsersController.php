@@ -44,7 +44,7 @@ class UsersController extends Controller
         $users    = $this->user->all();
         $allRoles = $this->roles->pluck('display_name','id');
 
-        return Viewer::get('admin.show_users', compact(
+        return Viewer::get('admin.user.index', compact(
                 'users',
                 'allRoles'
         ));
@@ -59,7 +59,7 @@ class UsersController extends Controller
         $roles      = $this->roles->pluck('display_name','id');
         $userRole   = $user->roles->pluck('id','id')->toArray();
 
-        return Viewer::get('admin.user_edit', compact(
+        return Viewer::get('admin.user.edit', compact(
                 'user',
                 'roles',
                 'userRole'
@@ -118,7 +118,7 @@ class UsersController extends Controller
             $allUsers = $this->user->pluck('name','id');
             unset($allUsers[$id]);
 
-            return Viewer::get('admin.user_object', compact(
+            return Viewer::get('admin.user.dependencies', compact(
                 'user',
                 'allUsers'
             ));

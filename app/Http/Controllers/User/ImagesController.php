@@ -79,9 +79,9 @@ class ImagesController extends Controller
         }
         
         if($request->ajax())
-            return Viewer::get('pages.images_page', $resultData);
+            return Viewer::get('user.image.page', $resultData);
         
-        return Viewer::get('pages.images', $resultData);
+        return Viewer::get('user.image.index', $resultData);
         
     }
 }

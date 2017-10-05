@@ -31,7 +31,7 @@ class StatisticsController extends Controller
     
     public function getStatistics() {
         
-        return Viewer::get('admin.statistics', [
+        return Viewer::get('admin.page.statistics', [
             'count_users' => $this->users->count(),
             'count_groups'=> $this->groups->count(),
             'count_albums'=> $this->albums->count(),

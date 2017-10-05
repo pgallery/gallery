@@ -29,7 +29,7 @@ class SettingsController extends Controller
      */
     public function getSettings() {
         
-        return Viewer::get('admin.settings', [
+        return Viewer::get('admin.setting.index', [
             'settings_groups'   => $this->settings_groups->all(),
             'settings'          => $this->settings->all(),
         ]);
