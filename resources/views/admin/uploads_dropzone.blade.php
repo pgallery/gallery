@@ -1,9 +1,9 @@
             
     {!! Form::open([
-        'route'     => 'uploads-dropzone',
+        'route'     => ['uploads', 'dropzone'],
         'class'     => 'dropzone needsclick',
         'id'        => 'uploads-dropzone'
-    ]) !!}         
+    ]) !!}
 
     {!! Form::hidden('album_id', $album_id) !!} 
             

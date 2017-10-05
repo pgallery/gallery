@@ -230,13 +230,10 @@ Route::get('/image/rotate/{option}/{id}', [
     'uses'          => 'ImagesController@getRotate',
     'middleware'    => 'role:admin|moderator'
 ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
-Route::post('/image/uploads/', [
-    'as'            => 'uploads', 
-    'uses'          => 'ImagesController@postCreateImage',
+
+// Загрузка изображений
+Route::any('/uploads/{option?}', [
+    'as'            => 'uploads',
+    'uses'          => 'UploadsController@postUploads',
     'middleware'    => 'role:admin|moderator'
-]);
-Route::post('/image/uploads-dropzone/', [
-    'as'            => 'uploads-dropzone', 
-    'uses'          => 'ImagesController@postCreateImageDropZone',
-    'middleware'    => 'role:admin|moderator'
-]);
+])->where(['option' => '[a-z]+']);

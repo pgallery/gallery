@@ -72,7 +72,7 @@
                     <br><a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Миниатюра</a> 
                     | 
                     <a href="/{{ $mobile_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Мобильная</a> </td>
-                <td>{{ round($image->size / 1024) . " Kb"  }}</td>
+                <td>{{ \Helper::formatBytes($image->size)  }}</td>
                 <td>{{ $image->width }}х{{ $image->height }}</td>
                 <td>{{ $image->owner()->name }}</td>
                 
