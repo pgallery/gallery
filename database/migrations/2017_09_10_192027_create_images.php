@@ -28,6 +28,7 @@ class CreateImages extends Migration
             $table->integer('is_modile')->default('0');
             $table->softDeletes();
             $table->timestamps();
+            $table->unique(['name', 'albums_id']);
         });
     }
 
