@@ -125,13 +125,14 @@ class Helper
     }
     
     // Приобразует байты в большие единицы измерения
-    public static function formatBytes($size, $precision = 2){
+    public static function formatBytes($size){
         if ($size > 0) {
             $size = (int) $size;
             $base = log($size) / log(1024);
-            $suffixes = array(' bytes', ' KB', ' MB', ' GB', ' TB');
-
-            return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+//            $suffixes = array(' bytes', ' KB', ' MB', ' GB', ' TB');
+            $suffixes = explode(",", Setting::get('format_bytes'));
+            
+            return round(pow(1024, $base - floor($base)), Setting::get('format_precision')) . $suffixes[floor($base)];
         } else {
             return $size;
         }

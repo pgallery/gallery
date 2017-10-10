@@ -21,9 +21,6 @@ Route::get('/', [
     'as'    => 'home', 
     'uses'  => 'User\AlbumsController@getShow'
 ]);
-//Route::get('/install', function () {
-//    $exitCode = Artisan::call('migrate');
-//});
 
 Route::get('/no_access', [
     'as'    => '403', 
