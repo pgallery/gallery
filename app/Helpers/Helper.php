@@ -129,7 +129,6 @@ class Helper
         if ($size > 0) {
             $size = (int) $size;
             $base = log($size) / log(1024);
-//            $suffixes = array(' bytes', ' KB', ' MB', ' GB', ' TB');
             $suffixes = explode(",", Setting::get('format_bytes'));
             
             return round(pow(1024, $base - floor($base)), Setting::get('format_precision')) . $suffixes[floor($base)];

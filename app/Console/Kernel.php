@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         Commands\queues::class,
         Commands\go2fa::class,
         Commands\password::class,
+        Commands\usermod::class,
     ];
 
     /**
