@@ -39,13 +39,13 @@
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{{ route('edit-group', ['id' => $group['id']]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
+                        <li><a href="{{ route('edit-group', ['id' => $group->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{ route('delete-group', ['id' => $group['id']]) }}" data-toggle="confirmation" data-title="Удалить группу, а так же все альбомы и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
+                        <li><a href="{{ route('delete-group', ['id' => $group->id]) }}" data-toggle="confirmation" data-title="Удалить группу, а так же все альбомы и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
                     </div>                    
                     @endif
-                     {{ $group['name'] }}
+                     <a href="{{ route('admin', ['options' => 'byGroup', 'id' => $group->id]) }}">{{ $group['name'] }}</a>
                 </td>
 
                 <td>{{ $group->albumCount() }}</td>

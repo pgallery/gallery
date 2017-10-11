@@ -17,11 +17,11 @@
  */
 
 // Генерация разных страниц
-Route::get('/', [
+Route::get('/{option?}/{id?}', [
     'as'            => 'admin', 
     'uses'          => 'InterfaceController@getPage',
     'middleware'    => 'role:admin|moderator'
-]);
+])->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 Route::get('/create/all/', [
     'as'            => 'create', 
     'uses'          => 'InterfaceController@getCreateForm',

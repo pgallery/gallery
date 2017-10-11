@@ -59,7 +59,9 @@ class AlbumsController extends Controller {
     public function getEditAlbum(Router $router) {
 
         $album = $this->albums->find($router->input('id'));
-        $groupsArray = $this->groups->pluck('name', 'id');
+        $groupsArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
+            return $this->groups->orderBy('name')->pluck('name','id');
+        });
 
         return Viewer::get('admin.album.edit', [
                     'type' => 'edit',
@@ -128,9 +130,13 @@ class AlbumsController extends Controller {
             $upload_dir  = Setting::get('upload_dir');
             $type        = 'thisAlbum';
             $album_id    = $thisAlbum->id;
-            $usersArray  = $this->users->pluck('name', 'id');
-            $albumsArray = $this->albums->pluck('name', 'id');
-
+            
+            $usersArray = Cache::remember('admin.show.usersArray', self::SHOWADMIN_CACHE_TTL, function() {
+                return $this->users->pluck('name','id');
+            });
+            $albumsArray = Cache::remember('admin.show.albumsArray', self::SHOWADMIN_CACHE_TTL, function() {
+                return $this->albums->pluck('name', 'id');
+            });
             $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {
                 return $thisAlbum->images()->paginate(Setting::get('count_images'));
             });
