@@ -6,40 +6,44 @@
   <h2>Статистика галереи</h2>
 </div>
 
-<div class="row">
-  <div class="col-md-8">Количество пользователей:</div>
-  <div class="col-md-4">{{ $count_users }}</div>
-</div>
-   
+<ul class="list-group">
 
-<div class="row">
-  <div class="col-md-8">Количество групп:</div>
-  <div class="col-md-4">{{ $count_groups }}</div>
-</div>
+<li class="list-group-item">
+    <span class="badge">{{ $count_users }}</span>
+    Количество пользователей:
+</li>
 
-<div class="row">
-  <div class="col-md-8">Количество альбомов:</div>
-  <div class="col-md-4">{{ $count_albums }}</div>
-</div>
+<li class="list-group-item">
+    <span class="badge">{{ $count_groups }}</span>
+    Количество групп:
+</li>
 
-<div class="row">
-  <div class="col-md-8">Количество изображений:</div>
-  <div class="col-md-4">{{ $count_images }}</div>
-</div>
 
-<div class="row">
-  <div class="col-md-8">Объем дискового пространства, занимаемого изображениями:</div>
-  <div class="col-md-4">{{ $summary_images_size }}</div>
-</div>
+<li class="list-group-item">
+    <span class="badge">{{ $count_albums }}</span>
+    Количество альбомов:
+</li>
 
-<div class="row">
-  <div class="col-md-8">Среднестатистический объем изображения:</div>
-  <div class="col-md-4">0</div>
-</div>
+<li class="list-group-item">
+    <span class="badge">{{ $count_images }}</span>
+    Количество изображений:
+</li>
 
-<div class="row">
-  <div class="col-md-8">Среднестатистическое разрешение изображения:</div>
-  <div class="col-md-4">0</div>
-</div>
+<li class="list-group-item">
+    <span class="badge">{{ $summary_images_size }}</span>
+    Объем дискового пространства, занимаемого изображениями:
+</li>
 
+<li class="list-group-item">
+    <span class="badge">-</span>
+    Среднестатистический объем изображения:
+</li>
+
+<li class="list-group-item">
+    <span class="badge">-</span>
+    Среднестатистическое разрешение изображения:
+</li>
+
+</ul>
+    
 @endsection
