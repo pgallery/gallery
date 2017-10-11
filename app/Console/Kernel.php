@@ -21,8 +21,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\queues::class,
-        Commands\go2fa::class,
-        Commands\password::class,
         Commands\usermod::class,
     ];
 
