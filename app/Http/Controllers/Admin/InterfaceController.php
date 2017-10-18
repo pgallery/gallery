@@ -46,7 +46,7 @@ class InterfaceController extends Controller
             $transliterateMap .= "'" . $key . "': '" . $value . "', ";        
         
         $categories = Cache::remember('admin.show.categories', self::SHOWADMIN_CACHE_TTL, function() {
-            return $this->categories->All();
+            return $this->categories->all();
         });
         
         $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {

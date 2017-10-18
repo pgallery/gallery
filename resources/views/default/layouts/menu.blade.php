@@ -12,23 +12,26 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ route('home') }}">Галерея</a></li>
+            
+            @if($categories_count > 0)
+            
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">По категориям <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     
                       @if(Auth::check() && Helper::isAdmin(Auth::user()->id))
                     
-                        @foreach($group_list as $group)
-                            @if( $group->albumCount() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $group->id]) }}">{{ $group->name }} ({{ $group->albumCount() }})</a></li>
+                        @foreach($categories as $category)
+                            @if( $category->albumCount() != 0)
+                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $category->id]) }}">{{ $category->name }} ({{ $category->albumCount() }})</a></li>
                             @endif
                         @endforeach                      
                       
                       @else
                       
-                        @foreach($group_list as $group)
-                            @if( $group->albumCountPublic() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $group->id]) }}">{{ $group->name }} ({{ $group->albumCountPublic() }})</a></li>
+                        @foreach($categories as $category)
+                            @if( $category->albumCountPublic() != 0)
+                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $category->id]) }}">{{ $category->name }} ({{ $category->albumCountPublic() }})</a></li>
                             @endif
                         @endforeach                      
                       
@@ -45,7 +48,10 @@
 
                     @endforeach
                   </ul>
-                </li>                
+                </li>   
+                
+            @endif  
+            
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
@@ -57,7 +63,7 @@
             @if(Helper::isAdminMenu(Auth::user()->id))
             
                 <li><a href="{{ route('admin') }}">Список</a></li>
-                <li><a href="{{ route('statistics') }}">Статистика</a></li>
+                
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Управление <span class="caret"></span></a>
                   <ul class="dropdown-menu">
@@ -66,6 +72,7 @@
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
                         <li><a href="{{ route('settings') }}">Настройки</a></li>
                     @endif
+                    <li><a href="{{ route('statistics') }}">Статистика</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="{{ route('flush-cache') }}">Сбросить кэш</a></li>
                   </ul>

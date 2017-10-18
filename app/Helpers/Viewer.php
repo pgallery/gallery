@@ -35,9 +35,10 @@ class Viewer
                 $year_list = Albums::select('year')->where('permission', 'All')->groupBy('year')->get();            
             
             $static = [
-                'group_list'        => Categories::orderBy('name')->get(),
-                'year_list'         => $year_list, 
-                'gallery_name'      => Setting::get('gallery_name'),
+                'categories_count' => Categories::All()->count(),
+                'categories'       => Categories::orderBy('name')->get(),
+                'year_list'        => $year_list, 
+                'gallery_name'     => Setting::get('gallery_name'),
             ];
             
             if(Auth::check() and Helper::isAdminMenu(Auth::user()->id)) {
