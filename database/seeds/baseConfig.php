@@ -91,7 +91,7 @@ class baseConfig extends Seeder
         ]);
         Settings::create([
             'set_name'    => 'start_year', 
-            'set_value'   => '2000',
+            'set_value'   => '2010',
             'set_desc'    => 'Минимальный год Ваших фотоальбомов',
             'set_group'   => $view,
             'set_tooltip' => 'Год, с которого начинаются Ваши фотоальбомы в галереи. '

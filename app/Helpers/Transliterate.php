@@ -18,6 +18,10 @@ class Transliterate
         
     }
     
+    public static function getMap() {
+        return self::map();
+    }
+    
     private static function map() {
         
         return [

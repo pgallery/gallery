@@ -25,8 +25,10 @@
                 {!! Form::text('name', null, array('class' => 'form-control', 'required')) !!}
             </div>
         </div>
-        <center>
-            {!! Form::submit((isset($type) && $type == 'edit' ? 'Сохранить изменения' : 'Создать группу' ), array('class' => 'btn btn-primary')) !!}       
-        </center>
+        <div class="modal-footer">
+            <center>
+                {!! Form::submit((isset($type) && $type == 'edit' ? 'Сохранить изменения' : 'Создать категорию' ), array('class' => 'btn btn-primary')) !!}       
+            </center>
+        </div>
 
     {!! Form::close() !!}

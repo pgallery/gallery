@@ -14,6 +14,7 @@ use App\Models\Roles;
 use Auth;
 use Helper;
 use Setting;
+use Transliterate;
 use Viewer;
 use Image;
 use Cache;
@@ -40,6 +41,10 @@ class InterfaceController extends Controller
      */
     public function getPage(Router $router){
         
+        $transliterateMap = '';
+        foreach (Transliterate::getMap() as $key => $value)
+            $transliterateMap .= "'" . $key . "': '" . $value . "', ";        
+        
         $categories = Cache::remember('admin.show.categories', self::SHOWADMIN_CACHE_TTL, function() {
             return $this->categories->All();
         });
@@ -48,10 +53,10 @@ class InterfaceController extends Controller
             return $this->categories->orderBy('name')->pluck('name','id');
         });
         
-        if($router->input('option') == 'byGroup' and is_numeric($router->input('id'))) {
-            $byGroupId = $router->input('id');
-            $albums = Cache::remember('admin.show.albums.byCategory.' . $byGroupId, self::SHOWADMIN_CACHE_TTL, function() use ($byGroupId) {
-                return $this->albums->where('categories_id', $byGroupId)->get();
+        if($router->input('option') == 'byCategory' and is_numeric($router->input('id'))) {
+            $byCategoryId = $router->input('id');
+            $albums = Cache::remember('admin.show.albums.byCategory.' . $byCategoryId, self::SHOWADMIN_CACHE_TTL, function() use ($byCategoryId) {
+                return $this->albums->where('categories_id', $byCategoryId)->get();
             });
         } else {
             $albums = Cache::remember('admin.show.albums', self::SHOWADMIN_CACHE_TTL, function() {
@@ -68,6 +73,7 @@ class InterfaceController extends Controller
         return Viewer::get('admin.page.index', compact(
             'thumbs_dir',
             'albums', 
+            'transliterateMap',
             'categories',
             'categoriesArray',                
             'usersArray'
@@ -79,9 +85,13 @@ class InterfaceController extends Controller
      * Отображение общей формы создания групп/альбомов/изображений на странице администратора
      */    
     public function getCreateForm(){
+
+        $transliterateMap = '';
+        foreach (Transliterate::getMap() as $key => $value)
+            $transliterateMap .= "'" . $key . "': '" . $value . "', ";
         
-        $categoriesArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
-            return Groups::orderBy('name')->pluck('name','id');
+        $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
+            return Categories::orderBy('name')->pluck('name','id');
         });
         
         $albumsArray = Cache::remember('admin.show.albumsArray', self::SHOWADMIN_CACHE_TTL, function() {
@@ -90,7 +100,8 @@ class InterfaceController extends Controller
         
         return Viewer::get('admin.page.create', compact(
             'albumsArray', 
-            'groupsArray'
+            'categoriesArray',
+            'transliterateMap'
         ));
     }
 }
