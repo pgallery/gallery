@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="page-header">
-      <h2>{{ $thisAlbum->group()->name }} > {{ $thisAlbum->name }} > Фотографии <a href="" data-toggle="modal" data-target="#uploadsModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h2>
+      <h2>{{ $thisAlbum->category()->name }} > {{ $thisAlbum->name }} > Фотографии <a href="" data-toggle="modal" data-target="#uploadsModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h2>
     </div>
 
 {{ $listImages->links() }}

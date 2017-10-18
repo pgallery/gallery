@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\queues::class,
         Commands\usermod::class,
+        Commands\usercreate::class,
     ];
 
     /**

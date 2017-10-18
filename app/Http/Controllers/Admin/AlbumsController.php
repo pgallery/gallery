@@ -10,7 +10,7 @@ use App\Http\Requests\AlbumsEditRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
-use App\Models\Groups;
+use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Images;
 
@@ -30,17 +30,17 @@ class AlbumsController extends Controller {
     const SHOWADMIN_CACHE_TTL = 10080;
 
     protected $users;
-    protected $groups;
+    protected $categories;
     protected $albums;
     protected $images;
 
-    public function __construct(User $users, Groups $groups, Albums $albums, Images $images) {
+    public function __construct(User $users, Categories $categories, Albums $albums, Images $images) {
         $this->middleware('g2fa');
 
-        $this->users  = $users;
-        $this->groups = $groups;
-        $this->albums = $albums;
-        $this->images = $images;
+        $this->users      = $users;
+        $this->categories = $categories;
+        $this->albums     = $albums;
+        $this->images     = $images;
     }
 
     /*
@@ -58,15 +58,14 @@ class AlbumsController extends Controller {
      */
     public function getEditAlbum(Router $router) {
 
-        $album = $this->albums->find($router->input('id'));
-        $groupsArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
-            return $this->groups->orderBy('name')->pluck('name','id');
+        $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
+            return $this->categories->orderBy('name')->pluck('name','id');
         });
 
         return Viewer::get('admin.album.edit', [
-                    'type' => 'edit',
-                    'album' => $album,
-                    'groupsArray' => $groupsArray,
+                    'type'            => 'edit',
+                    'album'           => $this->albums->find($router->input('id')),
+                    'categoriesArray' => $categoriesArray,
         ]);
     }
 
@@ -84,7 +83,7 @@ class AlbumsController extends Controller {
         $this->albums->create($input);
 
         $album_directory = Setting::get('upload_dir') . "/" . $input['directory'];
-
+        
         if (!File::isDirectory($album_directory))
             File::makeDirectory($album_directory, 0755, true);
 

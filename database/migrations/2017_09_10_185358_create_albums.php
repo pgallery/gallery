@@ -22,7 +22,7 @@ class CreateAlbums extends Migration
             $table->bigInteger('year')->default('1');
             $table->string('desc')->default('NULL');
             $table->enum('permission', array('All', 'Url', 'Pass'))->default('All');
-            $table->bigInteger('groups_id')->default('1');
+            $table->bigInteger('categories_id')->default('1');
             $table->bigInteger('users_id')->default('1');
             $table->softDeletes();
             $table->timestamps();

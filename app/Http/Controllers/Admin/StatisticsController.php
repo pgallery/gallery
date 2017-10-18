@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
-use App\Models\Groups;
+use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Images;
 
@@ -16,26 +16,26 @@ class StatisticsController extends Controller
 {
     
     protected $users;
-    protected $groups;
+    protected $categories;
     protected $albums;
     protected $images;
 
-    public function __construct(User $users, Groups $groups, Albums $albums, Images $images) {
+    public function __construct(User $users, Categories $categories, Albums $albums, Images $images) {
         $this->middleware('g2fa');
 
-        $this->users  = $users;
-        $this->groups = $groups;
-        $this->albums = $albums;
-        $this->images = $images;
+        $this->users      = $users;
+        $this->categories = $categories;
+        $this->albums     = $albums;
+        $this->images     = $images;
     }
     
     public function getStatistics() {
         
-        return Viewer::get('admin.page.statistics', [
-            'count_users' => $this->users->count(),
-            'count_groups'=> $this->groups->count(),
-            'count_albums'=> $this->albums->count(),
-            'count_images'=> $this->images->count(),
+        return Viewer::get('admin.statistics.index', [
+            'count_users'         => $this->users->count(),
+            'count_categories'    => $this->categories->count(),
+            'count_albums'        => $this->albums->count(),
+            'count_images'        => $this->images->count(),
             'summary_images_size' => \Helper::formatBytes($this->images->sum('size')),
         ]);
         

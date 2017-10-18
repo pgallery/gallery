@@ -66,8 +66,8 @@ class AlbumsController extends Controller
             if(!Auth::check() or !Helper::isAdmin(Auth::user()->id))
                 $AlbumsQuery = $AlbumsQuery->where('permission', 'All');
 
-            if($router->input('option') == "byGroup" and is_numeric($router->input('id')))
-                $AlbumsQuery = $AlbumsQuery->where('groups_id', $router->input('id'));
+            if($router->input('option') == "byCategory" and is_numeric($router->input('id')))
+                $AlbumsQuery = $AlbumsQuery->where('categories_id', $router->input('id'));
             elseif($router->input('option') == "byYear" and is_numeric($router->input('id')))
                 $AlbumsQuery = $AlbumsQuery->where('year', $router->input('id'));
 

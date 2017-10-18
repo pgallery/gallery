@@ -3,7 +3,7 @@
 @section('content')
 
 
-<h3>Группы <small>@if(Helper::isAdmin(Auth::user()->id))<a href="" data-toggle="modal" data-target="#newGroupModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
+<h3>Категории <small>@if(Helper::isAdmin(Auth::user()->id))<a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
 <table id="group-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -27,10 +27,10 @@
 
         </tfoot>
         <tbody>
-    @foreach($groups as $group)
+    @foreach($categories as $category)
         
             <tr>
-                <td>{{ $group->id }}</td>
+                <td>{{ $category->id }}</td>
                 <td> 
                     @if(Helper::isAdmin(Auth::user()->id))
                     <!-- Single button -->
@@ -39,19 +39,19 @@
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a href="{{ route('edit-group', ['id' => $group->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
+                        <li><a href="{{ route('edit-category', ['id' => $category->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{ route('delete-group', ['id' => $group->id]) }}" data-toggle="confirmation" data-title="Удалить группу, а так же все альбомы и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
+                        <li><a href="{{ route('delete-category', ['id' => $category->id]) }}" data-toggle="confirmation" data-title="Удалить категорию, а так же все альбомы и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
                     </div>                    
                     @endif
-                     <a href="{{ route('admin', ['options' => 'byGroup', 'id' => $group->id]) }}">{{ $group['name'] }}</a>
+                     <a href="{{ route('admin', ['options' => 'byGroup', 'id' => $category->id]) }}">{{ $category->name }}</a>
                 </td>
 
-                <td>{{ $group->albumCount() }}</td>
-                <td>{{ $group->albumCountPublic() }}</td>
-                <td>{{ $group->albumCountPrivate() }}</td>
-                <td>{{ $group->owner()->name }}</td>
+                <td>{{ $category->albumCount() }}</td>
+                <td>{{ $category->albumCountPublic() }}</td>
+                <td>{{ $category->albumCountPrivate() }}</td>
+                <td>{{ $category->owner()->name }}</td>
             </tr>
 
     @endforeach
@@ -71,7 +71,7 @@
                 <th>Миниатюра</th>
                 <th>Фотографий</th>
                 <th>Объем</th>
-                <th>Группа</th>
+                <th>Категория</th>
                 <th>Год</th>
                 <th>Доступ</th>
                 <th>Владелец</th>
@@ -85,7 +85,7 @@
                 <th>Миниатюра</th>
                 <th>Фотографий</th>
                 <th>Объем</th>
-                <th>Группа</th>
+                <th>Категория</th>
                 <th>Год</th>
                 <th>Доступ</th>
                 <th>Владелец</th>
@@ -143,7 +143,7 @@
                 </td>
                 <td>{{ $album->imagesCount() }}</td>
                 <td>{{ $album->imagesSumSize() }}</td>
-                <td>{{ $album->group()->name }}</td>
+                <td>{{ $album->category()->name }}</td>
                 <td>{{ $album->year }}</td>
                 <td>{{ ($album->permission == 'All' ? "Всем" : "По ссылке") }}</td>
                 <td>{{ $album->owner()->name }}</td>
@@ -157,18 +157,17 @@
 
 @if(Helper::isAdmin(Auth::user()->id))
 <!-- Modal add Group -->
-<div class="modal fade" id="newGroupModal" tabindex="-1" role="dialog" aria-labelledby="newGroupModalLabel">
+<div class="modal fade" id="newCategoriesModal" tabindex="-1" role="dialog" aria-labelledby="newCategoriesModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="newGroupModalLabel">Добавление группы</h4>
+        <h4 class="modal-title" id="newCategoriesModalLabel">Добавление категории</h4>
       </div>
         
-
       <div class="modal-body">
           
-         @include('default.admin.group.create_form')
+         @include('default.admin.category.create_form')
             
       </div>
           

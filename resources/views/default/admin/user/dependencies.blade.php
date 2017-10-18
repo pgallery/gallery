@@ -10,8 +10,8 @@
     <b>
     ВНИМАНИЕ! При удалении пользователя "{{ $user->name }}" были обнаружены связанные объекты:
     <br>
-    @if($user->groupsCount() != 0)
-        <br>Группы: {{ $user->groupsCount() }}
+    @if($user->categoriesCount() != 0)
+        <br>Группы: {{ $user->categoriesCount() }}
     @endif
     
     @if($user->albumsCount() != 0)

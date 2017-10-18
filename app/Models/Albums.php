@@ -13,13 +13,13 @@ class Albums extends Model
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
-        'name', 'url', 'directory', 'images_id', 'year', 'desc', 'permission', 'groups_id', 'users_id'
+        'name', 'url', 'directory', 'images_id', 'year', 'desc', 'permission', 'categories_id', 'users_id'
     ];
     
-    public function group()
+    public function category()
     {
-        return \Cache::remember('albums.group_' . $this->groups_id . '_cache', 100, function(){
-            return $this->hasOne('App\Models\Groups', 'id', 'groups_id')->select('name')->first();
+        return \Cache::remember('albums.category_' . $this->categories_id . '_cache', 100, function(){
+            return $this->hasOne('App\Models\Categories', 'id', 'categories_id')->select('name')->first();
         });
     }
     

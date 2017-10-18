@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Models\Roles;
-use App\Models\Groups;
+use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Images;
 
@@ -21,17 +21,17 @@ class UsersController extends Controller
 {
     protected $user;
     protected $roles;
-    protected $groups;
+    protected $categories;
     protected $albums;
     protected $images;
 
-    public function __construct(User $user, Roles $roles, Groups $groups, Albums $albums, Images $images) {
+    public function __construct(User $user, Roles $roles, Categories $categories, Albums $albums, Images $images) {
         
         $this->middleware('g2fa');
         
         $this->user    = $user;
         $this->roles   = $roles;
-        $this->groups  = $groups;
+        $this->categories  = $categories;
         $this->albums  = $albums;
         $this->images  = $images;
     }
@@ -109,7 +109,7 @@ class UsersController extends Controller
         
         $issetObject = false;
         
-        if($user->groupsCount() != 0) $issetObject = true;
+        if($user->categoriesCount() != 0) $issetObject = true;
         if($user->albumsCount() != 0) $issetObject = true;
         if($user->imagesCount() != 0) $issetObject = true;
         
@@ -139,13 +139,12 @@ class UsersController extends Controller
         $id     = $router->input('id');
         $user   = $this->user->find($id);
         
-        if($user->groupsCount() != 0) {
+        if($user->categoriesCount() != 0) {
             
-            $userGroups = $user->groups()->get();
+            $userCategories = $user->categories()->get();
             
-            foreach ($userGroups as $group) {
-                echo "GrID: " . $group->id . "<br>";
-                $this->groups->deleteWithAlbums($group->id);
+            foreach ($userCategories as $category) {
+                $this->categories->deleteWithAlbums($category->id);
             }
             
         }
@@ -186,7 +185,7 @@ class UsersController extends Controller
         $id       = $router->input('id');
         $newOwner = $request->input('newOwner');
 
-        $this->groups->where('users_id', $id)->update(['users_id' => $newOwner]);
+        $this->categories->where('users_id', $id)->update(['users_id' => $newOwner]);
         $this->albums->where('users_id', $id)->update(['users_id' => $newOwner]);
         $this->images->where('users_id', $id)->update(['users_id' => $newOwner]);        
         

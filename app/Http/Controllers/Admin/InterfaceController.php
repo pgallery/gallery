@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
-use App\Models\Groups;
+use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Roles;
 
@@ -24,15 +24,15 @@ class InterfaceController extends Controller
     const SHOWADMIN_CACHE_TTL = 10080;
     
     protected $users;
-    protected $groups;
+    protected $categories;
     protected $albums;
     
-    public function __construct(User $users, Groups $groups, Albums $albums) {
+    public function __construct(User $users, Categories $categories, Albums $albums) {
         $this->middleware('g2fa');
     
-        $this->users  = $users;
-        $this->groups = $groups;
-        $this->albums = $albums;
+        $this->users      = $users;
+        $this->categories = $categories;
+        $this->albums     = $albums;
     }
     
     /*
@@ -40,18 +40,18 @@ class InterfaceController extends Controller
      */
     public function getPage(Router $router){
         
-        $groups = Cache::remember('admin.show.groups', self::SHOWADMIN_CACHE_TTL, function() {
-            return $this->groups->All();
+        $categories = Cache::remember('admin.show.categories', self::SHOWADMIN_CACHE_TTL, function() {
+            return $this->categories->All();
         });
         
-        $groupsArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
-            return $this->groups->orderBy('name')->pluck('name','id');
+        $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
+            return $this->categories->orderBy('name')->pluck('name','id');
         });
         
         if($router->input('option') == 'byGroup' and is_numeric($router->input('id'))) {
             $byGroupId = $router->input('id');
-            $albums = Cache::remember('admin.show.albums.byGroup.' . $byGroupId, self::SHOWADMIN_CACHE_TTL, function() use ($byGroupId) {
-                return $this->albums->where('groups_id', $byGroupId)->get();
+            $albums = Cache::remember('admin.show.albums.byCategory.' . $byGroupId, self::SHOWADMIN_CACHE_TTL, function() use ($byGroupId) {
+                return $this->albums->where('categories_id', $byGroupId)->get();
             });
         } else {
             $albums = Cache::remember('admin.show.albums', self::SHOWADMIN_CACHE_TTL, function() {
@@ -66,10 +66,10 @@ class InterfaceController extends Controller
         $thumbs_dir = Setting::get('thumbs_dir');
         
         return Viewer::get('admin.page.index', compact(
-            'groupsArray',
             'thumbs_dir',
             'albums', 
-            'groups',
+            'categories',
+            'categoriesArray',                
             'usersArray'
         ));
         
@@ -80,7 +80,7 @@ class InterfaceController extends Controller
      */    
     public function getCreateForm(){
         
-        $groupsArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
+        $categoriesArray = Cache::remember('admin.show.groupsArray', self::SHOWADMIN_CACHE_TTL, function() {
             return Groups::orderBy('name')->pluck('name','id');
         });
         

@@ -14,8 +14,8 @@
 </li>
 
 <li class="list-group-item">
-    <span class="badge">{{ $count_groups }}</span>
-    Количество групп:
+    <span class="badge">{{ $count_categories }}</span>
+    Количество категорий:
 </li>
 
 

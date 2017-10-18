@@ -24,11 +24,10 @@ class AlbumsEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required|string', 
-//            'url'           => 'required|unique:albums',
+            'name'          => 'required|string',
             'url'           => 'required',
             'year'          => 'required|numeric',
-            'groups_id'     => 'required|numeric',
+            'categories_id' => 'required|numeric',
         ];
     }
     
@@ -40,13 +39,12 @@ class AlbumsEditRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'         => 'Поле "Название" обязательно для заполнения',
-            'url.required'          => 'Поле "URL" обязательно для заполнения',
-//            'url.unique'            => 'Поле "URL" должно быть уникальным, возможно уже создан альбом с данным URL',
-            'year.required'         => 'Поле "Год" обязательно для заполнения',
-            'year.numeric'          => 'Поле "Год" должно содержать только цифры',
-            'groups_id.required'    => 'Поле "Группа" обязательно для заполнения',
-            'groups_id.numeric'     => 'Поле "Группа" должно содержать только цифры',
+            'name.required'          => 'Поле "Название" обязательно для заполнения',
+            'url.required'           => 'Поле "URL" обязательно для заполнения',
+            'year.required'          => 'Поле "Год" обязательно для заполнения',
+            'year.numeric'           => 'Поле "Год" должно содержать только цифры',
+            'categories_id.required' => 'Поле "Категория" обязательно для заполнения',
+            'categories_id.numeric'  => 'Поле "Категория" должно содержать только цифры',
         ];
     }
 }

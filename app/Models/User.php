@@ -35,12 +35,12 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Roles', 'roles_user');
     }
     
-    public function groupsCount() {
-        return $this->hasMany('App\Models\Groups', 'users_id', 'id')->count();
+    public function categoriesCount() {
+        return $this->hasMany('App\Models\Categories', 'users_id', 'id')->count();
     }
 
-    public function groups() {
-        return $this->hasMany('App\Models\Groups', 'users_id', 'id');
+    public function categories() {
+        return $this->hasMany('App\Models\Categories', 'users_id', 'id');
     }
     
     public function albumsCount() {

@@ -45,9 +45,9 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">Группа:</label>
+            <label class="col-sm-2 control-label">Категория:</label>
             <div class="col-sm-4">
-                {{ $thisAlbum->group()->name }}
+                {{ $thisAlbum->category()->name }}
             </div>
             <label class="col-sm-2 control-label">Права:</label>
             <div class="col-sm-4">

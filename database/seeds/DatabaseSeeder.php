@@ -14,6 +14,5 @@ class DatabaseSeeder extends Seeder
         $this->call(baseConfig::class);
         $this->call(baseRoles::class);
         $this->call(baseUsers::class);
-        $this->call(addFormatSettings::class);
     }
 }

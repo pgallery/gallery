@@ -3,9 +3,9 @@
 @section('content')
       
     <div class="page-header">
-      <h2>Редактирование группы </h2>
+      <h2>Редактирование категории </h2>
     </div>
 
-      @include('default.admin.group.create_form')
+      @include('default.admin.category.create_form')
    
 @endsection

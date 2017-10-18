@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\User;
-use App\Models\Groups;
+use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Images;
 
@@ -35,24 +35,24 @@ class Viewer
                 $year_list = Albums::select('year')->where('permission', 'All')->groupBy('year')->get();            
             
             $static = [
-                'group_list'        => Groups::orderBy('name')->get(),
+                'group_list'        => Categories::orderBy('name')->get(),
                 'year_list'         => $year_list, 
                 'gallery_name'      => Setting::get('gallery_name'),
             ];
             
             if(Auth::check() and Helper::isAdminMenu(Auth::user()->id)) {
 
-                $CountTrashedUsers  = User::onlyTrashed()->count();
-                $CountTrashedGroups = Groups::onlyTrashed()->count();
-                $CountTrashedAlbums = Albums::onlyTrashed()->count();
-                $CountTrashedImages = Images::onlyTrashed()->count();
+                $CountTrashedUsers      = User::onlyTrashed()->count();
+                $CountTrashedCategories = Categories::onlyTrashed()->count();
+                $CountTrashedAlbums     = Albums::onlyTrashed()->count();
+                $CountTrashedImages     = Images::onlyTrashed()->count();
             
                 $TrashedMenu = [
-                    'summary_trashed'   => $CountTrashedUsers + $CountTrashedGroups + $CountTrashedAlbums + $CountTrashedImages,
-                    'users_trashed'     => $CountTrashedUsers,
-                    'groups_trashed'    => $CountTrashedGroups,
-                    'albums_trashed'    => $CountTrashedAlbums,
-                    'images_trashed'    => $CountTrashedImages,
+                    'summary_trashed'       => $CountTrashedUsers + $CountTrashedCategories + $CountTrashedAlbums + $CountTrashedImages,
+                    'users_trashed'         => $CountTrashedUsers,
+                    'categories_trashed'    => $CountTrashedCategories,
+                    'albums_trashed'        => $CountTrashedAlbums,
+                    'images_trashed'        => $CountTrashedImages,
                 ];                
                 
                 $static = array_merge($TrashedMenu, $static); 

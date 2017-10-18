@@ -53,12 +53,12 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">Группа:</label>
+            <label class="col-sm-2 control-label">Категория:</label>
             <div class="col-sm-4">
                 
-                        {!! Form::select('groups_id', $groupsArray, null,
-                        (count($groupsArray) == 0 
-                            ? array_merge(['placeholder' => 'Отсутствуют группы', 'class' => 'form-control'], ['disabled' => '']) 
+                        {!! Form::select('categories_id', $categoriesArray, null,
+                        (count($categoriesArray) == 0 
+                            ? array_merge(['placeholder' => 'Нет категорий', 'class' => 'form-control'], ['disabled' => '']) 
                             : array('class' => 'form-control')
                         )) !!}                
                 
@@ -84,7 +84,7 @@
         {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
     @else
         {!! Form::submit('Создать альбом', 
-        (count($groupsArray) == 0 
+        (count($categoriesArray) == 0 
             ? array_merge(['class' => 'btn btn-primary'], ['disabled' => '']) 
             : array('class' => 'btn btn-primary')
         )) !!}

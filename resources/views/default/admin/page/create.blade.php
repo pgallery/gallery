@@ -21,7 +21,7 @@
         
         <div class="panel panel-default">
           <div class="panel-body">
-            Создание группы
+            Создание категории
           </div>
         </div>        
         

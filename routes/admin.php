@@ -42,7 +42,7 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
-// Статус фоновых задач
+// Статистика
 Route::get('/statistics/', [
     'as'            => 'statistics', 
     'uses'          => 'StatisticsController@getStatistics',
@@ -122,25 +122,25 @@ Route::post('/users/save/{id}', [
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
 
-// Группы
-Route::get('/group/edit/{id}', [
-    'as'            => 'edit-group',
-    'uses'          => 'GroupsController@getEditGroup',
+// Категории
+Route::get('/category/edit/{id}', [
+    'as'            => 'edit-category',
+    'uses'          => 'CategoriesController@getEditСategory',
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
-Route::post('/group/save/{id}', [
-    'as'            => 'save-group',
-    'uses'          => 'GroupsController@putSaveGroup',
+Route::post('/category/save/{id}', [
+    'as'            => 'save-category',
+    'uses'          => 'CategoriesController@putSaveСategory',
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
-Route::get('/group/delete/{id}', [
-    'as'            => 'delete-group',
-    'uses'          => 'GroupsController@deleteGroup',
+Route::get('/category/delete/{id}', [
+    'as'            => 'delete-category',
+    'uses'          => 'CategoriesController@deleteСategory',
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
-Route::post('/group/create/', [
-    'as'            => 'create-group', 
-    'uses'          => 'GroupsController@postCreateGroup',
+Route::post('/category/create/', [
+    'as'            => 'create-category', 
+    'uses'          => 'CategoriesController@postCreateСategory',
     'middleware'    => 'role:admin'
 ]);
 

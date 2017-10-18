@@ -13,14 +13,14 @@
           <ul class="nav navbar-nav">
             <li><a href="{{ route('home') }}">Галерея</a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">По группам <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">По категориям <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     
                       @if(Auth::check() && Helper::isAdmin(Auth::user()->id))
                     
                         @foreach($group_list as $group)
                             @if( $group->albumCount() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'byGroup', 'id' => $group->id]) }}">{{ $group->name }} ({{ $group->albumCount() }})</a></li>
+                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $group->id]) }}">{{ $group->name }} ({{ $group->albumCount() }})</a></li>
                             @endif
                         @endforeach                      
                       
@@ -28,7 +28,7 @@
                       
                         @foreach($group_list as $group)
                             @if( $group->albumCountPublic() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'byGroup', 'id' => $group->id]) }}">{{ $group->name }} ({{ $group->albumCountPublic() }})</a></li>
+                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $group->id]) }}">{{ $group->name }} ({{ $group->albumCountPublic() }})</a></li>
                             @endif
                         @endforeach                      
                       
@@ -76,7 +76,7 @@
                   <ul class="dropdown-menu">
                     @if(Helper::isAdmin(Auth::user()->id))
                         <li><a href="{{ route('show-trash', ['option' => 'users']) }}">Пользователи ({{ $users_trashed }})</a></li>
-                        <li><a href="{{ route('show-trash', ['option' => 'groups']) }}">Группы ({{ $groups_trashed }})</a></li>
+                        <li><a href="{{ route('show-trash', ['option' => 'groups']) }}">Группы ({{ $categories_trashed }})</a></li>
                     @endif
                     <li><a href="{{ route('show-trash', ['option' => 'albums']) }}">Альбомы ({{ $albums_trashed }})</a></li>
                     <li><a href="{{ route('show-trash', ['option' => 'images']) }}">Фотографии ({{ $images_trashed }})</a></li>
