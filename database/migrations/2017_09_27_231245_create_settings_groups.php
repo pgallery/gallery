@@ -14,10 +14,11 @@ class CreateSettingsGroups extends Migration
     public function up()
     {
         Schema::create('settings_groups', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('setgroup_key')->unique();
             $table->string('setgroup_name');
             $table->string('setgroup_desc');
+            
             $table->timestamps();
         });
     }

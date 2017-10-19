@@ -14,7 +14,7 @@ class CreateAlbums extends Migration
     public function up()
     {
         Schema::create('albums', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
             $table->string('url')->default('NULL');
             $table->string('directory')->default('NULL');
@@ -24,8 +24,9 @@ class CreateAlbums extends Migration
             $table->enum('permission', array('All', 'Url', 'Pass'))->default('All');
             $table->bigInteger('categories_id')->default('1');
             $table->bigInteger('users_id')->default('1');
-            $table->softDeletes();
+            
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

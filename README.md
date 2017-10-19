@@ -2,8 +2,6 @@
 
 НАХОДИТСЯ В РАЗРАБОТКЕ!
 
-[Сайт](https://pgallery.ru/)
-
-[Документация](https://pgallery.ru/docs/)
-
-[Скриншоты](https://pgallery.ru/screenshot/)
+  1. [Сайт](https://pgallery.ru/)
+  2. [Документация](https://pgallery.ru/docs/)
+  3. [Скриншоты](https://pgallery.ru/screenshot/)

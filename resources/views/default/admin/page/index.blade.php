@@ -355,6 +355,6 @@
             $("#album_url").val(ToUrl($(this).val()));
             $("#album_directory").val(Transliterate($(this).val()));
             
-        });        
+        });
         
 @endsection

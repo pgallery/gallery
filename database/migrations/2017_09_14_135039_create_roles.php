@@ -19,6 +19,7 @@ class CreateRoles extends Migration
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->enum('topanel', array('Y', 'N'))->default('N');
+            
             $table->timestamps();
         });
 

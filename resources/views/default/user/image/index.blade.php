@@ -19,10 +19,8 @@
 <div class="row" id="main"> 
     <div id="allImages">
         
-        
         @include('default.user.image.page')
         
-
     </div>
     
 <a id="back-to-top" href="#" 

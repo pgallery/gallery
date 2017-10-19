@@ -26,8 +26,10 @@ class CreateImages extends Migration
             $table->integer('is_rebuild')->default('0');
             $table->integer('is_thumbs')->default('0');
             $table->integer('is_modile')->default('0');
-            $table->softDeletes();
+            
             $table->timestamps();
+            $table->softDeletes();
+            
             $table->unique(['name', 'albums_id']);
         });
     }

@@ -3,11 +3,10 @@
 @section('content')
 
 <div class="page-header">
-  <h2>Этап номер три</h2>
+  <h2>Третий этап, загрузка фотографий</h2>
 </div>
 
-Простыня разная
-
+@include('default.admin.upload.dropzone')
 
 <nav aria-label="Завершить ознакомление">
   <ul class="pager">

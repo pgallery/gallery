@@ -24,6 +24,7 @@ class CreateUsers extends Migration
             $table->timestamp('google2fa_ts')->nullable();
             $table->string('google2fa_secret')->nullable();
             $table->rememberToken();
+            
             $table->timestamps();
             $table->softDeletes();
         });

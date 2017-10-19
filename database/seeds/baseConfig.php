@@ -54,6 +54,14 @@ class baseConfig extends Seeder
         $setting_group->save();
         
         $archive = $setting_group->id;
+
+        $setting_group = new SettingsGroups();
+        $setting_group->setgroup_key = 'comment';
+        $setting_group->setgroup_name = 'Комментарии';
+        $setting_group->setgroup_desc = 'Настройки комментариев';
+        $setting_group->save();
+        
+        $comment = $setting_group->id;
         
         Settings::create([
             'set_name'    => 'gallery_name', 
@@ -245,5 +253,17 @@ class baseConfig extends Seeder
                 . 'огруглять формат отображения объема файлов.',
             'set_type'    => 'numeric',
         ]);
+        Settings::create([
+            'set_name'    => 'comment_engine', 
+            'set_value'   => 'None',
+            'set_variations' => 'None,Main,Disqus,VK',
+            'set_desc'    => 'Механизм комментариев',
+            'set_group'   => $comment,
+            'set_tooltip' => 'Выберите механизм комментариев.'
+            . '\n'
+            . 'None - не использовать',
+            
+            'set_type'    => 'select',
+        ]);        
     }
 }

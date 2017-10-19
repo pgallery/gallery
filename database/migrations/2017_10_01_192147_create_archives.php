@@ -14,13 +14,14 @@ class CreateArchives extends Migration
     public function up()
     {
         Schema::create('archives', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
             $table->bigInteger('size')->default('0');
             $table->bigInteger('users_id');
             $table->bigInteger('albums_id');
-            $table->softDeletes();
+            
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

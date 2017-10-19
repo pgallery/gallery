@@ -12,6 +12,6 @@ class Settings extends Model
     public $incrementing = false;
     
     protected $fillable = [
-        'set_name', 'set_value', 'set_desc', 'set_group', 'set_tooltip',
+        'set_name', 'set_value', 'set_variations', 'set_desc', 'set_group', 'set_tooltip',
     ];
 }

@@ -46,7 +46,7 @@ class InterfaceController extends Controller
         });
         
         if($categories->count() == 0)
-            return Viewer::get('admin.wizard.step-1');
+            return redirect()->route('wizard', ['id' => 1]);
 
         $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
             return $this->categories->orderBy('name')->pluck('name','id');
