@@ -86,8 +86,6 @@ class UsersController extends Controller
         else
             $input['google2fa_enabled'] = false;
         
-        print_r($input);
-//        exit;
         $user->update($input);
         $user->roles()->sync($request->input('roles'));
         

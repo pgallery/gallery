@@ -29,6 +29,7 @@ class Viewer
             
         } else {
             
+            
             if(Auth::check() and Helper::isAdmin(Auth::user()->id))
                 $year_list = Albums::select('year')->groupBy('year')->get();
             else

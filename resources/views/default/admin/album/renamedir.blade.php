@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="page-header">
-      <h2>{{ $thisAlbum->group()->name }} > {{ $thisAlbum->name }} > Переименование директории</h2>
+      <h2>{{ $thisAlbum->category()->name }} > {{ $thisAlbum->name }} > Переименование директории</h2>
     </div>
 
 

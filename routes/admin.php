@@ -29,12 +29,6 @@ Route::get('/wizard/step-{id}', [
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
 
-Route::get('/create/all/', [
-    'as'            => 'create', 
-    'uses'          => 'InterfaceController@getCreateForm',
-    'middleware'    => 'role:admin|moderator'
-]);
-
 // Статус фоновых задач
 Route::get('/status/', [
     'as'            => 'status', 

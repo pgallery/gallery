@@ -60,7 +60,7 @@ class Helper
         }
         else
         {
-            return public_path() . "/"  . Setting::get('upload_dir') . "/" .  $path;
+            return public_path(Setting::get('upload_dir') . "/" .  $path);
         }
     }
     
@@ -68,9 +68,9 @@ class Helper
     // $album_id - id альбома по таблице `albums`
     public static function getFullPathThumb($album_id){
         
-        $Albums = Albums::find($album_id);
+        $album = Albums::select('directory')->find($album_id);
         
-        return public_path() . "/" . Setting::get('thumbs_dir') . "/" .  $Albums['directory'];
+        return public_path(Setting::get('thumbs_dir') . "/" .  $album->directory);
         
     }
     
@@ -85,7 +85,7 @@ class Helper
         if($type == 'url')
             return env('APP_URL') . "/" . $path;
         else
-            return public_path() . "/" . $path;        
+            return public_path($path);        
         
     }
     
@@ -93,9 +93,9 @@ class Helper
     // $album_id - id альбома по таблице `albums`
     public static function getFullPathMobile($album_id){
         
-        $Albums = Albums::find($album_id);
+        $album = Albums::select('directory')->find($album_id);
         
-        return public_path() . "/" . Setting::get('mobile_upload_dir') . "/" .  $Albums['directory'];
+        return public_path(Setting::get('mobile_upload_dir') . "/" .  $album->directory);
         
     }
     
@@ -105,12 +105,12 @@ class Helper
         
         $image = Images::withTrashed()->where('id', $image_id)->first();
         
-        $path = Setting::get('mobile_upload_dir') . "/" .  $image->album->directory . "/" . $image['name'];
+        $path = Setting::get('mobile_upload_dir') . "/" .  $image->album->directory . "/" . $image->name;
         
         if($type == 'url')
             return env('APP_URL') . "/" . $path;
         else
-            return public_path() . "/" . $path;          
+            return public_path($path);          
         
     }
     
@@ -118,9 +118,9 @@ class Helper
     // $album_id - id альбома по таблице `albums`    
     public static function getUploadPath($album_id){
         
-        $Albums = Albums::find($album_id);
+        $album = Albums::select('directory')->find($album_id);
         
-        return public_path() . "/" . Setting::get('upload_dir') . "/" .  $Albums['directory'];        
+        return public_path(Setting::get('upload_dir') . "/" .  $album->directory);        
         
     }
     

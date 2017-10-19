@@ -83,7 +83,7 @@ class UploadsController extends Controller
         
         $album = $this->albums->find($album_id);
         
-        $upload_path        = Helper::getUploadPath($album->id);
+        $upload_path        = $album->path();
         $upload_file_name   = Transliterate::get($upload_file->getClientOriginalName());
         
         if(!File::isDirectory($upload_path))

@@ -73,19 +73,20 @@ class AlbumsController extends Controller {
      * Создание нового альбома
      */
     public function postCreateAlbum(AlbumsRequest $request) {
-
-        $input               = $request->all();
-        $input['url']        = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
-        $input['desc']       = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
-        $input['users_id']   = Auth::user()->id;
-        $input['directory']  = Transliterate::get($request->input('directory'));
-
-        $this->albums->create($input);
-
-        $album_directory = Setting::get('upload_dir') . "/" . $input['directory'];
         
-        if (!File::isDirectory($album_directory))
-            File::makeDirectory($album_directory, 0755, true);
+        $album                = new Albums();
+        $album->name          = $request->input('name');
+        $album->url           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
+        $album->directory     = Transliterate::get($request->input('directory'));
+        $album->year          = $request->input('year');
+        $album->desc          = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
+        $album->permission    = $request->input('permission');
+        $album->categories_id = $request->input('categories_id');
+        $album->users_id      = Auth::user()->id;
+        $album->save();
+
+        if (!File::isDirectory($album->path()))
+            File::makeDirectory($album->path(), 0755, true);
 
         Cache::flush();
 
@@ -183,7 +184,7 @@ class AlbumsController extends Controller {
         ];
 
         $album = $this->albums->find($router->input('id'));
-        $images = File::Files(Helper::getUploadPath($album->id));
+        $images = File::Files($album->path());
 
         foreach ($images as $image) {
 
@@ -207,13 +208,14 @@ class AlbumsController extends Controller {
         }
 
         // Проверяем альбом на наличие миниатюры
-        if ($album->images_id == 0)
+        if ($album->images_id == 0) {
+            $thumb = $this->images->where('albums_id', $album->id)->first();
             $this->albums
                     ->find($album->id)
                     ->update([
-                        'images_id' => $this->images->where('albums_id', $album->id)->first()->id
+                        'images_id' => $thumb->id,
                     ]);
-
+        }
         Cache::flush();
 
         return redirect()->route('admin');
@@ -273,12 +275,12 @@ class AlbumsController extends Controller {
         
         $album = $this->albums->find($router->input('id'));
 
-        $upload_path = Helper::getUploadPath($album->id);
-        $mobile_path = Helper::getFullPathMobile($album->id);
-        $thumb_path  = Helper::getFullPathThumb($album->id);
+        $upload_path = $album->path();
+        $mobile_path = $album->mobile_path();
+        $thumb_path  = $album->thumb_path();
         $directory   = Transliterate::get($request->input('directory'));
         
-        if (File::move($upload_path, public_path() . "/" . Setting::get('upload_dir') . "/" . $directory)) {
+        if (File::move($upload_path, public_path(Setting::get('upload_dir') . "/" . $directory))) {
 
             if (\File::isDirectory($mobile_path))
                 \File::deleteDirectory($mobile_path);

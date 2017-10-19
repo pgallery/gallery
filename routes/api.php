@@ -14,3 +14,12 @@ use Illuminate\Http\Request;
 */
 
 //Route::middleware('auth:api')->get('/admin/photo/add', 'PhotoController@Add');
+
+Route::prefix('v1')->group(function () {
+    
+    Route::get('/', [
+        'as'            => 'api', 
+        'uses'          => 'ApiController@getPage',
+    ]);
+    
+});

@@ -16,6 +16,18 @@ class Albums extends Model
         'name', 'url', 'directory', 'images_id', 'year', 'desc', 'permission', 'categories_id', 'users_id'
     ];
     
+    public function path() {
+        return public_path(\Setting::get('upload_dir') . "/" .  $this->directory);
+    }
+
+    public function thumb_path() {
+        return public_path(\Setting::get('thumbs_dir') . "/" .  $this->directory);
+    }
+
+    public function mobile_path() {
+        return public_path(\Setting::get('mobile_upload_dir') . "/" .  $this->directory);
+    }
+    
     public function category()
     {
         return \Cache::remember('albums.category_' . $this->categories_id . '_cache', 100, function(){
@@ -74,9 +86,9 @@ class Albums extends Model
         
         $album = $this->onlyTrashed()->where('id', $id)->first();
         
-        $upload_path = \Helper::getUploadPath($id) . $album->directory;
-        $mobile_path = \Helper::getFullPathMobile($id) . $album->directory;
-        $thumb_path  = \Helper::getFullPathThumb($id) . $album->directory;
+        $upload_path = $this->path();
+        $mobile_path = $this->mobile_path();
+        $thumb_path  = $this->thumb_path();
         
         if(\File::isDirectory($upload_path))
             \File::deleteDirectory($upload_path);

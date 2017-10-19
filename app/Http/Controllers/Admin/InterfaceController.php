@@ -40,7 +40,7 @@ class InterfaceController extends Controller
      * Отображение общего списка групп/альбомов на странице администратора
      */
     public function getPage(Router $router){
-        
+                
         $categories = Cache::remember('admin.show.categories', self::SHOWADMIN_CACHE_TTL, function() {
             return $this->categories->all();
         });
@@ -82,29 +82,5 @@ class InterfaceController extends Controller
             'usersArray'
         ));
         
-    }
-    
-    /*
-     * Отображение общей формы создания групп/альбомов/изображений на странице администратора
-     */    
-    public function getCreateForm(){
-
-        $transliterateMap = '';
-        foreach (Transliterate::getMap() as $key => $value)
-            $transliterateMap .= "'" . $key . "': '" . $value . "', ";
-        
-        $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
-            return Categories::orderBy('name')->pluck('name','id');
-        });
-        
-        $albumsArray = Cache::remember('admin.show.albumsArray', self::SHOWADMIN_CACHE_TTL, function() {
-            return Albums::orderBy('name')->pluck('name','id');
-        });
-        
-        return Viewer::get('admin.page.create', compact(
-            'albumsArray', 
-            'categoriesArray',
-            'transliterateMap'
-        ));
     }
 }

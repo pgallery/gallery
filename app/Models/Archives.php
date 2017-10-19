@@ -21,11 +21,11 @@ class Archives extends Model
         
         $album = Albums::where('url', $album_url)->first();
         
-        $archive_name = public_path() . "/" . \Setting::get('archive_dir') . "/" . $album->directory . ".zip";
+        $archive_name = public_path(\Setting::get('archive_dir') . "/" . $album->directory . ".zip");
         
         if (!\File::exists($archive_name)) {
             
-            $files = glob(\Helper::getUploadPath($album->id) . '/*');
+            $files = glob($album->path() . '/*');
             Zipper::make($archive_name)->add($files)->close();
 
             $archive = self::create([

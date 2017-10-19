@@ -16,7 +16,7 @@ class baseConfig extends Seeder
     {
         
         $setting_group = new SettingsGroups();
-        $setting_group->setgroup_key = 'base';
+        $setting_group->setgroup_key  = 'base';
         $setting_group->setgroup_name = 'Общие';
         $setting_group->setgroup_desc = 'Общие настройки галереи';
         $setting_group->save();
