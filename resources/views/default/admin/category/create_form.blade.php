@@ -22,7 +22,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Название категории:</label>
             <div class="col-sm-6">
-                {!! Form::text('name', null, array('class' => 'form-control', 'required')) !!}
+                {!! Form::text('name', null, array('class' => 'form-control', 'id' => 'name', 'required')) !!}
             </div>
         </div>
         <div class="modal-footer">

@@ -54,6 +54,12 @@ class Albums extends Model
             return $this->hasOne('App\Models\Images', 'id', 'images_id')->select('name')->first();
         });
     }
+
+    public function tags() {
+        return \Cache::remember('albums.tags_' . $this->images_id . '_cache', 100, function(){
+            return $this->belongsToMany('App\Models\Tags');
+        });
+    }
     
     public static function deleteWithImages($id) {
                

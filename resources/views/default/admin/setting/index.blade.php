@@ -100,7 +100,9 @@
 @endsection
 
 @section('js-top')
+
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
+    
 @endsection

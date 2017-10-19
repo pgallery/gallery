@@ -24,7 +24,7 @@
     </p>
 </div>
 
-<h3>Категории <small><a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h3> 
+<h3>Категории <small><a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs" data-whatever="Мои фотографии"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h3> 
 
 @if($categories_count != 0)
     
@@ -60,5 +60,17 @@
     </div>
   </div>
 </div>
+
+@endsection
+
+@section('js-top')
+
+$('#newCategoriesModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var recipient = button.data('whatever')
+
+    var modal = $(this)
+    modal.find('#name').val(recipient)
+})
 
 @endsection
