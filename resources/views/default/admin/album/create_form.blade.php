@@ -64,13 +64,9 @@
 
         <div class="form-group">
             <center>
-                <a class="btn btn-info btn-sm" 
-                   role="button" 
-                   data-toggle="collapse" 
-                   href="#collapseAlbumForm" 
-                   aria-expanded="false" 
-                   aria-controls="collapseAlbumForm">
-                  Дополнительные опции (не обязательны)
+                <a class="btn btn-success btn-sm" role="button" data-toggle="collapse" 
+                   href="#collapseAlbumForm" aria-expanded="false" aria-controls="collapseAlbumForm">
+                  Продвинутые настройки (не обязательны)
                 </a>
             </center>
         </div>

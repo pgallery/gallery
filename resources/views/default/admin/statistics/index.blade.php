@@ -10,28 +10,23 @@
 
 <li class="list-group-item">
     <span class="badge">{{ $count_users }}</span>
-    Количество пользователей:
+    Пользователей:
 </li>
 
 <li class="list-group-item">
     <span class="badge">{{ $count_categories }}</span>
-    Количество категорий:
+    Категорий:
 </li>
 
 
 <li class="list-group-item">
     <span class="badge">{{ $count_albums }}</span>
-    Количество альбомов:
+    Альбомов:
 </li>
 
 <li class="list-group-item">
-    <span class="badge">{{ $count_images }}</span>
-    Количество изображений:
-</li>
-
-<li class="list-group-item">
-    <span class="badge">{{ $summary_images_size }}</span>
-    Объем дискового пространства, занимаемого изображениями:
+    <span class="badge">{{ $count_images }} шт. ({{ $summary_images_size }})</span>
+    Изображений:
 </li>
 
 <li class="list-group-item">

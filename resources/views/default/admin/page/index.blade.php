@@ -2,11 +2,6 @@
 
 @section('content')
 
-
-
-
-
-
 <h3>Категории <small>
         @if(Helper::isAdmin(Auth::user()->id))<a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
 
@@ -187,7 +182,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="newCategoriesModalLabel">Добавление категории</h4>
+        <h4 class="modal-title" id="newCategoriesModalLabel">Новая категория</h4>
       </div>
         
       <div class="modal-body">
@@ -207,7 +202,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="newAlbumModalLabel">Добавление альбома</h4>
+        <h4 class="modal-title" id="newAlbumModalLabel">Новый альбом</h4>
       </div>
         
 

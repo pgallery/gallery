@@ -62,11 +62,12 @@
             
             @if(Helper::isAdminMenu(Auth::user()->id))
             
-                <li><a href="{{ route('admin') }}">Список</a></li>
+                <li><a href="{{ route('admin') }}">Альбомы</a></li>
                 
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Управление <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
                   <ul class="dropdown-menu">
+                    <li><a href="{{ route('wizard', ['id' => '1']) }}">WIZARD</a></li>
                     <li><a href="{{ route('create') }}">Добавление</a></li>
                     @if(Helper::isAdmin(Auth::user()->id))
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
@@ -83,7 +84,7 @@
                   <ul class="dropdown-menu">
                     @if(Helper::isAdmin(Auth::user()->id))
                         <li><a href="{{ route('show-trash', ['option' => 'users']) }}">Пользователи ({{ $users_trashed }})</a></li>
-                        <li><a href="{{ route('show-trash', ['option' => 'groups']) }}">Группы ({{ $categories_trashed }})</a></li>
+                        <li><a href="{{ route('show-trash', ['option' => 'categories']) }}">Категории ({{ $categories_trashed }})</a></li>
                     @endif
                     <li><a href="{{ route('show-trash', ['option' => 'albums']) }}">Альбомы ({{ $albums_trashed }})</a></li>
                     <li><a href="{{ route('show-trash', ['option' => 'images']) }}">Фотографии ({{ $images_trashed }})</a></li>

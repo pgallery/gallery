@@ -41,13 +41,12 @@ class InterfaceController extends Controller
      */
     public function getPage(Router $router){
         
-        $transliterateMap = '';
-        foreach (Transliterate::getMap() as $key => $value)
-            $transliterateMap .= "'" . $key . "': '" . $value . "', ";        
-        
         $categories = Cache::remember('admin.show.categories', self::SHOWADMIN_CACHE_TTL, function() {
             return $this->categories->all();
         });
+        
+        if($categories->count() == 0)
+            return redirect()->route('wizard', ['id' => 1]);
         
         $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
             return $this->categories->orderBy('name')->pluck('name','id');
@@ -69,13 +68,17 @@ class InterfaceController extends Controller
         });
         
         $thumbs_dir = Setting::get('thumbs_dir');
+
+        $transliterateMap = '';
+        foreach (Transliterate::getMap() as $key => $value)
+            $transliterateMap .= "'" . $key . "': '" . $value . "', "; 
         
         return Viewer::get('admin.page.index', compact(
             'thumbs_dir',
-            'albums', 
+            'albums',
             'transliterateMap',
             'categories',
-            'categoriesArray',                
+            'categoriesArray', 
             'usersArray'
         ));
         

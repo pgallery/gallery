@@ -22,12 +22,12 @@ Route::get('/list/{option?}/{id?}', [
     'uses'          => 'InterfaceController@getPage',
     'middleware'    => 'role:admin|moderator'
 ])->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
-//Route::get('/{option?}/{id?}', [
-//    'as'            => 'admin', 
-//    'uses'          => 'InterfaceController@getPage',
-//    'middleware'    => 'role:admin|moderator'
-//])->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 
+Route::get('/wizard/step-{id}', [
+    'as'            => 'wizard', 
+    'uses'          => 'WizardController@getWizard',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
 
 Route::get('/create/all/', [
     'as'            => 'create', 
@@ -61,7 +61,7 @@ Route::get('/trash/{option}/', [
     'middleware'    => 'role:admin|moderator'
 ])->where(['option' => '[a-z]+']);  
 Route::get('/restore/trash/{option}/{id}', [
-    'as'            => 'restoreGroup-trash',
+    'as'            => 'restoreCategory-trash',
     'uses'          => 'TrashController@getRestore',
     'middleware'    => 'role:admin|moderator'
 ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
