@@ -10,7 +10,7 @@
         'route'     => 'save-settings',
         'class'     => 'form-horizontal',
         'method'    => 'POST'
-    ]) !!}  
+    ]) !!}
 
 <ul class="nav nav-tabs">
   @foreach($settings_groups as $setting_group)
@@ -56,12 +56,22 @@
                 <label class="col-sm-6 control-label">{{ $setting->set_desc }}:</label>
                 <div class="col-sm-4"> 
                     @if($setting->set_type == 'yesno')
+                    
                         {!! Form::select("newSetting[$setting->set_name]", [
                             'yes'   => 'Включено',
                             'no'    => 'Отключено'
-                        ], $setting['set_value'], array('class' => 'form-control')) !!}   
+                        ], $setting['set_value'], array('class' => 'form-control')) !!}
+                        
+                    @elseif($setting->set_type == 'select')
+                    
+                        {!! Form::select("newSetting[$setting->set_name]", 
+                            json_decode($setting['set_variations'])
+                        , $setting['set_value'], array('class' => 'form-control')) !!}
+                    
                     @else
+                    
                         {!! Form::text("newSetting[$setting->set_name]", $setting->set_value, array('class' => 'form-control', 'required')) !!}
+                    
                     @endif
 
                 </div>

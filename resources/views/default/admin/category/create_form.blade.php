@@ -26,9 +26,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <center>
-                {!! Form::submit((isset($type) && $type == 'edit' ? 'Сохранить изменения' : 'Создать категорию' ), array('class' => 'btn btn-primary')) !!}       
-            </center>
+            <button type="submit" class="btn btn-default" data-dismiss="modal">Отмена</button>
+
+            {!! Form::submit((isset($type) && $type == 'edit' ? 'Сохранить изменения' : 'Создать категорию' ), array('class' => 'btn btn-primary')) !!}       
+
         </div>
 
     {!! Form::close() !!}

@@ -28,7 +28,7 @@ class SettingsController extends Controller
      * Вывод страницы редактирования настроек
      */
     public function getSettings() {
-        
+    
         return Viewer::get('admin.setting.index', [
             'settings_groups'   => $this->settings_groups->all(),
             'settings'          => $this->settings->all(),
@@ -39,7 +39,7 @@ class SettingsController extends Controller
      * Сохранение изменений настроек
      */
     public function putSettings(Request $request) {
-        
+
         foreach ($request->input('newSetting') as $name => $value) {
             $this->settings->where('set_name', $name)->update(['set_value' => $value]);
         }

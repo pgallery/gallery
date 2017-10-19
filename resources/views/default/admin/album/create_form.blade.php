@@ -90,7 +90,8 @@
         </div>
 
         <div class="modal-footer">
-            <center>
+            <button type="submit" class="btn btn-default" data-dismiss="modal">Отмена</button>
+
             @if(isset($type) && $type == 'edit')
                 {!! Form::submit('Сохранить изменения', array('class' => 'btn btn-primary')) !!}
             @else
@@ -100,7 +101,7 @@
                     : array('class' => 'btn btn-primary')
                 )) !!}
             @endif
-            </center>
+
         </div>
 
     {!! Form::close() !!}
