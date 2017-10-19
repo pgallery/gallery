@@ -263,13 +263,20 @@ class baseConfig extends Seeder
             
             'set_type'    => 'select',
         ]);
-        
         Settings::create([
             'set_name'    => 'comment_disqus', 
-            'set_value'   => '',
+            'set_value'   => '0000',
             'set_desc'    => 'Имя сайта в системе disqus.com',
             'set_group'   => $comment,
             'set_tooltip' => 'Выдается системой disqus.com после регистрации и добавления сайта.',
+            'set_type'    => 'string',
+        ]);
+        Settings::create([
+            'set_name'    => 'comment_vk', 
+            'set_value'   => '0000',
+            'set_desc'    => 'API ID в системе vk.com',
+            'set_group'   => $comment,
+            'set_tooltip' => 'Выдается системой vk.com при подключении виджета комментариев.',
             'set_type'    => 'string',
         ]);
     }

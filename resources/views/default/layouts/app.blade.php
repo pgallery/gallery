@@ -21,12 +21,25 @@
 
     @if (Auth::check())    
     
-    <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="/css/dropzone.css" rel="stylesheet">
+        <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <link href="/css/dropzone.css" rel="stylesheet">
     
     @endif
     
-    <script src="//ulogin.ru/js/ulogin.js"></script>    
+    @if(Setting::get('use_ulogin') == 'yes')
+
+        <script src="//ulogin.ru/js/ulogin.js"></script>    
+
+    @endif
+
+    @if(Setting::get('comment_engine') == 'VK')
+    
+        <script type="text/javascript" src="//vk.com/js/api/openapi.js?150"></script>
+        <script type="text/javascript">
+            VK.init({apiId: {{ Setting::get('comment_vk') }}, onlyWidgets: true});
+        </script>
+
+    @endif
     
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="/js/ie8-responsive-file-warning.js"></script><![endif]-->
