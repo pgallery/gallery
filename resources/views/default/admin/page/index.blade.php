@@ -5,6 +5,17 @@
 <h3>Категории <small>
         @if(Helper::isAdmin(Auth::user()->id))<a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
 
+        <div class="form-group">
+            <center>
+                <a class="btn btn-success btn-sm" role="button" data-toggle="collapse" 
+                   href="#collapseShowCategories" aria-expanded="false" aria-controls="collapseAlbumForm">
+                  Отобразить список категорий
+                </a>
+            </center>
+        </div>
+        <!-- Start collapseShowCategories -->
+        <div class="collapse" id="collapseShowCategories">
+
 @if($categories->count() < 1 and Helper::isAdmin(Auth::user()->id))
 
     <div class="panel panel-danger">
@@ -79,6 +90,8 @@
         </tbody>
     </table>
 
+        </div>
+        <!-- Start collapseShowCategories -->
 
 <h3>Альбомы <small><a href="" data-toggle="modal" data-target="#newAlbumModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h3> 
 
