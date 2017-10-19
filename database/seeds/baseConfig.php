@@ -256,7 +256,7 @@ class baseConfig extends Seeder
         Settings::create([
             'set_name'    => 'comment_engine', 
             'set_value'   => 'None',
-            'set_variations' => '{"None":"Выключен","Main":"Внутренний","Disqus":"Сервис Disqus","VK":"Сервис VK"}',
+            'set_variations' => '{"None":"Выключен","Disqus":"Сервис Disqus","VK":"Сервис VK"}',
             'set_desc'    => 'Механизм комментариев',
             'set_group'   => $comment,
             'set_tooltip' => 'Выберите механизм комментариев.',
