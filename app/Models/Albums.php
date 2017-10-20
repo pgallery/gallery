@@ -80,7 +80,7 @@ class Albums extends Model
     public function imagesSumSize()
     {
         return \Cache::remember('albums.imagesSumSize_' . $this->id . '_cache', 100, function(){
-            return \Helper::formatBytes($this->hasMany('App\Models\Images')->sum('size'));
+            return \App\Helpers\Format::Bytes($this->hasMany('App\Models\Images')->sum('size'));
         });
     }
     

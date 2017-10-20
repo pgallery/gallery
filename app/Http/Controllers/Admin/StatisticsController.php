@@ -36,7 +36,7 @@ class StatisticsController extends Controller
             'count_categories'    => $this->categories->count(),
             'count_albums'        => $this->albums->count(),
             'count_images'        => $this->images->count(),
-            'summary_images_size' => \Helper::formatBytes($this->images->sum('size')),
+            'summary_images_size' => \App\Helpers\Format::Bytes($this->images->sum('size')),
         ]);
         
     }

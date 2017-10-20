@@ -56,20 +56,13 @@ class ImagesController extends Controller
             else
                 $show_admin_panel = 0;             
             
-            if (Agent::isMobile())
-                $upload_dir = Setting::get('mobile_upload_dir');
-            else
-                $upload_dir = Setting::get('upload_dir');         
-
             $listImages = $thisAlbum
                     ->images()
                     ->paginate(Setting::get('count_images'));
 
             $resultData = compact(
-                'upload_dir',
                 'thumbs_width',
                 'thumbs_height',
-                'thumbs_dir',
                 'show_admin_panel',
                 'thisAlbum',
                 'listImages'
