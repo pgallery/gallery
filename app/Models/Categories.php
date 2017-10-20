@@ -21,6 +21,13 @@ class Categories extends Model
             return $this->hasMany('App\Models\Albums')->count();           
         });
     }
+
+    public function albumActiveCount()
+    {
+        return \Cache::remember('categories.albumActiveCount_' . $this->id . '_cache', 100, function(){
+            return $this->hasMany('App\Models\Albums')->where('images_id', '!=', '0')->count();           
+        });
+    }
     
     public function albumCountPublic()
     {
@@ -28,6 +35,13 @@ class Categories extends Model
             return $this->hasMany('App\Models\Albums')->where('albums.permission', 'All')->count();           
         });
     }     
+
+    public function albumActiveCountPublic()
+    {
+        return \Cache::remember('categories.albumActiveCountPublic_' . $this->id . '_cache', 100, function(){
+            return $this->hasMany('App\Models\Albums')->where('images_id', '!=', '0')->where('albums.permission', 'All')->count();           
+        });
+    }    
     
     public function albumCountPrivate()
     {

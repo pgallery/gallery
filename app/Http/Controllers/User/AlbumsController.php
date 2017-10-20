@@ -58,18 +58,22 @@ class AlbumsController extends Controller
         $CacheKey .= ($router->input('url')) ? "." . $router->input('url') : ".Null" ;
         
         if (Cache::has($CacheKey)) {
+            
             $resultData = Cache::get($CacheKey);
+            
         } else {
             
             if($router->input('option') == "tag") {
                 
                 $tags = $this->tags->select('id')->where('name', urldecode($router->input('url')))->first();
                 
-                $albums = $tags->albums;
-
+                if(Roles::is('admin'))
+                    $albums = $tags->albums->where('images_id', '!=', '0');
+                else
+                    $albums = $tags->albums->where('permission', 'All')->where('images_id', '!=', '0');
+                
             } else {
                 
-            
                 $albums = $this->albums->latest('year');
 
                 if(!Roles::is('admin'))
@@ -77,7 +81,7 @@ class AlbumsController extends Controller
 
                 if($router->input('option') == "category" and $router->input('url')) {
 
-                    $category = $this->categories->select('id')->where('name', urldecode($router->input('url')))->first();
+                    $category = $this->categories->select('id')->where('name', urldecode($router->input('url')))->firstOrFail();
                     $albums   = $albums->where('categories_id', $category->id);
 
                 } elseif($router->input('option') == "year" and $router->input('url')) {
@@ -95,8 +99,16 @@ class AlbumsController extends Controller
             $thumbs_height = Setting::get('thumbs_height');
             $thumbs_dir    = Setting::get('thumbs_dir');
             
+            if(Roles::is('admin'))
+                $tags = $this->tags->has('albums')->get();
+            else
+                $tags = $this->tags->whereHas('albums', function ($query) {
+                    $query->where('permission', 'All');
+                })->get();
+            
             $resultData = compact(
                 'albums', 
+                'tags', 
                 'thumbs_width', 
                 'thumbs_height', 
                 'thumbs_dir'

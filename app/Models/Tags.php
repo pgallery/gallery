@@ -17,8 +17,7 @@ class Tags extends Model
     
     public function albums()
     {
-//        return \Cache::remember('tags.album_' . $this->id . '_cache', 100, function(){
-            return $this->belongsToMany('App\Models\Albums', 'tags_albums')->where('permission', 'All');        
-//        });
+        return $this->belongsToMany('App\Models\Albums', 'tags_albums');        
     }
+
 }

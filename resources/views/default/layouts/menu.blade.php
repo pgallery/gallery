@@ -23,7 +23,7 @@
                     
                         @foreach($categories as $category)
                             @if( $category->albumCount() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumCount() }})</a></li>
+                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumActiveCount() }})</a></li>
                             @endif
                         @endforeach                      
                       
@@ -31,7 +31,7 @@
                       
                         @foreach($categories as $category)
                             @if( $category->albumCountPublic() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumCountPublic() }})</a></li>
+                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumActiveCountPublic() }})</a></li>
                             @endif
                         @endforeach                      
                       
