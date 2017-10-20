@@ -3,7 +3,7 @@
 @section('content')
 
 <h3>Категории <small>
-        @if(Helper::isAdmin(Auth::user()->id))<a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
+        @if(Roles::is('admin'))<a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
 
         <div class="form-group">
             <center>
@@ -44,7 +44,7 @@
             <tr>
                 <td>{{ $category->id }}</td>
                 <td> 
-                    @if(Helper::isAdmin(Auth::user()->id))
+                    @if(Roles::is('admin'))
                     <!-- Single button -->
                     <div class="btn-group">
                       <button type="button" class="btn btn-primary  btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -129,7 +129,7 @@
                             <li><a href="{{ route('zip-album', ['url' => $album->url]) }}"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Скачать альбом</a></li>
                         @endif
                         <li><a href="{{ route('uploads-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-paste" aria-hidden="true"></span> Загрузить фотографии</a></li>
-                        @if(Helper::isAdmin(Auth::user()->id))
+                        @if(Roles::is('admin'))
                             <li><a href="{{ route('sync-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Синхронизировать из директории</a></li>
                             <li><a href="{{ route('renamedir-album', ['id' => $album->id]) }}"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Переименовать директорию</a></li>
                             <li><a href="" data-toggle="modal" data-target="#ChangeOwnerAlbumModal" class="clickChangeOwnerAlbum" data-id="{{ $album->id }}" data-owner="{{ $album->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
@@ -174,7 +174,7 @@
     </table>
 
 
-@if(Helper::isAdmin(Auth::user()->id))
+@if(Roles::is('admin'))
 <!-- Modal add Group -->
 <div class="modal fade" id="newCategoriesModal" tabindex="-1" role="dialog" aria-labelledby="newCategoriesModalLabel">
   <div class="modal-dialog" role="document">

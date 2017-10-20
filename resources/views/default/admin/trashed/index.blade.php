@@ -25,7 +25,7 @@
         
             <tr>
                 <td> 
-                    @if(Helper::isAdmin(Auth::user()->id))
+                    @if(Roles::is('admin'))
                     <!-- Single button -->
                     <div class="btn-group">
                       <button type="button" class="btn btn-primary  btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -82,7 +82,7 @@
 
     <div class="container">
 
-        @if(Auth::check() && Helper::isAdmin(Auth::user()->id))        
+        @if(Roles::is('admin'))        
             <div id="showStatus">
                 
             </div>
@@ -127,7 +127,7 @@
         @yield('js-top')
         
         
-        @if (Auth::check() && Helper::isAdmin(Auth::user()->id))
+        @if (Roles::is('admin'))
             
         function showStatus()  
             {      
@@ -159,7 +159,7 @@
           
           @yield('js')
           
-          @if (Auth::check() && Helper::isAdmin(Auth::user()->id))
+          @if (Roles::is('admin'))
           
             showStatus();  
             setInterval('showStatus()',2000);

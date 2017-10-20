@@ -19,7 +19,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">По категориям <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     
-                      @if(Auth::check() && Helper::isAdmin(Auth::user()->id))
+                      @if(Roles::is('admin'))
                     
                         @foreach($categories as $category)
                             @if( $category->albumCount() != 0)
@@ -60,7 +60,7 @@
         @if (Auth::check())
                 
             
-            @if(Helper::isAdminMenu(Auth::user()->id))
+            @if(Roles::is(['admin', 'moderator', 'operator']))
             
                 <li><a href="{{ route('admin') }}">Альбомы</a></li>
                 
@@ -68,7 +68,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a href="{{ route('wizard', ['id' => '1']) }}">WIZARD</a></li>
-                    @if(Helper::isAdmin(Auth::user()->id))
+                    @if(Roles::is('admin'))
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
                         <li><a href="{{ route('settings') }}">Настройки</a></li>
                     @endif
@@ -78,22 +78,23 @@
                   </ul>
                 </li>                
                 
+                @if(Roles::is(['admin', 'moderator']))
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> ({{ $summary_trashed }}) <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    @if(Helper::isAdmin(Auth::user()->id))
+                    @if(Roles::is('admin'))
                         <li><a href="{{ route('show-trash', ['option' => 'users']) }}">Пользователи ({{ $users_trashed }})</a></li>
                         <li><a href="{{ route('show-trash', ['option' => 'categories']) }}">Категории ({{ $categories_trashed }})</a></li>
                     @endif
                     <li><a href="{{ route('show-trash', ['option' => 'albums']) }}">Альбомы ({{ $albums_trashed }})</a></li>
                     <li><a href="{{ route('show-trash', ['option' => 'images']) }}">Фотографии ({{ $images_trashed }})</a></li>
-                    @if(Helper::isAdmin(Auth::user()->id))
+                    @if(Roles::is('admin'))
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('empty-trash') }}">Очистить корзину</a></li>
                     @endif
                   </ul>
-                </li>                 
-            
+                </li>
+                @endif
             @endif
                 
                 <li class="dropdown">

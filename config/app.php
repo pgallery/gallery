@@ -252,7 +252,7 @@ return [
         // User-Agent
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         
-        'Helper' => App\Helpers\Helper::class,
+        'Roles' => App\Helpers\Roles::class,
         'Setting' => App\Helpers\Setting::class,
         'Viewer' => App\Helpers\Viewer::class,
         'Transliterate' => App\Helpers\Transliterate::class,

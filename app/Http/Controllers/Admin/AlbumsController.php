@@ -16,7 +16,6 @@ use App\Models\Tags;
 use App\Models\Images;
 
 use Auth;
-use Helper;
 use Setting;
 use Viewer;
 use Transliterate;

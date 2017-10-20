@@ -12,7 +12,6 @@ use App\Models\Images;
 use Image;
 use File;
 use Auth;
-use Helper;
 use Setting;
 use Transliterate;
 use Cache;

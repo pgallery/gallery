@@ -10,13 +10,13 @@ use App\Models\Images;
 use Auth;
 use Cache;
 use Setting;
-use Helper;
+use Roles;
 
 class Viewer
 {
     public static function get($page, $data = false) {
         
-        if(Auth::check() and Helper::isAdminMenu(Auth::user()->id))
+        if(Roles::is('admin'))
             $CacheKey = 'Admin.';
         else
             $CacheKey = 'User.';        
@@ -29,8 +29,7 @@ class Viewer
             
         } else {
             
-            
-            if(Auth::check() and Helper::isAdmin(Auth::user()->id))
+            if(Roles::is('admin'))
                 $year_list = Albums::select('year')->groupBy('year')->get();
             else
                 $year_list = Albums::select('year')->where('permission', 'All')->groupBy('year')->get();            
@@ -42,7 +41,7 @@ class Viewer
                 'gallery_name'     => Setting::get('gallery_name'),
             ];
             
-            if(Auth::check() and Helper::isAdminMenu(Auth::user()->id)) {
+            if(Roles::is(['admin', 'moderator'])) {
 
                 $CountTrashedUsers      = User::onlyTrashed()->count();
                 $CountTrashedCategories = Categories::onlyTrashed()->count();

@@ -11,7 +11,6 @@ use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Roles;
 
-use Auth;
 use Setting;
 use Transliterate;
 use Viewer;
@@ -40,6 +39,12 @@ class InterfaceController extends Controller
      */
     public function getPage(Router $router){
         
+//        if(\App\Helpers\Roles::is(['admin', 'moderator', 'operator']))
+//            echo "Есть права";
+//        else
+//            echo "А вот хуй!";
+//        
+//        exit;
         $categories = Cache::remember('admin.show.categories', self::SHOWADMIN_CACHE_TTL, function() {
             return $this->categories->all();
         });

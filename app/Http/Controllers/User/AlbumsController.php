@@ -11,7 +11,7 @@ use App\Models\Images;
 use App\Models\Archives;
 
 use Auth;
-use Helper;
+use Roles;
 use Setting;
 use Viewer;
 use Cache;
@@ -33,7 +33,7 @@ class AlbumsController extends Controller
     
     public function getShow(Router $router) {
                 
-        if(Auth::check() and Helper::isAdmin(Auth::user()->id)) {
+        if(Roles::is('admin')) {
         
             $countShowAlbums = Cache::remember('all.showadmin.albums', Setting::get('cache_ttl'), function() {
                 return $this->albums->where('images_id', '!=', '0')->count();
@@ -63,7 +63,7 @@ class AlbumsController extends Controller
         
             $AlbumsQuery = $this->albums->latest('year');
             
-            if(!Auth::check() or !Helper::isAdmin(Auth::user()->id))
+            if(!Roles::is('admin'))
                 $AlbumsQuery = $AlbumsQuery->where('permission', 'All');
 
             if($router->input('option') == "byCategory" and is_numeric($router->input('id')))

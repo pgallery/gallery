@@ -50,7 +50,7 @@
                         <li><a href="{{ route('rotate-image', ['option' => 'right', 'id' => $image->id]) }}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> Повернуть вправо</a></li>
                         <li><a href="{{ route('rotate-image', ['option' => 'top', 'id' => $image->id]) }}"><span class="glyphicon glyphicon-resize-vertical" aria-hidden="true"></span> Перевернуть</a></li>
                         
-                        @if(Helper::isAdmin(Auth::user()->id))
+                        @if(Roles::is('admin'))
                         
                             <li><a href="" data-toggle="modal" data-target="#MoveToAlbumModal" class="clickMoveToAlbum" data-id="{{ $image->id }}" data-album="{{ $thisAlbum->id }}"><span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> Переместить в альбом</a></li>
                             <li><a href="" data-toggle="modal" data-target="#ChangeOwnerModal" class="clickChangeOwner" data-id="{{ $image->id }}" data-owner="{{ $image->owner()->id }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Сменить владельца</a></li>
@@ -72,7 +72,7 @@
                     <br><a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Миниатюра</a> 
                     | 
                     <a href="/{{ $mobile_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Мобильная</a> </td>
-                <td>{{ \Helper::formatBytes($image->size)  }}</td>
+                <td>{{ \App\Helpers\Format::Bytes($image->size)  }}</td>
                 <td>{{ $image->width }}х{{ $image->height }}</td>
                 <td>{{ $image->owner()->name }}</td>
                 

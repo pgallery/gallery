@@ -10,7 +10,7 @@ use App\Models\Albums;
 
 use Auth;
 use Agent;
-use Helper;
+use Roles;
 use Setting;
 use Viewer;
 use Cache;
@@ -36,9 +36,9 @@ class ImagesController extends Controller
         
         if (Agent::isMobile() and !Auth::check())
             $CacheKey = $url . '.Mobile' . $request->input('page');
-        elseif(Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+        elseif(Agent::isMobile() and Roles::is('admin'))
             $CacheKey = $url . '.AdminMobile' . $request->input('page');
-        elseif(!Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+        elseif(!Agent::isMobile() and Roles::is('admin'))
             $CacheKey = $url . '.Admin' . $request->input('page');        
         else
             $CacheKey = $url . $request->input('page');
@@ -51,7 +51,7 @@ class ImagesController extends Controller
             $thumbs_height = Setting::get('thumbs_height');
             $thumbs_dir    = Setting::get('thumbs_dir');
             
-            if(!Agent::isMobile() and Auth::check() and Helper::isAdmin(Auth::user()->id))
+            if(!Agent::isMobile() and Roles::is('admin'))
                 $show_admin_panel = 1;
             else
                 $show_admin_panel = 0;             
