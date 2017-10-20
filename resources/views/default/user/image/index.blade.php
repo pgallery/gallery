@@ -21,7 +21,10 @@
       @endif
   </h2>
   <small>{{ $thisAlbum->desc }}</small>
-  
+    <br>
+    @foreach($thisAlbum->tags as $tag)
+        <a href="{{ route('tag', ['tag' => urlencode($tag->name)]) }}" class="btn btn-default btn-xs" role="button">{{ $tag->name }}</a>
+    @endforeach
 </div>
 
 <div class="row" id="main"> 

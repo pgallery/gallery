@@ -43,9 +43,9 @@ class ImagesController extends Controller
         
         $new_name     = Transliterate::get($request->input('newName'));
         
-        $mobile_image = Helper::getFullPathMobileImage($image->id);
-        $thumb_image  = Helper::getFullPathThumbImage($image->id);
-        $upload_dir   = Helper::getUploadPath($image->albums_id);
+        $mobile_image = $image->mobile_path();
+        $thumb_image  = $image->thumb_path();
+        $upload_dir   = $image->album->path();
         
         if(File::move($upload_dir . "/" . $image->name, $upload_dir . "/" . $new_name)) {
             
@@ -92,7 +92,9 @@ class ImagesController extends Controller
      */
     public function getRotate(Router $router) {
         
-        $file = Helper::getFullPathImage($router->input('id'));
+        $image = $this->images->find($router->input('id'));
+        
+        $file = $image->path();
         
         if($router->input('option') == 'left')
             $rotate = 90;
@@ -104,8 +106,7 @@ class ImagesController extends Controller
         Image::make($file)
             ->rotate($rotate)
             ->save($file);
-
-        $image = $this->images->find($router->input('id'));
+        
         $image->is_rebuild = 1;
         $image->save();
 
@@ -164,10 +165,10 @@ class ImagesController extends Controller
         $this_image     = $this->images->find($request->input('id'));
         $new_album      = $this->albums->find($request->input('MoveToAlbumNew'));
         
-        $old_path       = Helper::getFullPathImage($this_image->id);
-        $new_path       = Helper::getUploadPath($new_album->id) . "/" . $this_image->name;
-        $delete_thumb   = Helper::getFullPathThumbImage($this_image->id);
-        $delete_mobile  = Helper::getFullPathMobileImage($this_image->id);
+        $old_path       = $this_image->path();
+        $new_path       = $new_album->path() . "/" . $this_image->name;
+        $delete_thumb   = $this_image->thumb_path();
+        $delete_mobile  = $this_image->mobile_path();
         
         if(File::move($old_path, $new_path) and $this_image->albums_id != $request->input('MoveToAlbumNew')) {
             

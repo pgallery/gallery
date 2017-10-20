@@ -37,6 +37,12 @@ Route::get('/album/{option}/{id}', [
     'uses'  => 'User\AlbumsController@getShow'    
 ])->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
 
+Route::get('/tag/{option}', [
+    'as'    => 'tag', 
+    'uses'  => 'User\ImagesController@getPage'    
+]);
+
+
 Route::post('/ulogin', 'User\UloginController@login');
 
 // Маршруты авторизации

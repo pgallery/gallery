@@ -16,13 +16,35 @@ class Images extends Model
         'name', 'size', 'albums_id', 'users_id', 'is_rebuild', 'is_thumbs', 'is_modile'
     ];
     
-    public function album()
-    {
+    public function album() {
         return $this->hasOne('App\Models\Albums', 'id', 'albums_id')->withTrashed();
     }
     
-    public function owner()
-    {
+    public function path() {
+        return $this->album->path() . '/' . $this->name;
+    }
+
+    public function http_path() {
+        return $this->album->http_path() . '/' . $this->name;
+    }
+    
+    public function thumb_path() {
+        return $this->album->thumb_path() . '/' . $this->name;
+    }
+
+    public function http_thumb_path() {
+        return $this->album->http_thumb_path() . '/' . $this->name;
+    }    
+    
+    public function mobile_path() {
+        return $this->album->mobile_path() . '/' . $this->name;
+    }
+
+    public function http_mobile_path() {
+        return $this->album->http_mobile_path() . '/' . $this->name;
+    } 
+    
+    public function owner() {
         return \Cache::remember('images.owner_' . $this->users_id . '_cache', 100, function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id', 'name')->first();           
         });

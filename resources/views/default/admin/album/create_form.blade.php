@@ -71,7 +71,7 @@
             </center>
         </div>
 
-        <div class="collapse" id="collapseAlbumForm">
+        <div class="collapse in" id="collapseAlbumForm">
             <div class="form-group">
                 <label class="col-sm-2 control-label">URL:</label>
                 <div class="col-sm-4">
@@ -87,6 +87,15 @@
                     )) !!}
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Теги:</label>
+                <div class="col-sm-10">
+                    {!! Form::text('tags', null, array('class' => 'form-control')) !!}
+                    
+                    <p class="help-block">Теги разделяются запятыми.</p>
+                </div>
+            </div>            
+            
         </div>
 
         <div class="modal-footer">

@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Categories;
 use App\Models\Albums;
+use App\Models\Tags;
 use App\Models\Images;
 
 use Auth;
@@ -32,14 +33,16 @@ class AlbumsController extends Controller {
     protected $users;
     protected $categories;
     protected $albums;
+    protected $tags;
     protected $images;
 
-    public function __construct(User $users, Categories $categories, Albums $albums, Images $images) {
+    public function __construct(User $users, Categories $categories, Albums $albums, Tags $tags, Images $images) {
         $this->middleware('g2fa');
 
         $this->users      = $users;
         $this->categories = $categories;
         $this->albums     = $albums;
+        $this->tags       = $tags;
         $this->images     = $images;
     }
 
@@ -73,7 +76,7 @@ class AlbumsController extends Controller {
      * Создание нового альбома
      */
     public function postCreateAlbum(AlbumsRequest $request) {
-        
+
         $album                = new Albums();
         $album->name          = $request->input('name');
         $album->url           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
@@ -85,6 +88,31 @@ class AlbumsController extends Controller {
         $album->users_id      = Auth::user()->id;
         $album->save();
 
+        if(!empty($request->input('tags'))) {
+            $tags = explode(",", $request->input('tags'));
+            foreach ($tags as $tag) {
+                $tag = trim($tag);
+                
+                if(!empty($tag)) {
+
+                    if ($this->tags->where('name', $tag)->exists()) {
+
+                        $tag_attach = $this->tags->where('name', $tag)->first();
+
+                    }else{
+
+                        $tag_attach = new Tags();
+                        $tag_attach->name = $tag;
+                        $tag_attach->save();
+
+                    }
+
+                    $album->tags()->attach($tag_attach->id);
+                    
+                }
+            }
+        }
+        
         if (!File::isDirectory($album->path()))
             File::makeDirectory($album->path(), 0755, true);
 

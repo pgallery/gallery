@@ -5,7 +5,6 @@ namespace App\Helpers;
 use App\Models\Albums;
 use App\Models\Images;
 
-use Helper;
 use Setting;
 use File;
 use Image;
@@ -14,14 +13,14 @@ class BuildImage
 {
     
     public static function run($id) {
+
+        $image = Images::find($id);
         
-        $album = Images::find($id)->album;
-        
-        $file_path   = Helper::getFullPathImage($id);
-        $thumbs_path = Helper::getFullPathThumb($album->id);
-        $thumbs_file = Helper::getFullPathThumbImage($id);
-        $modile_path = Helper::getFullPathMobile($album->id);
-        $modile_file = Helper::getFullPathMobileImage($id);          
+        $file_path   = $image->path();
+        $thumbs_path = $image->album->thumb_path();
+        $thumbs_file = $image->thumb_path();
+        $modile_path = $image->album->mobile_path();
+        $modile_file = $image->mobile_path();
         
         if (File::exists($thumbs_file))
             File::delete($thumbs_file);
@@ -54,7 +53,7 @@ class BuildImage
 
         $ThumbsSizeImage = $OriginalImage->filesize(); 
 
-        Images::where('id', $id)->update([
+        $image->update([
             'size'          => $imgSize,
             'height'        => $imgHeight,
             'width'         => $imgWidth,
