@@ -6,29 +6,29 @@ use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\Categories;
 use App\Models\Albums;
+use App\Models\Tags;
 use App\Models\Images;
-use App\Models\Archives;
 
 use Auth;
 use Roles;
 use Setting;
 use Viewer;
 use Cache;
-use Carbon\Carbon;
-
-use App\Jobs\ArchivesCleanJob;
 
 class AlbumsController extends Controller
 {
+    protected $categories;    
     protected $albums;
+    protected $tags;    
     protected $images;
-    protected $archives;
     
-    public function __construct(Albums $albums, Images $images, Archives $archives) {
-        $this->albums   = $albums;
-        $this->images   = $images;
-        $this->archives = $archives;        
+    public function __construct(Categories $categories, Albums $albums, Tags $tags, Images $images) {
+        $this->categories = $categories;
+        $this->albums     = $albums;
+        $this->tags       = $tags;
+        $this->images     = $images;       
     }
     
     public function getShow(Router $router) {
@@ -55,25 +55,41 @@ class AlbumsController extends Controller
         
         $CacheKey .= 'Cache.Albums.';
         $CacheKey .= (!empty($router->input('option'))) ? $router->input('option') : "Base" ;
-        $CacheKey .= (is_numeric($router->input('id'))) ? "." . $router->input('id') : ".Null" ;
+        $CacheKey .= ($router->input('url')) ? "." . $router->input('url') : ".Null" ;
         
         if (Cache::has($CacheKey)) {
             $resultData = Cache::get($CacheKey);
         } else {
-        
-            $AlbumsQuery = $this->albums->latest('year');
             
-            if(!Roles::is('admin'))
-                $AlbumsQuery = $AlbumsQuery->where('permission', 'All');
+            if($router->input('option') == "tag") {
+                
+                $tags = $this->tags->select('id')->where('name', urldecode($router->input('url')))->first();
+                
+                $albums = $tags->albums;
 
-            if($router->input('option') == "byCategory" and is_numeric($router->input('id')))
-                $AlbumsQuery = $AlbumsQuery->where('categories_id', $router->input('id'));
-            elseif($router->input('option') == "byYear" and is_numeric($router->input('id')))
-                $AlbumsQuery = $AlbumsQuery->where('year', $router->input('id'));
-
-            $AlbumsQuery = $AlbumsQuery->where('images_id', '!=', '0');
+            } else {
+                
             
-            $albums = $AlbumsQuery->get();
+                $albums = $this->albums->latest('year');
+
+                if(!Roles::is('admin'))
+                    $albums = $albums->where('permission', 'All');
+
+                if($router->input('option') == "category" and $router->input('url')) {
+
+                    $category = $this->categories->select('id')->where('name', urldecode($router->input('url')))->first();
+                    $albums   = $albums->where('categories_id', $category->id);
+
+                } elseif($router->input('option') == "year" and $router->input('url')) {
+
+                    $albums = $albums->where('year', $router->input('url'));
+
+                }
+
+                $albums = $albums->where('images_id', '!=', '0');
+                $albums = $albums->get();
+            
+            }
             
             $thumbs_width  = Setting::get('thumbs_width');
             $thumbs_height = Setting::get('thumbs_height');
@@ -92,27 +108,4 @@ class AlbumsController extends Controller
         return Viewer::get('user.album.index', $resultData);
 
     }
-    
-    /*
-     * Архивация альбома
-     */
-    public function getZip(Router $router) {
-        
-        $archive = $this->archives->createWithZipper($router->input('url'));
-        
-        if(Setting::get('use_queue') == 'yes')
-            ArchivesCleanJob::dispatch($archive->id)
-                ->onQueue('ArchivesClean')
-                ->delay(Carbon::now()->addHours(Setting::get('archive_save')));
-        
-        return response()->download($archive->name);
-
-    }    
-    
-    public function getNoAccess() {
-        
-        return Viewer::get('errors.403');
-        
-    }
-    
 }

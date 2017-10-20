@@ -23,7 +23,7 @@
                     
                         @foreach($categories as $category)
                             @if( $category->albumCount() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $category->id]) }}">{{ $category->name }} ({{ $category->albumCount() }})</a></li>
+                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumCount() }})</a></li>
                             @endif
                         @endforeach                      
                       
@@ -31,7 +31,7 @@
                       
                         @foreach($categories as $category)
                             @if( $category->albumCountPublic() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'byCategory', 'id' => $category->id]) }}">{{ $category->name }} ({{ $category->albumCountPublic() }})</a></li>
+                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumCountPublic() }})</a></li>
                             @endif
                         @endforeach                      
                       
@@ -44,7 +44,7 @@
                   <ul class="dropdown-menu">
                     @foreach($year_list as $year)
 
-                            <li><a href="{{ route('album-showBy', ['option' => 'byYear', 'id' => $year['year']]) }}">{{ $year['year'] }}</a></li>
+                            <li><a href="{{ route('album-showBy', ['option' => 'year', 'url' => $year['year']]) }}">{{ $year['year'] }}</a></li>
 
                     @endforeach
                   </ul>

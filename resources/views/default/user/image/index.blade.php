@@ -23,7 +23,7 @@
   <small>{{ $thisAlbum->desc }}</small>
     <br>
     @foreach($thisAlbum->tags as $tag)
-        <a href="{{ route('tag', ['tag' => urlencode($tag->name)]) }}" class="btn btn-default btn-xs" role="button">{{ $tag->name }}</a>
+        <a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($tag->name)]) }}" class="btn btn-default btn-xs" role="button">{{ $tag->name }}</a>
     @endforeach
 </div>
 

@@ -24,24 +24,18 @@ Route::get('/', [
 
 Route::get('/no_access', [
     'as'    => '403', 
-    'uses'  => 'User\AlbumsController@getNoAccess'
+    'uses'  => 'User\AccessController@getNoAccess'
 ]);
 
-Route::get('/gallery-{url}', [
+Route::get('/{url}', [
     'as'    => 'gallery-show', 
     'uses'  => 'User\ImagesController@getPage'    
 ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
 
-Route::get('/album/{option}/{id}', [
+Route::get('/by/{option}/{url}', [
     'as'    => 'album-showBy', 
     'uses'  => 'User\AlbumsController@getShow'    
-])->where(['option', '[A-Za-z0-9]+', 'id' => '[0-9]+']);
-
-Route::get('/tag/{option}', [
-    'as'    => 'tag', 
-    'uses'  => 'User\ImagesController@getPage'    
-]);
-
+])->where(['option', '[A-Za-z0-9]+', 'id' => '[А-Яа-яA-Za-z0-9_-]+']);
 
 Route::post('/ulogin', 'User\UloginController@login');
 
@@ -81,11 +75,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/google2fa/authenticate', [
         'as'            => 'google2fa.auth', 
         'uses'          => 'User\Google2FAController@g2faAuth'
-    ]);    
+    ]);
     
     // Скачивание архива альбома
     Route::get('/downloads/{url}', [
         'as'            => 'zip-album',
-        'uses'          => 'User\AlbumsController@getZip',
+        'uses'          => 'User\ArchivesController@getZip',
     ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
 });
