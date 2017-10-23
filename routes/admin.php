@@ -36,6 +36,12 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
+//Route::get('/tags/', [
+//    'as'            => 'tags', 
+//    'uses'          => 'TagsController@getTags',
+//    'middleware'    => 'role:admin|moderator'
+//]);
+
 // Статистика
 Route::get('/statistics/', [
     'as'            => 'statistics', 
@@ -144,11 +150,11 @@ Route::get('/album/edit/{id}', [
     'uses'          => 'AlbumsController@getEditAlbum',
     'middleware'    => 'role:admin|moderator'
 ])->where(['id' => '[0-9]+']);
-Route::post('/album/save/{id}', [
+Route::post('/album/save/', [
     'as'            => 'save-album', 
     'uses'          => 'AlbumsController@putSaveAlbum',
     'middleware'    => 'role:admin|moderator'
-])->where(['id' => '[0-9]+']);
+]);
 Route::get('/album/delete/{id}', [
     'as'            => 'delete-album',
     'uses'          => 'AlbumsController@deleteAlbum',
@@ -168,16 +174,6 @@ Route::get('/album/rebuild/{id}', [
     'as'            => 'rebuild-album',
     'uses'          => 'AlbumsController@getRebuild',
     'middleware'    => 'role:admin|moderator'
-])->where(['id' => '[0-9]+']);
-Route::get('/album/renamedir/{id}', [
-    'as'            => 'renamedir-album',
-    'uses'          => 'AlbumsController@getRenameDir',
-    'middleware'    => 'role:admin'
-])->where(['id' => '[0-9]+']);
-Route::post('/album/savedir/{id}', [
-    'as'            => 'savedir-album',
-    'uses'          => 'AlbumsController@putRenameDir',
-    'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
 Route::get('/album/uploads/{id}', [
     'as'            => 'uploads-album',

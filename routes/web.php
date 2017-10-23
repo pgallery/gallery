@@ -16,6 +16,9 @@
  * 
  */
 
+// Маршруты авторизации
+Auth::routes();
+
 // Публичные страницы, доступные без авторизации
 Route::get('/', [
     'as'    => 'home', 
@@ -27,21 +30,12 @@ Route::get('/no_access', [
     'uses'  => 'User\AccessController@getNoAccess'
 ]);
 
-Route::get('/{url}', [
-    'as'    => 'gallery-show', 
-    'uses'  => 'User\ImagesController@getPage'    
-])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
-
 Route::get('/by/{option}/{url}', [
     'as'    => 'album-showBy', 
     'uses'  => 'User\AlbumsController@getShow'    
 ])->where(['option', '[A-Za-z0-9]+', 'id' => '[А-Яа-яA-Za-z0-9_-]+']);
 
 Route::post('/ulogin', 'User\UloginController@login');
-
-// Маршруты авторизации
-Auth::routes();
-
 
 // Маршруты авторизованных пользователей
 Route::group(['middleware' => 'auth'], function () {
@@ -83,3 +77,8 @@ Route::group(['middleware' => 'auth'], function () {
         'uses'          => 'User\ArchivesController@getZip',
     ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
 });
+
+Route::get('/{url}', [
+    'as'    => 'gallery-show', 
+    'uses'  => 'User\ImagesController@getPage'    
+])->where('url', '[А-Яа-яA-Za-z0-9_-]+');

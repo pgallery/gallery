@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use App\Http\Requests\AlbumsRequest;
-use App\Http\Requests\AlbumsDirectoryRequest;
-use App\Http\Requests\AlbumsEditRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
@@ -64,11 +62,24 @@ class AlbumsController extends Controller {
             return $this->categories->orderBy('name')->pluck('name','id');
         });
 
-        return Viewer::get('admin.album.edit', [
-                    'type'            => 'edit',
-                    'album'           => $this->albums->find($router->input('id')),
-                    'categoriesArray' => $categoriesArray,
-        ]);
+        $usersArray = Cache::remember('admin.show.usersArray', self::SHOWADMIN_CACHE_TTL, function() {
+            return $this->users->pluck('name','id');
+        });
+        
+        $album = $this->albums->find($router->input('id'));
+        
+        $tags = '';
+        foreach ($album->tags as $tag) {
+            $tags .= $tag->name . ", ";
+        }
+        $tags = rtrim(rtrim($tags), ',');
+        
+        return Viewer::get('admin.album.edit', compact([
+            'album',
+            'tags',
+            'categoriesArray',
+            'usersArray'
+        ]));
     }
 
     /*
@@ -87,52 +98,11 @@ class AlbumsController extends Controller {
         $album->users_id      = Auth::user()->id;
         $album->save();
 
-        if(!empty($request->input('tags'))) {
-            $tags = explode(",", $request->input('tags'));
-            foreach ($tags as $tag) {
-                $tag = trim($tag);
-                
-                if(!empty($tag)) {
-
-                    if ($this->tags->where('name', $tag)->exists()) {
-
-                        $tag_attach = $this->tags->where('name', $tag)->first();
-
-                    }else{
-
-                        $tag_attach = new Tags();
-                        $tag_attach->name = $tag;
-                        $tag_attach->save();
-
-                    }
-
-                    $album->tags()->attach($tag_attach->id);
-                    
-                }
-            }
-        }
+        if(!empty($request->input('tags')))
+            $album->tags()->sync($this->_tags_to_array($request->input('tags')));
         
         if (!File::isDirectory($album->path()))
             File::makeDirectory($album->path(), 0755, true);
-
-        Cache::flush();
-
-        return back();
-    }
-
-    /*
-     * Изменение владельца альбома
-     */
-    public function putChangeOwnerAlbum(Request $request) {
-
-        $this->albums->where('id', $request->input('id'))->update([
-            'users_id' => $request->input('ChangeOwnerAlbumNew'),
-        ]);
-
-        if ($request->input('ChangeOwnerAlbumRecursion'))
-            $this->images->where('albums_id', $request->input('id'))->update([
-                'users_id' => $request->input('ChangeOwnerAlbumNew'),
-            ]);
 
         Cache::flush();
 
@@ -185,13 +155,30 @@ class AlbumsController extends Controller {
     /*
      * Сохранение изменений альбома
      */
-    public function putSaveAlbum(Router $router, AlbumsEditRequest $request) {
+    public function putSaveAlbum(AlbumsRequest $request) {
+        
+        $album = $this->albums->find($request->input('id'));
+        
+        // Если изменена директория, переносим файлы
+        if($album->directory != $request->input('directory'))
+            $this->_rename_dir($request->input('id'), $request->input('directory'));
+        
+        // Если изменен владелец, меняем его
+        if($album->users_id != $request->input('users_id'))
+            $this->_change_owner($request->input('id'), $request->input('users_id'), $request->input('owner_recursion'));
+        
+        // Если есть теги, создаем их
+        if(!empty($request->input('tags')))
+            $album->tags()->sync($this->_tags_to_array($request->input('tags')));
 
-        $input = $request->all();
-        $input['url'] = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
-        $input['desc'] = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
-
-        $this->albums->find($router->input('id'))->update($input);
+        $input['name']          = $request->input('name');
+        $input['year']          = $request->input('year');
+        $input['categories_id'] = $request->input('categories_id');
+        $input['permission']    = $request->input('permission');
+        $input['desc']          = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
+        $input['url']           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
+        
+        $album->update($input);
 
         Cache::flush();
 
@@ -284,28 +271,16 @@ class AlbumsController extends Controller {
     }
 
     /*
-     *  Вывод формы переименовывания директории альбома
-     */
-    public function getRenameDir(Router $router) {
-
-        $thisAlbum = $this->albums->find($router->input('id'));
-
-        return Viewer::get('admin.album.renamedir', compact(
-            'thisAlbum'
-        ));
-    }
-
-    /*
      * Переименование директории
      */
-    public function putRenameDir(Router $router, AlbumsDirectoryRequest $request) {
+    private function _rename_dir($id, $directory) {
         
-        $album = $this->albums->find($router->input('id'));
+        $album = $this->albums->find($id);
 
         $upload_path = $album->path();
         $mobile_path = $album->mobile_path();
         $thumb_path  = $album->thumb_path();
-        $directory   = Transliterate::get($request->input('directory'));
+        $directory   = Transliterate::get($directory);
         
         if (File::move($upload_path, public_path(Setting::get('upload_dir') . "/" . $directory))) {
 
@@ -330,9 +305,52 @@ class AlbumsController extends Controller {
                     BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
                 }
             }
-            Cache::flush();
         }
+    }    
+    
+    /*
+     * Изменение владельца альбома
+     */
+    private function _change_owner($id, $users_id, $recursion = false) {
 
-        return redirect()->route('admin');
+        $this->albums->find($id)->update([
+            'users_id' => $users_id,
+        ]);
+
+        if ($recursion == 'yes')
+            $this->images->where('albums_id', $id)->update([
+                'users_id' => $users_id,
+            ]);
+
+    }
+    
+    /*
+     * Приобразуем строку тегов в массив ID тегов
+     */
+    private function _tags_to_array($tags){
+        
+        $tags = explode(",", $tags);
+            foreach ($tags as $tag) {
+                $tag = trim($tag);
+                
+                if(!empty($tag)) {
+
+                    if ($this->tags->where('name', $tag)->exists()) {
+
+                        $tag_attach = $this->tags->where('name', $tag)->first();
+
+                    }else{
+
+                        $tag_attach = new Tags();
+                        $tag_attach->name = $tag;
+                        $tag_attach->save();
+
+                    }
+
+                    $tags_attach[] = $tag_attach->id;
+                }
+            }        
+        
+        return $tags_attach;
     }
 }

@@ -49,7 +49,6 @@
             <h6>{{ $setting_group->setgroup_desc }}</h6>
         </div>
 
-
         @foreach($setting_group->settings() as $setting)
 
             <div class="form-group">
@@ -76,9 +75,7 @@
 
                 </div>
                 @if($setting->set_tooltip)
-                <!--<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="{{ $setting->set_tooltip }}">-->
                     <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="{{ $setting->set_tooltip }}"></span>
-                <!--</button>-->
                 @endif
             </div>    
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AlbumsRequest extends FormRequest
@@ -21,12 +23,19 @@ class AlbumsRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
             'name'          => 'required|string', 
-            'url'           => 'required|unique:albums',
-            'directory'     => 'required|alpha_dash|unique:albums',
+            'url'           => [
+                'required', 
+                Rule::unique('albums')->ignore($request->input('id'))
+            ],
+            'directory'     => [
+                'required', 
+                'alpha_dash', 
+                Rule::unique('albums')->ignore($request->input('id'))
+            ],
             'year'          => 'required|numeric',
             'categories_id' => 'required|numeric',
         ];

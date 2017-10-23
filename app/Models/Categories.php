@@ -15,6 +15,11 @@ class Categories extends Model
         'name', 'users_id'
     ];
     
+    public function albums()
+    {
+        return $this->hasMany('App\Models\Albums');        
+    }
+    
     public function albumCount()
     {
         return \Cache::remember('categories.albumCount_' . $this->id . '_cache', 100, function(){

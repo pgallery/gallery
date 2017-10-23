@@ -73,8 +73,6 @@ class UsersController extends Controller
         
         $user = $this->user->find($router->input('id'));
         
-        print_r($request->all());
-        
         $input['name']  = $request->input('new_name');
         $input['email'] = $request->input('new_email');
         
