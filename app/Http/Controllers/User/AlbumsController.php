@@ -111,10 +111,12 @@ class AlbumsController extends Controller
             $thumbs_dir    = Setting::get('thumbs_dir');
             
             if(Roles::is('admin'))
-                $tags = $this->tags->has('albums')->get();
+                $tags = $this->tags->whereHas('albums', function ($query) {
+                    $query->where('images_id', '!=', '0');
+                })->get();
             else
                 $tags = $this->tags->whereHas('albums', function ($query) {
-                    $query->where('permission', 'All');
+                    $query->where('permission', 'All')->where('images_id', '!=', '0');
                 })->get();
             
             $resultData = compact(

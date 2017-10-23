@@ -334,22 +334,26 @@ class AlbumsController extends Controller {
                 $tag = trim($tag);
                 
                 if(!empty($tag)) {
-
-                    if ($this->tags->where('name', $tag)->exists()) {
-
-                        $tag_attach = $this->tags->where('name', $tag)->first();
-
-                    }else{
-
-                        $tag_attach = new Tags();
-                        $tag_attach->name = $tag;
-                        $tag_attach->save();
-
-                    }
+                    
+                    $tag_attach = $this->tags->firstOrCreate([
+                        'name' => $tag
+                    ]);
+                    
+//                    if ($this->tags->where('name', $tag)->exists()) {
+//
+//                        $tag_attach = $this->tags->where('name', $tag)->first();
+//
+//                    }else{
+//
+//                        $tag_attach = new Tags();
+//                        $tag_attach->name = $tag;
+//                        $tag_attach->save();
+//
+//                    }
 
                     $tags_attach[] = $tag_attach->id;
                 }
-            }        
+            }
         
         return $tags_attach;
     }
