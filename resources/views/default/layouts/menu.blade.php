@@ -67,7 +67,6 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="{{ route('wizard', ['id' => '1']) }}">WIZARD</a></li>
                     @if(Roles::is('admin'))
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
                         <li><a href="{{ route('settings') }}">Настройки</a></li>
