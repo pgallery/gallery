@@ -330,30 +330,19 @@ class AlbumsController extends Controller {
     private function _tags_to_array($tags){
         
         $tags = explode(",", $tags);
-            foreach ($tags as $tag) {
-                $tag = trim($tag);
-                
-                if(!empty($tag)) {
-                    
-                    $tag_attach = $this->tags->firstOrCreate([
-                        'name' => $tag
-                    ]);
-                    
-//                    if ($this->tags->where('name', $tag)->exists()) {
-//
-//                        $tag_attach = $this->tags->where('name', $tag)->first();
-//
-//                    }else{
-//
-//                        $tag_attach = new Tags();
-//                        $tag_attach->name = $tag;
-//                        $tag_attach->save();
-//
-//                    }
+        foreach ($tags as $tag) {
+            $tag = trim($tag);
 
-                    $tags_attach[] = $tag_attach->id;
-                }
+            if(!empty($tag)) {
+
+                $tag_attach = $this->tags->firstOrCreate([
+                    'name' => $tag
+                ]);
+
+                $tags_attach[] = $tag_attach->id;
+
             }
+        }
         
         return $tags_attach;
     }
