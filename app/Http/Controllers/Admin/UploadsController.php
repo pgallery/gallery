@@ -11,6 +11,7 @@ use App\Models\Images;
 
 use Image;
 use File;
+use Storage;
 use Auth;
 use Setting;
 use Transliterate;
@@ -39,7 +40,8 @@ class UploadsController extends Controller
     public function postUploads(Router $router, Request $request) {
         
         if($router->input('option') == 'dropzone') {
-            
+        
+//            Storage::append('pgallery.log', 'start dropzone');
             if($this->createImage($request->file('file'), $request->input('album_id')))
                 return \Response::json([
                     'error' => false,
@@ -85,10 +87,25 @@ class UploadsController extends Controller
         $upload_path        = $album->path();
         $upload_file_name   = Transliterate::get($upload_file->getClientOriginalName());
         
-        if(!File::isDirectory($upload_path))
-            File::makeDirectory($upload_path, 0755, true);
+        Storage::makeDirectory($upload_path);
+//        
+//        if(!File::isDirectory($upload_path))
+//            File::makeDirectory($upload_path, 0755, true);
         
-        Image::make($upload_file)->save($upload_path . "/" . $upload_file_name);
+//        Image::make($upload_file)->save($upload_path . "/" . $upload_file_name);
+        
+//$file = $request->file('image');
+//$name = $file->getClientOriginalName();
+//$path = public_path("images/$name");
+//
+//Storage::put($path, File::get($file->getRealPath()));        
+        
+        $img = Image::make($upload_file->getRealPath());
+        $img->encode();
+        
+        Storage::put($upload_path . "/" . $upload_file_name, (string) $img);
+        
+//        Storage::put($upload_path . "/" . $upload_file_name, File::get($upload_file));
         
         if($this->images->where('albums_id', $album->id)->where('name', $upload_file_name)->first()) {
             

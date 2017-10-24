@@ -30,6 +30,11 @@ Route::get('/no_access', [
     'uses'  => 'User\AccessController@getNoAccess'
 ]);
 
+Route::get('/images/{option}/{url}/{name}', [
+    'as'    => 'show-image', 
+    'uses'  => 'User\ImagesController@image'
+]);
+
 Route::get('/by/{option}/{url}', [
     'as'    => 'album-showBy', 
     'uses'  => 'User\AlbumsController@getShow'    

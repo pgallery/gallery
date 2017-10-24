@@ -18,43 +18,47 @@ class Albums extends Model
 
     public function http() {
         return \Cache::remember('albums.http_' . $this->id . '_cache', 100, function(){
-            return route('gallery-show', ['url' => $this->url]);
+            return url("/images/original/" . $this->url);
         });
     }
     
     public function path() {
         return \Cache::remember('albums.path_' . $this->id . '_cache', 100, function(){
-            return public_path(\Setting::get('upload_dir') . "/" .  $this->directory);
+//            return public_path(\Setting::get('upload_dir') . "/" .  $this->directory);
+            return \Setting::get('upload_dir') . "/" .  $this->directory;
         });
     }
 
     public function http_path() {
         return \Cache::remember('albums.http_path_' . $this->id . '_cache', 100, function(){
-            return url(\Setting::get('upload_dir') . "/" .  $this->directory);
+//            return url(\Setting::get('upload_dir') . "/" .  $this->directory);
+            return url("/images/original/" . $this->url);
         });
     }    
     
     public function thumb_path() {
         return \Cache::remember('albums.thumb_path_' . $this->id . '_cache', 100, function(){
-            return public_path(\Setting::get('thumbs_dir') . "/" .  $this->directory);
+            return \Setting::get('thumbs_dir') . "/" .  $this->directory;
         });
     }
 
     public function http_thumb_path() {
         return \Cache::remember('albums.http_thumb_path_' . $this->id . '_cache', 100, function(){
-            return url(\Setting::get('thumbs_dir') . "/" .  $this->directory);
+//            return url(\Setting::get('thumbs_dir') . "/" .  $this->directory);
+            return url("/images/thumb/" . $this->url);
         });
     }     
     
     public function mobile_path() {
         return \Cache::remember('albums.mobile_path_' . $this->id . '_cache', 100, function(){
-            return public_path(\Setting::get('mobile_upload_dir') . "/" .  $this->directory);
+            return \Setting::get('mobile_upload_dir') . "/" .  $this->directory;
         });
     }
 
     public function http_mobile_path() {
         return \Cache::remember('albums.http_mobile_path_' . $this->id . '_cache', 100, function(){
-            return url(\Setting::get('mobile_upload_dir') . "/" .  $this->directory);
+//            return url(\Setting::get('mobile_upload_dir') . "/" .  $this->directory);
+            return url("/images/mobile/" . $this->url);
         });
     }
     

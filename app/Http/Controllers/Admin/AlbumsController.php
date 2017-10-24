@@ -18,6 +18,7 @@ use Setting;
 use Viewer;
 use Transliterate;
 use File;
+use Storage;
 use Cache;
 
 use App\Jobs\BuildImagesJob;
@@ -101,8 +102,10 @@ class AlbumsController extends Controller {
         if(!empty($request->input('tags')))
             $album->tags()->sync($this->_tags_to_array($request->input('tags')));
         
-        if (!File::isDirectory($album->path()))
-            File::makeDirectory($album->path(), 0755, true);
+        Storage::makeDirectory($album->path());
+        
+//        if (!File::isDirectory($album->path()))
+//            File::makeDirectory($album->path(), 0755, true);
 
         Cache::flush();
 

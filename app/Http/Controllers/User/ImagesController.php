@@ -77,4 +77,26 @@ class ImagesController extends Controller
         return Viewer::get('user.image.index', $resultData);
         
     }
+    
+    public function image(Router $router) {
+        
+//        echo $router->input('option');
+//        echo $router->input('url');
+//        echo $router->input('name');
+        
+        $album = $this->albums->where('url', $router->input('url'))->first();
+        
+        if($router->input('option') == 'thumb')
+            $response = $album->thumb_path();
+        elseif($router->input('option') == 'mobile')
+            $response = $album->mobile_path();
+        else
+            $response = $album->path();
+            
+        $response .= "/" . $router->input('name');
+        
+        $file = \Storage::get($response);
+        return response($file, 200)->header('Content-Type', 'image/jpeg');
+//        
+    }
 }
