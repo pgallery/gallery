@@ -17,10 +17,10 @@ class BuildImage
 
         $image = Images::find($id);
         
-        if (Storage::has($image->thumb_path()))
+        if(Storage::has($image->thumb_path()))
             Storage::delete($image->thumb_path());
         
-        if (Storage::has($image->mobile_path()))
+        if(Storage::has($image->mobile_path()))
             Storage::delete($image->mobile_path());        
         
         if(!Storage::has($image->album->thumb_path()))
@@ -45,7 +45,7 @@ class BuildImage
         $OriginalImage->fit(Setting::get('thumbs_width'), Setting::get('thumbs_height'));
         
         Storage::put($image->thumb_path(), (string) $OriginalImage->encode());  
-
+        
         $image->update([
             'size'          => Storage::size($image->path()),
             'height'        => $imgHeight,
@@ -53,8 +53,6 @@ class BuildImage
             'thumbs_size'   => Storage::size($image->thumb_path()),
             'modile_size'   => Storage::size($image->mobile_path()),
             'is_rebuild'    => 0,
-            'is_thumbs'     => 1,
-            'is_modile'     => 1,
         ]);
 
     }

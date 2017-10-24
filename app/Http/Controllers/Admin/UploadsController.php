@@ -40,8 +40,7 @@ class UploadsController extends Controller
     public function postUploads(Router $router, Request $request) {
         
         if($router->input('option') == 'dropzone') {
-        
-//            Storage::append('pgallery.log', 'start dropzone');
+
             if($this->createImage($request->file('file'), $request->input('album_id')))
                 return \Response::json([
                     'error' => false,
@@ -84,37 +83,24 @@ class UploadsController extends Controller
         
         $album = $this->albums->find($album_id);
         
-        $upload_path        = $album->path();
         $upload_file_name   = Transliterate::get($upload_file->getClientOriginalName());
         
-        Storage::makeDirectory($upload_path);
-//        
-//        if(!File::isDirectory($upload_path))
-//            File::makeDirectory($upload_path, 0755, true);
-        
-//        Image::make($upload_file)->save($upload_path . "/" . $upload_file_name);
-        
-//$file = $request->file('image');
-//$name = $file->getClientOriginalName();
-//$path = public_path("images/$name");
-//
-//Storage::put($path, File::get($file->getRealPath()));        
-        
+        Storage::makeDirectory($album->path());
+
         $img = Image::make($upload_file->getRealPath());
         $img->encode();
         
-        Storage::put($upload_path . "/" . $upload_file_name, (string) $img);
+        if(!Storage::put($album->path() . "/" . $upload_file_name, (string) $img))
+            return true;
         
-//        Storage::put($upload_path . "/" . $upload_file_name, File::get($upload_file));
-        
-        if($this->images->where('albums_id', $album->id)->where('name', $upload_file_name)->first()) {
+        if($this->images->where('albums_id', $album->id)->where('name', $upload_file_name)->exists()) {
             
             $image = $this->images
-                    ->where('albums_id', $album->id)
-                    ->where('name', $upload_file_name)
-                    ->update([
-                        'is_rebuild' => 1,
-                    ]);
+                ->where('albums_id', $album->id)
+                ->where('name', $upload_file_name)
+                ->update([
+                    'is_rebuild' => 1,
+                ]);
             
         }else{
             

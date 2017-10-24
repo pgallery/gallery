@@ -109,7 +109,7 @@ class baseConfig extends Seeder
         ]);
         Settings::create([
             'set_name'    => 'upload_dir', 
-            'set_value'   => 'originals',
+            'set_value'   => 'gallery/originals',
             'set_desc'    => 'Директория для загрузки фотографий галереи',
             'set_group'   => $upload,
             'set_tooltip' => 'Директория, относительно public, в которую будут '
@@ -119,7 +119,7 @@ class baseConfig extends Seeder
         ]);
         Settings::create([
             'set_name'    => 'thumbs_dir', 
-            'set_value'   => 'thumbs',
+            'set_value'   => 'gallery/thumbs',
             'set_desc'    => 'Директория миниатюр',
             'set_group'   => $upload,
             'set_tooltip' => 'Директория, в которую будут создаваться миниатюры '
@@ -129,7 +129,7 @@ class baseConfig extends Seeder
         ]);
         Settings::create([
             'set_name'    => 'mobile_upload_dir', 
-            'set_value'   => 'mobiles',
+            'set_value'   => 'gallery/mobiles',
             'set_desc'    => 'Директория галереи для мобильных устройств',
             'set_group'   => $upload,
             'set_tooltip' => 'Директория, в которую будут создаваться уменьшенные'

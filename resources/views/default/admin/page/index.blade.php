@@ -153,8 +153,8 @@
                 </td>
                 <td>
                     @if($album->images_id != 0)
-                        <a href="/images/thumbs/{{ $album->url }}/{{ $album->thumbs()->name  }}" data-fancybox="images"> 
-                            <img  src="/images/thumbs/{{ $album->url }}/{{ $album->thumbs()->name  }}" width="75"/> 
+                        <a href="{{ $album->thumbs->http_thumb_path() }}" data-fancybox="images"> 
+                            <img  src="{{ $album->thumbs->http_thumb_path() }}" width="75"/> 
                         </a>
                     @endif
                 </td>

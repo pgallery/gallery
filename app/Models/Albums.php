@@ -24,14 +24,12 @@ class Albums extends Model
     
     public function path() {
         return \Cache::remember('albums.path_' . $this->id . '_cache', 100, function(){
-//            return public_path(\Setting::get('upload_dir') . "/" .  $this->directory);
             return \Setting::get('upload_dir') . "/" .  $this->directory;
         });
     }
 
     public function http_path() {
         return \Cache::remember('albums.http_path_' . $this->id . '_cache', 100, function(){
-//            return url(\Setting::get('upload_dir') . "/" .  $this->directory);
             return url("/images/original/" . $this->url);
         });
     }    
@@ -44,7 +42,6 @@ class Albums extends Model
 
     public function http_thumb_path() {
         return \Cache::remember('albums.http_thumb_path_' . $this->id . '_cache', 100, function(){
-//            return url(\Setting::get('thumbs_dir') . "/" .  $this->directory);
             return url("/images/thumb/" . $this->url);
         });
     }     
@@ -57,7 +54,6 @@ class Albums extends Model
 
     public function http_mobile_path() {
         return \Cache::remember('albums.http_mobile_path_' . $this->id . '_cache', 100, function(){
-//            return url(\Setting::get('mobile_upload_dir') . "/" .  $this->directory);
             return url("/images/mobile/" . $this->url);
         });
     }
@@ -96,9 +92,7 @@ class Albums extends Model
     }
     
     public function thumbs() {
-        return \Cache::remember('albums.thumbs_' . $this->images_id . '_cache', 100, function(){
-            return $this->hasOne('App\Models\Images', 'id', 'images_id')->select('name')->first();
-        });
+        return $this->hasOne('App\Models\Images', 'id', 'images_id');
     }
 
     public function tags() {
@@ -116,23 +110,23 @@ class Albums extends Model
     
     public function destroyAlbum($id){
         
-        $album = $this->onlyTrashed()->where('id', $id)->first();
-        
-        $upload_path = $this->path();
-        $mobile_path = $this->mobile_path();
-        $thumb_path  = $this->thumb_path();
-        
-        if(\File::isDirectory($upload_path))
-            \File::deleteDirectory($upload_path);
-            
-        if(\File::isDirectory($mobile_path))
-            \File::deleteDirectory($mobile_path);
-
-        if(\File::isDirectory($thumb_path))
-            \File::deleteDirectory($thumb_path);         
-        
-        $album = $this->withTrashed()->findOrFail($id);
-        $album->forceDelete();
+//        $album = $this->onlyTrashed()->where('id', $id)->first();
+//        
+//        $upload_path = $this->path();
+//        $mobile_path = $this->mobile_path();
+//        $thumb_path  = $this->thumb_path();
+//        
+//        if(\File::isDirectory($upload_path))
+//            \File::deleteDirectory($upload_path);
+//            
+//        if(\File::isDirectory($mobile_path))
+//            \File::deleteDirectory($mobile_path);
+//
+//        if(\File::isDirectory($thumb_path))
+//            \File::deleteDirectory($thumb_path);         
+//        
+//        $album = $this->withTrashed()->findOrFail($id);
+//        $album->forceDelete();
         
     }
 }

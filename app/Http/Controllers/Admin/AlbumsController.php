@@ -17,7 +17,7 @@ use Auth;
 use Setting;
 use Viewer;
 use Transliterate;
-use File;
+//use File;
 use Storage;
 use Cache;
 
@@ -104,9 +104,6 @@ class AlbumsController extends Controller {
         
         Storage::makeDirectory($album->path());
         
-//        if (!File::isDirectory($album->path()))
-//            File::makeDirectory($album->path(), 0755, true);
-
         Cache::flush();
 
         return back();
@@ -201,14 +198,14 @@ class AlbumsController extends Controller {
         ];
 
         $album = $this->albums->find($router->input('id'));
-        $images = File::Files($album->path());
-
+        $images = Storage::files($album->path());
+        
         foreach ($images as $image) {
 
             $base_filename = basename($image);
-            $mimeType = File::mimeType($image);
+//            $mimeType = File::mimeType($image);
 
-            if (in_array($mimeType, $accessType)) {
+//            if (in_array($mimeType, $accessType)) {
                 if ($this->images->where('name', $base_filename)->where('albums_id', $album->id)->count() == 0) {
 
                     $image              = new Images();
@@ -221,7 +218,7 @@ class AlbumsController extends Controller {
                     if (Setting::get('use_queue') == 'yes')
                         BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
                 }
-            }
+//            }
         }
 
         // Проверяем альбом на наличие миниатюры
@@ -280,18 +277,18 @@ class AlbumsController extends Controller {
         
         $album = $this->albums->find($id);
 
-        $upload_path = $album->path();
-        $mobile_path = $album->mobile_path();
-        $thumb_path  = $album->thumb_path();
+//        $upload_path = $album->path();
+//        $mobile_path = $album->mobile_path();
+//        $thumb_path  = $album->thumb_path();
         $directory   = Transliterate::get($directory);
         
-        if (File::move($upload_path, public_path(Setting::get('upload_dir') . "/" . $directory))) {
+        if (Storage::move($album->path(), Setting::get('upload_dir') . "/" . $directory)) {
 
-            if (\File::isDirectory($mobile_path))
-                \File::deleteDirectory($mobile_path);
+            if(Storage::has($album->mobile_path()))
+                Storage::deleteDirectory($album->mobile_path());
 
-            if (\File::isDirectory($thumb_path))
-                \File::deleteDirectory($thumb_path);
+            if(Storage::has($album->thumb_path()))
+                Storage::deleteDirectory($album->thumb_path());
 
             $album->update([
                 'directory' => $directory,
