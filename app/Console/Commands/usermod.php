@@ -22,14 +22,18 @@ class usermod extends Command
      */
     protected $description = 'Редактирование пользователя';
 
+    protected $user;    
+    
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user)
     {
         parent::__construct();
+        
+        $this->user    = $user;
     }
 
     /**
@@ -41,8 +45,8 @@ class usermod extends Command
     {
                 
         if(empty($this->option('email')) 
-                and empty($this->option('password')) 
-                and empty($this->option('google2fa')))
+            and empty($this->option('password')) 
+            and empty($this->option('google2fa')))
         {
             exit;
         }
@@ -56,7 +60,7 @@ class usermod extends Command
         if($this->option('google2fa'))
             $output['google2fa_enabled'] = (($this->option('google2fa') == 'enabled') ? true : false);
         
-        User::where('email', $this->argument('user'))->update($output);
+        $this->user->where('email', $this->argument('user'))->update($output);
         
     }
 }

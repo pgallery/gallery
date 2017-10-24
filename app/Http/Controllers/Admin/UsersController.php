@@ -29,11 +29,11 @@ class UsersController extends Controller
         
         $this->middleware('g2fa');
         
-        $this->user    = $user;
-        $this->roles   = $roles;
+        $this->user        = $user;
+        $this->roles       = $roles;
         $this->categories  = $categories;
-        $this->albums  = $albums;
-        $this->images  = $images;
+        $this->albums      = $albums;
+        $this->images      = $images;
     }
 
     /*
