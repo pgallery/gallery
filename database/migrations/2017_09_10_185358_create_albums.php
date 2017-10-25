@@ -22,6 +22,7 @@ class CreateAlbums extends Migration
             $table->bigInteger('year')->default('1');
             $table->string('desc')->default('NULL');
             $table->enum('permission', array('All', 'Url', 'Pass'))->default('All');
+            $table->string('password')->nullable();
             $table->bigInteger('categories_id')->default('1');
             $table->bigInteger('users_id')->default('1');
             

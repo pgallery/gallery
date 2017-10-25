@@ -15,6 +15,8 @@ use Setting;
 use Viewer;
 use Cache;
 
+use Carbon\Carbon;
+
 class AlbumsController extends Controller
 {
     protected $albums;
@@ -36,7 +38,15 @@ class AlbumsController extends Controller
         
         if(!$thisAlbum)
             return Viewer::get('errors.404');
-        
+
+        if($thisAlbum->permission == 'Pass' and !Roles::is('admin') and !$request->session()->has("password_album_$thisAlbum->id"))
+        {
+            if($request->session()->get("password_album_$thisAlbum->id")['access'] != 'yes'
+                or $request->session()->get("password_album_$thisAlbum->id")['key'] != md5($request->ip() . $request->header('User-Agent'))
+            )
+            return Viewer::get('user.album.password', ['url' => $url]);
+        }
+
         if (Agent::isMobile() and !Auth::check())
             $CacheKey = $url . '.Mobile' . $request->input('page');
         elseif(Agent::isMobile() and Roles::is('admin'))
@@ -79,5 +89,21 @@ class AlbumsController extends Controller
         
         return Viewer::get('user.album.index', $resultData);
         
+    }
+    
+    public function postAuth(Router $router, Request $request) {
+        
+        if($this->albums->where('password', $request->input('password'))->exists()){
+            $album = $this->albums->select('id')->where('password', $request->input('password'))->first();
+            session([
+                "password_album_$album->id" => [
+                    'access'        => 'yes',
+                    'autorized_at'  => Carbon::now(),
+                    'key'           => md5($request->ip() . $request->header('User-Agent')),
+                ]
+            ]);
+        }
+        
+        return back();
     }
 }

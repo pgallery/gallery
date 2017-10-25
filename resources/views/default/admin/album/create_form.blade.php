@@ -46,9 +46,27 @@
                 
                 {!! Form::select('permission', [
                     'All'  => 'Всем',
-                    'Url'  => 'По ссылке'
-                ], null, array('class' => 'form-control')) !!}    
+                    'Url'  => 'По ссылке',
+                    'Pass' => 'По паролю'
+                ], null, array('class' => 'form-control', 'id' => 'album_permission')) !!}    
                 
+            </div>
+        </div>
+
+        <div class="collapse" id="collapse_pass">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    
+                </div>
+                <label class="col-sm-3 control-label text-danger">Пароль:</label>
+                <div class="col-sm-4">
+                    {!! Form::text('password', null, array('class' => 'form-control', 'id' => 'album_password')) !!}
+                </div>
+                <div class="col-sm-1">
+                    <a class="btn btn-success btn-default" role="button" id="generate_password">
+                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </a>
+                </div>
             </div>
         </div>
 

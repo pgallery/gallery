@@ -95,6 +95,14 @@ class AlbumsController extends Controller {
         $album->year          = $request->input('year');
         $album->desc          = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
         $album->permission    = $request->input('permission');
+        
+        if($request->input('permission') == 'Pass' and empty($request->input('password')))
+            $album->password = rand(1000000, 9999999);
+        elseif($request->input('permission') == 'Pass' and !empty($request->input('password')))
+            $album->password = $request->input('password');
+        else
+            $album->password = null;
+
         $album->categories_id = $request->input('categories_id');
         $album->users_id      = Auth::user()->id;
         $album->save();
@@ -175,6 +183,14 @@ class AlbumsController extends Controller {
         $input['year']          = $request->input('year');
         $input['categories_id'] = $request->input('categories_id');
         $input['permission']    = $request->input('permission');
+        
+        if($request->input('permission') == 'Pass' and empty($request->input('password')))
+            $input['password'] = rand(1000000, 9999999);
+        elseif($request->input('permission') == 'Pass' and !empty($request->input('password')))
+            $input['password'] = $request->input('password');
+        else
+            $input['password'] = null;
+        
         $input['desc']          = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
         $input['url']           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
         

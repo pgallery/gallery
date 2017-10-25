@@ -13,7 +13,7 @@ class Albums extends Model
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
-        'name', 'url', 'directory', 'images_id', 'year', 'desc', 'permission', 'categories_id', 'users_id'
+        'name', 'url', 'directory', 'images_id', 'year', 'desc', 'permission', 'password', 'categories_id', 'users_id'
     ];
 
     public function http() {

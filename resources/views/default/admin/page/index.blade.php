@@ -162,7 +162,21 @@
                 <td>{{ $album->imagesSumSize() }}</td>
                 <td>{{ $album->category()->name }}</td>
                 <td>{{ $album->year }}</td>
-                <td>{{ ($album->permission == 'All' ? "Всем" : "По ссылке") }}</td>
+                <td>
+                    
+                    @php
+                    
+                        $perm_array = [
+                            'All'  => 'Всем',
+                            'Url'  => 'По ссылке',
+                            'Pass' => 'По паролю'
+                        ];
+                    
+                        echo $perm_array[$album->permission];
+                        
+                    @endphp
+                    
+                </td>
                 <td>{{ $album->owner()->name }}</td>
             </tr>
 
@@ -216,6 +230,31 @@
 @endsection
 
 @section('js-top')
+
+        function random_pass() {
+                var result       = '';
+                var words        = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+                var max_position = words.length - 1;
+                        for( i = 0; i < 12; ++i ) {
+                                position = Math.floor ( Math.random() * max_position );
+                                result = result + words.substring(position, position + 1);
+                        }
+                return result;
+        }
+
+        $('#generate_password').click(function() {
+            $('#album_password').attr('value', random_pass());
+        });
+
+        $("#album_permission").change(function(){
+            if ($(this).val()=="Pass" ){
+                console.log('show');
+                $('#collapse_pass').collapse('show');
+            }else{
+                console.log('hide');
+                $('#collapse_pass').collapse('hide');
+            }
+        }).change();
 
         $('a.clickChangeOwnerAlbum').click(function(e){
             $('#ChangeOwnerAlbumID').val(this.getAttribute('data-id'));

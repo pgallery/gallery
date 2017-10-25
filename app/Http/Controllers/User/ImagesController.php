@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Albums;
 
+use Roles;
+
 class ImagesController extends Controller
 {
     protected $albums;
@@ -19,9 +21,17 @@ class ImagesController extends Controller
     /*
      * Вывод фотографии
      */
-    public function getImage(Router $router) {
+    public function getImage(Router $router, Request $request) {
         
         $album = $this->albums->where('url', $router->input('url'))->firstOrFail();
+        
+        if($album->permission == 'Pass' and !Roles::is('admin') and !$request->session()->has("password_album_$album->id"))
+        {
+            if($request->session()->get("password_album_$album->id")['access'] != 'yes'
+                or $request->session()->get("password_album_$album->id")['key'] != md5($request->ip() . $request->header('User-Agent'))
+            )
+            return redirect()->route('gallery-show', ['url' => $router->input('url')]);
+        }
         
         if($router->input('option') == 'thumb') {
             

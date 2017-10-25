@@ -34,7 +34,10 @@ Route::get('/images/{option}/{url}/{name}', [
     'as'    => 'show-image', 
     'uses'  => 'User\ImagesController@getImage'
 ]);
-
+Route::post('/auth-album/{url}/', [
+    'as'    => 'auth-album', 
+    'uses'  => 'User\AlbumsController@postAuth'
+]);
 Route::get('/by/{option}/{url}', [
     'as'    => 'album-showBy', 
     'uses'  => 'User\GalleryController@getShow'    
