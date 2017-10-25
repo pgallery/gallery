@@ -24,7 +24,21 @@ class CategoriesRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string', 
+            'name' => 'required|string|unique:categories', 
         ];
     }
+    
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required'  => 'Поле "Название категории" обязательно для заполнения',
+            'name.string'    => 'Поле "Название категории" должно быть строкой',
+            'name.unique'    => 'Поле "Название категории" должно быть уникальным, возможно уже создана категория с таким именем',
+        ];
+    }    
 }
