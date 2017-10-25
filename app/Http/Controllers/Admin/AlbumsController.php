@@ -17,7 +17,7 @@ use Auth;
 use Setting;
 use Viewer;
 use Transliterate;
-//use File;
+use File;
 use Storage;
 use Cache;
 
@@ -203,11 +203,11 @@ class AlbumsController extends Controller {
         foreach ($images as $image) {
 
             $base_filename = basename($image);
-//            $mimeType = File::mimeType($image);
-
-//            if (in_array($mimeType, $accessType)) {
-                if ($this->images->where('name', $base_filename)->where('albums_id', $album->id)->count() == 0) {
-
+            $mimeType = File::mimeType(storage_path('app/' . $image));
+            
+            if (in_array($mimeType, $accessType)) {
+                if (!$this->images->where('name', $base_filename)->where('albums_id', $album->id)->exists()) {
+                    
                     $image              = new Images();
                     $image->name        = $base_filename;
                     $image->albums_id   = $album->id;
@@ -218,7 +218,7 @@ class AlbumsController extends Controller {
                     if (Setting::get('use_queue') == 'yes')
                         BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
                 }
-//            }
+            }
         }
 
         // Проверяем альбом на наличие миниатюры
@@ -230,6 +230,7 @@ class AlbumsController extends Controller {
                         'images_id' => $thumb->id,
                     ]);
         }
+        
         Cache::flush();
 
         return redirect()->route('admin');
@@ -277,9 +278,6 @@ class AlbumsController extends Controller {
         
         $album = $this->albums->find($id);
 
-//        $upload_path = $album->path();
-//        $mobile_path = $album->mobile_path();
-//        $thumb_path  = $album->thumb_path();
         $directory   = Transliterate::get($directory);
         
         if (Storage::move($album->path(), Setting::get('upload_dir') . "/" . $directory)) {

@@ -11,6 +11,7 @@ use App\Models\Images;
 
 use Image;
 use File;
+use Storage;
 use Auth;
 use Setting;
 use Transliterate;
@@ -40,19 +41,15 @@ class ImagesController extends Controller
         
         $image = $this->images->find($request->input('id'));
         
-        $new_name     = Transliterate::get($request->input('newName'));
-        
-        $mobile_image = $image->mobile_path();
-        $thumb_image  = $image->thumb_path();
-        $upload_dir   = $image->album->path();
-        
-        if(File::move($upload_dir . "/" . $image->name, $upload_dir . "/" . $new_name)) {
+        $new_name = Transliterate::get($request->input('newName'));
+                
+        if(Storage::move($image->album->path() . "/" . $image->name, $image->album->path() . "/" . $new_name)) {
             
-            if (File::exists($mobile_image))
-                File::delete($mobile_image);
+            if(Storage::has($image->thumb_path()))
+                Storage::delete($image->thumb_path());
 
-            if (File::exists($thumb_image))
-                File::delete($thumb_image);            
+            if(Storage::has($image->mobile_path()))
+                Storage::delete($image->mobile_path());
             
             $image->update([
                 'name'          => $new_name,
@@ -161,31 +158,40 @@ class ImagesController extends Controller
      */
     public function putMoveToAlbum(Request $request) {
         
-        $this_image     = $this->images->find($request->input('id'));
-        $new_album      = $this->albums->find($request->input('MoveToAlbumNew'));
-        
-        $old_path       = $this_image->path();
-        $new_path       = $new_album->path() . "/" . $this_image->name;
-        $delete_thumb   = $this_image->thumb_path();
-        $delete_mobile  = $this_image->mobile_path();
-        
-        if(File::move($old_path, $new_path) and $this_image->albums_id != $request->input('MoveToAlbumNew')) {
+        $this_image = $this->images->find($request->input('id'));
+        $new_album  = $this->albums->find($request->input('MoveToAlbumNew'));
+                
+        if($this_image->albums_id != $request->input('MoveToAlbumNew') and Storage::move($this_image->path(), $new_album->path() . "/" . $this_image->name)) {
             
-            if (File::exists($delete_thumb))
-                File::delete($delete_thumb);
-            
-            if (File::exists($delete_mobile))
-                File::delete($delete_mobile);            
+            if(Storage::has($this_image->thumb_path()))
+                Storage::delete($this_image->thumb_path());
+
+            if(Storage::has($this_image->mobile_path()))
+                Storage::delete($this_image->mobile_path());
             
             $this->images->where('id', $this_image->id)->update([
                 'albums_id'  => $new_album->id,
                 'is_rebuild' => 1,
             ]);
             
+            if(Setting::get('use_queue') == 'yes') {
+                BuildImagesJob::dispatch($this_image->id)->onQueue('BuildImage');
+            }
+            
+            // Проверяем, не переносим ли мы миниатюру альбома
+            // Если да, устанавливаем новую
             if($this_image->album->images_id == $this_image->id) {
                 
                 $Images = $this->images->where('albums_id', $this_image->albums_id)->first();
                 $this->albums->find($this_image->albums_id)->update(['images_id' => $Images->id]);
+                
+            }
+            // Проверяем, есть ли миниатюра у альбома приемника
+            // Если нет, устанавливаем переносимую фотограцию как миниатюру
+            if($new_album->images_id == 0) {
+                
+                $new_album->images_id = $this_image->id;
+                $new_album->save();
                 
             }
             
