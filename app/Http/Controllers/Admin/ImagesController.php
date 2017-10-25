@@ -90,7 +90,7 @@ class ImagesController extends Controller
         
         $image = $this->images->find($router->input('id'));
         
-        $file = $image->path();
+//        $file = $image->path();
         
         if($router->input('option') == 'left')
             $rotate = 90;
@@ -99,9 +99,10 @@ class ImagesController extends Controller
         else
             $rotate = -90;
         
-        Image::make($file)
-            ->rotate($rotate)
-            ->save($file);
+        $rotate = Image::make(Storage::get($image->path()))
+            ->rotate($rotate);
+        
+        Storage::put($image->path(), (string) $rotate->encode());
         
         $image->is_rebuild = 1;
         $image->save();
