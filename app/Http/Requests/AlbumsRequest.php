@@ -49,16 +49,16 @@ class AlbumsRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'          => 'Поле "Название" обязательно для заполнения',
-            'url.required'           => 'Поле "URL" обязательно для заполнения',
-            'url.unique'             => 'Поле "URL" должно быть уникальным, возможно уже создан альбом с данным URL',
-            'directory.required'     => 'Поле "Директория" обязательно для заполнения',
-            'directory.alpha_dash'   => 'Поле "Директория" должно содержать только латинские символы, цифры, знаки подчёркивания (_) и дефисы (-)',
-            'directory.unique'       => 'Поле "Директория" должно быть уникальным, возможно уже создан альбом с данной директорией',
-            'year.required'          => 'Поле "Год" обязательно для заполнения',
-            'year.numeric'           => 'Поле "Год" должно содержать только цифры',
-            'categories_id.required' => 'Поле "Категория" обязательно для заполнения',
-            'categories_id.numeric'  => 'Поле "Категория" должно содержать только цифры',
+            'name.required'          => __('request_albums.name.required'),
+            'url.required'           => __('request_albums.url.required'),
+            'url.unique'             => __('request_albums.url.unique'),
+            'directory.required'     => __('request_albums.directory.required'),
+            'directory.alpha_dash'   => __('request_albums.directory.alpha_dash'),
+            'directory.unique'       => __('request_albums.directory.unique'),
+            'year.required'          => __('request_albums.year.required'),
+            'year.numeric'           => __('request_albums.year.numeric'),
+            'categories_id.required' => __('request_albums.categories_id.required'),
+            'categories_id.numeric'  => __('request_albums.categories_id.numeric'),
         ];
     }
 }

@@ -36,9 +36,9 @@ class CategoriesRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'  => 'Поле "Название категории" обязательно для заполнения',
-            'name.string'    => 'Поле "Название категории" должно быть строкой',
-            'name.unique'    => 'Поле "Название категории" должно быть уникальным, возможно уже создана категория с таким именем',
+            'name.required'  => __('request_categories.name.required'),
+            'name.string'    => __('request_categories.name.string'),
+            'name.unique'    => __('request_categories.name.unique'),
         ];
-    }    
+    }
 }

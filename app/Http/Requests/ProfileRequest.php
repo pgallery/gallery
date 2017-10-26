@@ -45,11 +45,11 @@ class ProfileRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'         => 'Поле "Имя" обязательно для заполнения',
-            'email.required'        => 'Поле "E-Mail" обязательно для заполнения',
-            'email.email'           => 'Поле "E-Mail" должно быть корректным E-Mail адресом',
-            'email.unique'          => 'Поле "E-Mail" должно быть уникальным, возможно указанный Вами E-Mail уже используется',
-            'newpassword.confirmed' => 'Указанные пароли не совпадают',
+            'name.required'         => __('request_profile.name.required'),
+            'email.required'        => __('request_profile.email.required'),
+            'email.email'           => __('request_profile.email.email'),
+            'email.unique'          => __('request_profile.email.unique'),
+            'newpassword.confirmed' => __('request_profile.newpassword.confirmed'),
         ];
-    }    
+    }
 }
