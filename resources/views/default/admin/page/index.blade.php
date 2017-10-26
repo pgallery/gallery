@@ -186,6 +186,18 @@
                         
                     @endphp
                     
+                    @if($album->permission == 'Pass')
+                        
+                        <button onclick="show_pass({{ $album->id }})" type="button" class="btn btn-danger btn-xs" id="get_password" data-id="{{ $album->id }}">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        </button>
+                        
+                        <div id="show_password" style="display: none;" data-id="{{ $album->id }}">
+                            <p class="text-primary">{{ $album->password }}</p>
+                        </div>
+                    
+                    @endif
+                    
                 </td>
                 <td>{{ $album->owner()->name }}</td>
             </tr>
@@ -241,6 +253,11 @@
 
 @section('js-top')
 
+        function show_pass(id){
+            $('#get_password[data-id="' + id + '"] span.glyphicon-eye-open').toggleClass('glyphicon-eye-close');
+            $('#show_password[data-id="' + id + '"]').toggle();
+        }
+
         function random_pass() {
                 var result       = '';
                 var words        = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
@@ -258,10 +275,8 @@
 
         $("#album_permission").change(function(){
             if ($(this).val()=="Pass" ){
-                console.log('show');
                 $('#collapse_pass').collapse('show');
             }else{
-                console.log('hide');
                 $('#collapse_pass').collapse('hide');
             }
         }).change();
