@@ -17,9 +17,10 @@
 
         <div class="form-group">
             <center>
-                <a class="btn btn-success btn-sm" role="button" data-toggle="collapse" 
-                   href="#collapseShowCategories" aria-expanded="false" aria-controls="collapseAlbumForm">
+                <a class="btn btn-success btn-sm" role="button" data-toggle="collapse"
+                   href="#collapseShowCategories" aria-expanded="false" aria-controls="collapseShowCategories">
                   Отобразить список категорий
+                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                 </a>
             </center>
         </div>
@@ -257,7 +258,15 @@
             $('#get_password[data-id="' + id + '"] span.glyphicon-eye-open').toggleClass('glyphicon-eye-close');
             $('#show_password[data-id="' + id + '"]').toggle();
         }
-
+        
+        $('a[aria-controls="collapseShowCategories"]').click(function(){
+            $('a[aria-controls="collapseShowCategories"] span').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+        });
+        
+        $('a[aria-controls="collapseAlbumForm"]').click(function(){
+            $('a[aria-controls="collapseAlbumForm"] span').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+        });        
+        
         function random_pass() {
                 var result       = '';
                 var words        = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';

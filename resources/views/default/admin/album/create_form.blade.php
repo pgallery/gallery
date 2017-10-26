@@ -84,6 +84,7 @@
                 <a class="btn btn-success btn-sm" role="button" data-toggle="collapse" 
                    href="#collapseAlbumForm" aria-expanded="false" aria-controls="collapseAlbumForm">
                   Продвинутые настройки (не обязательны)
+                  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                 </a>
             </center>
         </div>
