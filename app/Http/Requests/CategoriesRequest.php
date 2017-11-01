@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CategoriesRequest extends FormRequest
@@ -21,10 +23,14 @@ class CategoriesRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            'name' => 'required|string|unique:categories', 
+            'name' => [
+                'required',
+                'string', 
+                Rule::unique('categories')->ignore($request->input('id'))
+            ], 
         ];
     }
     

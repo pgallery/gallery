@@ -2,10 +2,12 @@
 
     {!! Form::model($category, [
         'method'    => 'POST',
-        'route'     => ['save-category', $category->id],
+        'route'     => 'save-category',
         'class'     => 'form-horizontal',
         'id'        => 'GroupForm',
-    ]) !!}    
+    ]) !!}
+    
+    {!! Form::hidden('id', $category->id) !!}
     
 @else
 

@@ -128,11 +128,11 @@ Route::get('/category/edit/{id}', [
     'uses'          => 'CategoriesController@getEditСategory',
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
-Route::post('/category/save/{id}', [
+Route::post('/category/save/', [
     'as'            => 'save-category',
     'uses'          => 'CategoriesController@putSaveСategory',
     'middleware'    => 'role:admin'
-])->where(['id' => '[0-9]+']);
+]);
 Route::get('/category/delete/{id}', [
     'as'            => 'delete-category',
     'uses'          => 'CategoriesController@deleteСategory',

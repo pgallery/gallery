@@ -71,9 +71,9 @@ class CategoriesController extends Controller
     /*
      * Сохранение изменений категории
      */
-    public function putSaveСategory(Router $router, CategoriesRequest $request) {
+    public function putSaveСategory(CategoriesRequest $request) {
         
-        $this->categories->find($router->input('id'))->update($request->all());
+        $this->categories->find($request->input('id'))->update($request->all());
         
         Cache::flush();
         
