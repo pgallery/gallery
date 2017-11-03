@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => 'local',
+    'default' => env('DISK_DRIVER', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -63,6 +63,13 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+        'bizmrg' => [
+            'driver' => 'bizmrg',
+            'key' => env('AWS_KEY'),
+            'secret' => env('AWS_SECRET'),
+            'bucket' => env('AWS_BUCKET'),
+        ],        
+        
     ],
 
 ];

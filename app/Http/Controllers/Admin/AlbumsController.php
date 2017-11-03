@@ -219,9 +219,9 @@ class AlbumsController extends Controller {
         foreach ($images as $image) {
 
             $base_filename = basename($image);
-            $mimeType = File::mimeType(storage_path('app/' . $image));
-            
-            if (in_array($mimeType, $accessType)) {
+//            $mimeType = File::mimeType(storage_path('app/' . $image));
+//            
+//            if (in_array($mimeType, $accessType)) {
                 if (!$this->images->where('name', $base_filename)->where('albums_id', $album->id)->exists()) {
                     
                     $image              = new Images();
@@ -234,7 +234,7 @@ class AlbumsController extends Controller {
                     if (Setting::get('use_queue') == 'yes')
                         BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
                 }
-            }
+//            }
         }
 
         // Проверяем альбом на наличие миниатюры

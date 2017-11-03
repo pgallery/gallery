@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Cache;
+
 class Categories extends Model
 {
     use SoftDeletes;
@@ -22,42 +24,42 @@ class Categories extends Model
     
     public function albumCount()
     {
-        return \Cache::remember('categories.albumCount_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('categories.albumCount_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->count();           
         });
     }
 
     public function albumActiveCount()
     {
-        return \Cache::remember('categories.albumActiveCount_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('categories.albumActiveCount_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->where('images_id', '!=', '0')->count();           
         });
     }
     
     public function albumCountPublic()
     {
-        return \Cache::remember('categories.albumCountPublic_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('categories.albumCountPublic_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->where('albums.permission', 'All')->count();           
         });
     }     
 
     public function albumActiveCountPublic()
     {
-        return \Cache::remember('categories.albumActiveCountPublic_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('categories.albumActiveCountPublic_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->where('images_id', '!=', '0')->where('albums.permission', 'All')->count();           
         });
     }    
     
     public function albumCountPrivate()
     {
-        return \Cache::remember('categories.albumCountPrivate_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('categories.albumCountPrivate_' . $this->id . '_cache', 100, function(){
             return $this->hasMany('App\Models\Albums')->where('albums.permission', '!=', 'All')->count();           
         });
     }
     
     public function owner()
     {
-        return \Cache::remember('categories.owner_' . $this->users_id . '_cache', 100, function(){
+        return Cache::remember('categories.owner_' . $this->users_id . '_cache', 100, function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('name')->first();           
         });
     }    
@@ -71,14 +73,14 @@ class Categories extends Model
         
         self::destroy($id);
         
-        \Cache::flush();
+        Cache::flush();
         
     }
     
     public function destroyCategorie($id){
         
-        $group = $this->withTrashed()->findOrFail($id);
-        $group->forceDelete();
+        $category = $this->withTrashed()->findOrFail($id);
+        $category->forceDelete();
         
     }    
 }

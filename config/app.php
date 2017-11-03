@@ -194,6 +194,9 @@ return [
 
         // Zipper
         Chumper\Zipper\ZipperServiceProvider::class,
+        
+        // Mail.ru AWS S3 Filesystem Driver
+        App\Providers\BizmrgServiceProvider::class,
     ],
 
     /*

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Cache;
+use Storage;
+
 class Images extends Model
 {
     
@@ -45,46 +48,43 @@ class Images extends Model
     } 
     
     public function owner() {
-        return \Cache::remember('images.owner_' . $this->users_id . '_cache', 100, function(){
+        return Cache::remember('images.owner_' . $this->users_id . '_cache', 100, function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id', 'name')->first();           
         });
     }
     
-    public static function deleteCheckAlbumPreview($id) {
+    public function deleteCheckAlbumPreview($id) {
         
-        $album_id = self::find($id)->album->id;
-        self::destroy($id);
+        $album_id = $this->find($id)->album->id;
+        $this->destroy($id);
         
         if(Albums::find($album_id)->where('images_id', $id)->count() == 1) {
-            if(self::where('albums_id', $album_id)->count() == 0) {
+            if($this->where('albums_id', $album_id)->count() == 0) {
                 Albums::find($album_id)->update(['images_id' => 0]);
             } else {
-                $Images = self::where('albums_id', $album_id)->first();
+                $Images = $this->where('albums_id', $album_id)->first();
                 Albums::find($album_id)->update(['images_id' => $Images->id]);
             }
         }
         
-        \Cache::flush();
+        Cache::flush();
         
     }
     
     public function destroyImage($id){
         
-//        $full_image   = \Helper::getFullPathImage($id);
-//        $mobile_image = \Helper::getFullPathMobileImage($id);
-//        $thumb_image  = \Helper::getFullPathThumbImage($id);
-//        
-//        if (\File::exists($full_image))
-//            \File::delete($full_image);
-//        
-//        if (\File::exists($mobile_image))
-//            \File::delete($mobile_image);
-//        
-//        if (\File::exists($thumb_image))
-//            \File::delete($thumb_image);        
-//        
-//        $image = $this->withTrashed()->findOrFail($id);
-//        $image->forceDelete();
+        $image = $this->withTrashed()->findOrFail($id);
+        
+        if(Storage::has($image->thumb_path()))
+            Storage::delete($image->thumb_path());
+        
+        if(Storage::has($image->mobile_path()))
+            Storage::delete($image->mobile_path());        
+
+        if(Storage::has($image->path()))
+            Storage::delete($image->path());  
+        
+        $image->forceDelete();
         
     }
 }
