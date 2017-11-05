@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Albums;
 
 use Roles;
+use Storage;
 
 class ImagesController extends Controller
 {
@@ -49,7 +50,7 @@ class ImagesController extends Controller
         
         $response .= "/" . $router->input('name');
         
-        $file = \Storage::get($response);
+        $file = Storage::get($response);
         return response($file, 200)->header('Content-Type', 'image/jpeg');
 
     }

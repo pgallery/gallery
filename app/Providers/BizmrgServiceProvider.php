@@ -26,7 +26,7 @@ class BizmrgServiceProvider extends ServiceProvider
                     'key'    => env('AWS_KEY'),
                     'secret' => env('AWS_SECRET'),
                 ],
-                'endpoint' => 'https://hb.bizmrg.com'
+                'endpoint' => 'https://' . env('AWS_ENDPOINT')
             ]);
 
             $bucket = env('AWS_BUCKET');
