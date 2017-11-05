@@ -18,7 +18,8 @@
         "pragmarx/google2fa-laravel": "^0.1.2",
         "pragmarx/recovery": "^0.1.0",
         "predis/predis": "~1.0",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "5.5"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "5.5",
+        "league/flysystem-aws-s3-v3": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
