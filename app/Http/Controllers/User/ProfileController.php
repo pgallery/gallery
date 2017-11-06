@@ -47,7 +47,7 @@ class ProfileController extends Controller
                 'google2fa_enabled' => ($request->input('go2fa') == 'enable') ? '1' : '0',                
             ]);
             
-            if($request->input('newpassword') && $request->input('newpassword') == $request->input('confirmPassword'))
+            if($request->input('newpassword') && $request->input('newpassword') == $request->input('newpassword_confirmation'))
                 $user->update([
                     'password' => Hash::make($request->input('newpassword')),
                 ]);
