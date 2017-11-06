@@ -7,16 +7,23 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Albums;
+use App\Models\Images;
 
 use Roles;
 use Storage;
+use Image;
+use Setting;
 
 class ImagesController extends Controller
 {
     protected $albums;
+    protected $images;
 
-    public function __construct(Albums $albums) {
-        $this->albums  = $albums;
+    public function __construct(Albums $albums, Images $images) {
+        
+        $this->albums = $albums;
+        $this->images = $images;
+        
     }
     
     /*
@@ -36,22 +43,38 @@ class ImagesController extends Controller
         
         if($router->input('option') == 'thumb') {
             
-            $response = $album->thumb_path();
+            $path = $album->thumb_path();
             
         } elseif($router->input('option') == 'mobile') {
             
-            $response = $album->mobile_path();
+            $path = $album->mobile_path();
             
         } else {
             
-            $response = $album->path();
+            $path = $album->path();
             
         }
         
-        $response .= "/" . $router->input('name');
+//        $image = $this->images->where('name', $router->input('name'))->firstOrFail();
+//        $path = $response .= "/" . $router->input('name');
+        //
+        $path .= "/" . $router->input('name');
         
-        $file = Storage::get($response);
-        return response($file, 200)->header('Content-Type', 'image/jpeg');
+//        $file = Storage::get($response);
+        
+        if($router->input('option') == 'thumb') {
+            
+            $img = Image::cache(function($image) use ($path) {
+                return $image->make(Storage::get($path));
+            }, Setting::get('cache_ttl'));
+            
+        } else {
+            
+            $img = Storage::get($response);
+            
+        }
+        
+        return response($img, 200)->header('Content-Type', 'image/jpeg');
 
     }
 }
