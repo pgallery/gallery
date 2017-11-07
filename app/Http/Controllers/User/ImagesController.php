@@ -41,12 +41,15 @@ class ImagesController extends Controller
             return redirect()->route('gallery-show', ['url' => $router->input('url')]);
         }
         
+        if(!$this->images->where('name', $router->input('name'))->where('albums_id', $album->id)->exists())
+            abort(404);
+        
         if($router->input('option') == 'thumb') {
             
             $path = $album->thumb_path() . '/' . $router->input('name');
             $img = Image::cache(function($image) use ($path) {
                 return $image->make(Storage::get($path));
-            }, Setting::get('cache_ttl'));
+            }, (Setting::get('cache_ttl') / 60));
             
         } elseif($router->input('option') == 'mobile') {
             
@@ -60,7 +63,13 @@ class ImagesController extends Controller
             
         }
         
-        return response($img, 200)->header('Content-Type', 'image/jpeg');
+        
+        $mimeType = Storage::getMimetype($path);
+        
+        if(!$mimeType)
+            $mimeType = 'image/jpeg';
+        
+        return response($img, 200)->header('Content-Type', $mimeType);
 
     }
 }
