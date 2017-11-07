@@ -46,6 +46,8 @@ class BuildImage
         
         Storage::put($image->thumb_path(), (string) $OriginalImage->encode());  
         
+        $OriginalImage->destroy();
+        
         $image->update([
             'size'          => Storage::size($image->path()),
             'height'        => $imgHeight,
