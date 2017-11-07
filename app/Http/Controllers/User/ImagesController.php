@@ -43,29 +43,20 @@ class ImagesController extends Controller
         
         if($router->input('option') == 'thumb') {
             
-            $path = $album->thumb_path();
-            
-        } elseif($router->input('option') == 'mobile') {
-            
-            $path = $album->mobile_path();
-            
-        } else {
-            
-            $path = $album->path();
-            
-        }
-        
-        $path .= "/" . $router->input('name');
-        
-        if($router->input('option') == 'thumb') {
-            
+            $path = $album->thumb_path() . '/' . $router->input('name');
             $img = Image::cache(function($image) use ($path) {
                 return $image->make(Storage::get($path));
             }, Setting::get('cache_ttl'));
             
+        } elseif($router->input('option') == 'mobile') {
+            
+            $path = $album->mobile_path() . '/' . $router->input('name');
+            $img = Storage::get($path);
+            
         } else {
             
-            $img = Storage::get($response);
+            $path = $album->path() . '/' . $router->input('name');
+            $img = Storage::get($path);
             
         }
         
