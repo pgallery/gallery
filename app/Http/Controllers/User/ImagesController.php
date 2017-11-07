@@ -55,12 +55,7 @@ class ImagesController extends Controller
             
         }
         
-//        $image = $this->images->where('name', $router->input('name'))->firstOrFail();
-//        $path = $response .= "/" . $router->input('name');
-        //
         $path .= "/" . $router->input('name');
-        
-//        $file = Storage::get($response);
         
         if($router->input('option') == 'thumb') {
             

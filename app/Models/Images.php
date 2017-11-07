@@ -37,7 +37,7 @@ class Images extends Model
 
     public function http_thumb_path() {
         return $this->album->http_thumb_path() . '/' . $this->name;
-    }    
+    }
     
     public function mobile_path() {
         return $this->album->mobile_path() . '/' . $this->name;
