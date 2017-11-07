@@ -21,8 +21,9 @@
 
     @endforeach
     
-</div>   
+</div>
 
+@if($tags->count() != 0)
 <blockquote>
     <p>
         @foreach($tags as $tag)
@@ -32,5 +33,6 @@
         @endforeach
     </p>
 </blockquote>
+@endif
 
 @endsection
