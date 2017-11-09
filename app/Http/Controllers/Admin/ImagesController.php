@@ -39,11 +39,16 @@ class ImagesController extends Controller
      */
     public function putRename(Request $request) {
         
+        print_r($request->all());
+        
         $image = $this->images->find($request->input('id'));
         
         $new_name = Transliterate::get($request->input('newName'));
-                
-        if(Storage::move($image->album->path() . "/" . $image->name, $image->album->path() . "/" . $new_name)) {
+        
+        if(Storage::has($image->album->path() . "/" . $new_name))
+            return back();
+        
+        if(Storage::move($image->path(), $image->album->path() . "/" . $new_name)) {
             
             if(Storage::has($image->thumb_path()))
                 Storage::delete($image->thumb_path());

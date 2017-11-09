@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use Storage;
 use League\Flysystem\Filesystem;
-use Aws\S3\S3Client;
 use Illuminate\Support\ServiceProvider;
-use League\Flysystem\AwsS3v3\AwsS3Adapter as S3Adapter;
+use Aws\S3\S3Client;
+use App\Helpers\AwsS3Adapter;
 
 class BizmrgServiceProvider extends ServiceProvider
 {
@@ -31,7 +31,7 @@ class BizmrgServiceProvider extends ServiceProvider
 
             $bucket = env('AWS_BUCKET');
             
-            return new Filesystem(new S3Adapter($client, $bucket));
+            return new Filesystem(new AwsS3Adapter($client, $bucket));
         });
 
     }
