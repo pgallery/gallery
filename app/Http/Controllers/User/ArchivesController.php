@@ -10,6 +10,7 @@ use App\Models\Archives;
 use App\Models\Albums;
 
 use Auth;
+use Roles;
 use Setting;
 use Carbon\Carbon;
 use Storage;
@@ -35,7 +36,17 @@ class ArchivesController extends Controller
      */
     public function getZip(Router $router) {
         
-        $archive = $this->_create($router->input('url'));
+        $album = $this->albums->where('url', $router->input('url'))->firstOrFail();
+        
+        if($album->permission == 'Pass' and !Roles::is('admin') and !$request->session()->has("password_album_$album->id"))
+        {
+            if($request->session()->get("password_album_$album->id")['access'] != 'yes'
+                or $request->session()->get("password_album_$album->id")['key'] != md5($request->ip() . $request->header('User-Agent'))
+            )
+            return redirect()->route('gallery-show', ['url' => $router->input('url')]);
+        }        
+        
+        $archive = $this->_create($album->id);
         
         if(Setting::get('use_queue') == 'yes')
             ArchivesCleanJob::dispatch($archive->id)
@@ -46,38 +57,45 @@ class ArchivesController extends Controller
 
     }
     
-    private function _create($url){
+    private function _create($id){
         
-        $album = $this->albums->where('url', $url)->firstOrFail();
-        
+        $album = $this->albums->findOrFail($id);
         $archive_name = storage_path(Setting::get('archive_dir') . "/" . $album->directory . ".zip");
-        $tmp_dir = storage_path(Setting::get('archive_dir') . "/__" . sha1(Carbon::now() . $album->directory . "_tmp"));
         
         if (!File::exists($archive_name)) {
             
-            if (!File::isDirectory($tmp_dir))
-                File::makeDirectory($tmp_dir, 0755, true);
-
-            $zipper = Zipper::make($archive_name);
-
-            foreach ($album->images as $image) {
-
-                $file = Storage::get($image->path());
-                File::put($tmp_dir . '/' . $image->name, $file);
-
-                $zipper->add($tmp_dir . '/' . $image->name);
-            }
-       
-            $zipper->close();
+            if(env('DISK_DRIVER') == 'local') {
             
+                $files = glob($album->path() . '/*');
+                Zipper::make($archive_name)->add($files)->close();
+                
+            }else{
+                
+                $tmp_dir = storage_path(Setting::get('archive_dir') . "/__" . sha1(Carbon::now() . $album->directory . "_tmp"));
+                
+                if (!File::isDirectory($tmp_dir))
+                    File::makeDirectory($tmp_dir, 0755, true);
+
+                $zipper = Zipper::make($archive_name);
+
+                foreach ($album->images as $image) {
+                    $file = Storage::get($image->path());
+                    File::put($tmp_dir . '/' . $image->name, $file);
+
+                    $zipper->add($tmp_dir . '/' . $image->name);
+                }
+
+                $zipper->close();
+
+                File::deleteDirectory($tmp_dir);
+            }
+
             $archive = $this->archives->create([
                 'name'      => $archive_name,
                 'size'      => File::size($archive_name),
                 'users_id'  => Auth::user()->id,
                 'albums_id' => $album->id,
-            ]);
-            
-            File::deleteDirectory($tmp_dir);
+            ]);     
             
         } else {
             

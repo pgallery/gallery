@@ -63,7 +63,6 @@ class ImagesController extends Controller
             
         }
         
-        
         $mimeType = Storage::getMimetype($path);
         
         if(!$mimeType)

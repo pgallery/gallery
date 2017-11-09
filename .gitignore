@@ -1,9 +1,10 @@
 /node_modules
 /public/hot
 /public/gallery
-/public/archives/
+/public/archives
 /public/storage
 /storage/*.key
+/storage/gallery
 /vendor
 /.idea
 /.vagrant
