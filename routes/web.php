@@ -80,7 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
     ]);
     
     // Скачивание архива альбома
-    Route::get('/downloads/{url}', [
+    Route::get('/downloads/{url}.zip', [
         'as'            => 'zip-album',
         'uses'          => 'User\ArchivesController@getZip',
     ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
