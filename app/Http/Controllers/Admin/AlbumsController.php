@@ -67,7 +67,7 @@ class AlbumsController extends Controller {
             return $this->users->pluck('name','id');
         });
         
-        $album = $this->albums->find($router->input('id'));
+        $album = $this->albums->findOrFail($router->input('id'));
         
         $tags = '';
         foreach ($album->tags as $tag) {
@@ -122,7 +122,7 @@ class AlbumsController extends Controller {
      */
     public function getShowAlbum(Router $router, Request $request) {
 
-        $thisAlbum = $this->albums->find($router->input('id'));
+        $thisAlbum = $this->albums->findOrFail($router->input('id'));
 
         if ($thisAlbum->imagesCount() == 0) {
             $images = [];
@@ -165,7 +165,7 @@ class AlbumsController extends Controller {
      */
     public function putSaveAlbum(AlbumsRequest $request) {
         
-        $album = $this->albums->find($request->input('id'));
+        $album = $this->albums->findOrFail($request->input('id'));
         
         // Если изменена директория, переносим файлы
         if($album->directory != $request->input('directory'))
@@ -213,7 +213,7 @@ class AlbumsController extends Controller {
             'image/bmp',
         ];
 
-        $album = $this->albums->find($router->input('id'));
+        $album = $this->albums->findOrFail($router->input('id'));
         $images = Storage::files($album->path());
         
         foreach ($images as $image) {
@@ -243,7 +243,7 @@ class AlbumsController extends Controller {
         if ($album->images_id == 0) {
             $thumb = $this->images->where('albums_id', $album->id)->first();
             $this->albums
-                    ->find($album->id)
+                    ->findOrFail($album->id)
                     ->update([
                         'images_id' => $thumb->id,
                     ]);
@@ -264,7 +264,7 @@ class AlbumsController extends Controller {
         ]);
 
         if (Setting::get('use_queue') == 'yes') {
-            $album = $this->albums->find($router->input('id'));
+            $album = $this->albums->findOrFail($router->input('id'));
             $album_images = $album->images;
 
             foreach ($album_images as $image) {
@@ -280,7 +280,7 @@ class AlbumsController extends Controller {
      */
     public function getUploads(Router $router) {
 
-        $album = $this->albums->find($router->input('id'));
+        $album = $this->albums->findOrFail($router->input('id'));
 
         return Viewer::get('admin.album.uploads', [
             'type'       => 'thisAlbum',
@@ -294,7 +294,7 @@ class AlbumsController extends Controller {
      */
     private function _rename_dir($id, $directory) {
         
-        $album = $this->albums->find($id);
+        $album = $this->albums->findOrFail($id);
 
         $directory   = Transliterate::get($directory);
         
@@ -329,7 +329,7 @@ class AlbumsController extends Controller {
      */
     private function _change_owner($id, $users_id, $recursion = false) {
 
-        $this->albums->find($id)->update([
+        $this->albums->findOrFail($id)->update([
             'users_id' => $users_id,
         ]);
 

@@ -39,9 +39,7 @@ class ImagesController extends Controller
      */
     public function putRename(Request $request) {
         
-        print_r($request->all());
-        
-        $image = $this->images->find($request->input('id'));
+        $image = $this->images->findOrFail($request->input('id'));
         
         $new_name = Transliterate::get($request->input('newName'));
         
@@ -77,7 +75,7 @@ class ImagesController extends Controller
      */
     public function getRebuild(Router $router) {
 
-        $image = $this->images->find($router->input('id'));
+        $image = $this->images->findOrFail($router->input('id'));
         $image->is_rebuild = 1;
         $image->save();
 
@@ -93,7 +91,7 @@ class ImagesController extends Controller
      */
     public function getRotate(Router $router) {
         
-        $image = $this->images->find($router->input('id'));
+        $image = $this->images->findOrFail($router->input('id'));
         
 //        $file = $image->path();
         
@@ -135,8 +133,8 @@ class ImagesController extends Controller
      */
     public function putInstallImage(Router $router) {
         
-        $album_id = $this->images->find($router->input('id'))->album->id;
-        $this->albums->find($album_id)->update(['images_id' => $router->input('id')]);
+        $album_id = $this->images->findOrFail($router->input('id'))->album->id;
+        $this->albums->findOrFail($album_id)->update(['images_id' => $router->input('id')]);
         
         Cache::flush();
         
@@ -149,7 +147,7 @@ class ImagesController extends Controller
      */
     public function putChangeOwnerImage(Request $request) {
         
-        $image = $this->images->find($request->input('id'));
+        $image = $this->images->findOrFail($request->input('id'));
         $image->users_id = $request->input('ChangeOwnerNew');
         $image->save();
         
@@ -164,8 +162,8 @@ class ImagesController extends Controller
      */
     public function putMoveToAlbum(Request $request) {
         
-        $this_image = $this->images->find($request->input('id'));
-        $new_album  = $this->albums->find($request->input('MoveToAlbumNew'));
+        $this_image = $this->images->findOrFail($request->input('id'));
+        $new_album  = $this->albums->findOrFail($request->input('MoveToAlbumNew'));
                 
         if($this_image->albums_id != $request->input('MoveToAlbumNew') and Storage::move($this_image->path(), $new_album->path() . "/" . $this_image->name)) {
             
@@ -189,7 +187,7 @@ class ImagesController extends Controller
             if($this_image->album->images_id == $this_image->id) {
                 
                 $Images = $this->images->where('albums_id', $this_image->albums_id)->first();
-                $this->albums->find($this_image->albums_id)->update(['images_id' => $Images->id]);
+                $this->albums->findOrFail($this_image->albums_id)->update(['images_id' => $Images->id]);
                 
             }
             // Проверяем, есть ли миниатюра у альбома приемника

@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         Commands\queues::class,
         Commands\usermod::class,
         Commands\usercreate::class,
+        Commands\setVisibilityFiles::class,
     ];
 
     /**

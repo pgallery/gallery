@@ -3,6 +3,8 @@
 /public/gallery
 /public/archives
 /public/storage
+/public/images
+/public/32779c721995.html
 /storage/*.key
 /storage/gallery
 /vendor
@@ -15,5 +17,4 @@ package.json
 webpack.mix.js
 yarn.lock
 composer.lock
-/public/32779c721995.html
 /nbproject/
