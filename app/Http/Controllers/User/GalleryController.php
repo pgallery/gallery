@@ -85,7 +85,7 @@ class GalleryController extends Controller
                 
             } elseif ($router->input('option') == "year" and !empty($router->input('url'))){
                 
-                $albums = $this->albums->latest('year');
+                $albums = $this->albums->orderBy('year', 'DESC')->orderBy('created_at', 'DESC');
                 $albums = $albums->where('year', $router->input('url'));
                 
                 if(!Roles::is('admin'))
@@ -96,7 +96,7 @@ class GalleryController extends Controller
                 
             } else {
                 
-                $albums = $this->albums->latest('year');
+                $albums = $this->albums->orderBy('year', 'DESC')->orderBy('created_at', 'DESC');
                 
                 if(!Roles::is('admin'))
                     $albums = $albums->where('permission', 'All');

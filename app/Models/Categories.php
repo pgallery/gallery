@@ -19,7 +19,7 @@ class Categories extends Model
     
     public function albums()
     {
-        return $this->hasMany('App\Models\Albums');        
+        return $this->hasMany('App\Models\Albums')->orderBy('year', 'DESC')->orderBy('created_at', 'DESC');        
     }
     
     public function albumCount()
