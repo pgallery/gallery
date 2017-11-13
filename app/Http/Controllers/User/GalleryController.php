@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Routing\Router;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Categories;

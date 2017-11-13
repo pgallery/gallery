@@ -11,7 +11,7 @@ class Setting
     // 10080 минут - 1 неделя
     const SETTING_CACHE_TTL = 10080;
     
-    public static function get($key){
+    public function get($key){
         
         $settings = Cache::remember('global.settings', self::SETTING_CACHE_TTL, function() {
             

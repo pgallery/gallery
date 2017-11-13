@@ -6,7 +6,7 @@ use Storage;
 use League\Flysystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 use Aws\S3\S3Client;
-use App\Helpers\AwsS3Adapter;
+use App\Adapters\AwsS3Adapter;
 
 class BizmrgServiceProvider extends ServiceProvider
 {

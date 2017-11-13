@@ -11,18 +11,25 @@ use Auth;
 use Cache;
 use Setting;
 use Roles;
+use Route;
 
 class Viewer
 {
-    public static function get($page, $data = false) {
+    protected $router;
+    
+    public function __construct() {
+        $this->router = Route::current();
+    }
+
+    public function get($page, $data = false) {
         
         if(Roles::is('admin'))
             $CacheKey = 'Admin.';
         else
-            $CacheKey = 'User.';        
+            $CacheKey = 'User.';
         
         $CacheKey .= 'Cache.App.Helpers.Viewer';
-        
+                
         if (Cache::has($CacheKey)) {
             
             $static = Cache::get($CacheKey);
@@ -71,5 +78,57 @@ class Viewer
         return view('default/' . $page, $result);
         
     }
+
     
+    public function getTitle() {
+
+        if(Route::is('gallery-show')) {
+
+            $album = Albums::select('name')->where('url', $this->router->parameter("url"))->firstOrFail();
+            
+            $return = Setting::get('gallery_name') . ": " . $album->name;
+            
+        } else {
+            
+            $return = Setting::get('gallery_name');
+            
+        }        
+        
+        return $return;
+    }
+    
+    public function getDescription() {
+        
+        if(Route::is('gallery-show')) {
+
+            $album = Albums::select('desc')->where('url', $this->router->parameter("url"))->firstOrFail();
+            
+            $return = Setting::get('gallery_name') . ": " . $album->desc;
+            
+        } else {
+            
+            $return = Setting::get('gallery_name');
+            
+        }        
+        
+        return $return;        
+    }
+    
+    public function getKeywords() {
+        
+        $return = '';
+        
+        if(Route::is('gallery-show')) {
+
+            $album = Albums::where('url', $this->router->parameter("url"))->firstOrFail();
+            
+            foreach ($album->tags as $tag) {
+                $return .= $tag->name . ", ";
+            }
+            
+            $return = rtrim(rtrim($return), ",");
+        }     
+        
+        return $return;        
+    }    
 }

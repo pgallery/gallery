@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Adapters;
 
 use Aws\Result;
 use Aws\S3\Exception\DeleteMultipleObjectsException;

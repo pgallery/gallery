@@ -177,6 +177,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
+        // Setting
+        App\Providers\SettingServiceProvider::class,
+        // Viewer
+        App\Providers\ViewerServiceProvider::class,
+        // Roles
+        App\Providers\RolesServiceProvider::class,
+        
         // Debug
         Barryvdh\Debugbar\ServiceProvider::class,
         
@@ -255,9 +262,10 @@ return [
         // User-Agent
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         
-        'Roles' => App\Helpers\Roles::class,
-        'Setting' => App\Helpers\Setting::class,
-        'Viewer' => App\Helpers\Viewer::class,
+//        'Roles' => App\Helpers\Roles::class,
+        'Roles' => App\Facades\Roles::class,
+        'Setting' => App\Facades\Setting::class,
+        'Viewer' => App\Facades\Viewer::class,
         'Transliterate' => App\Helpers\Transliterate::class,
         'BuildImage' => App\Helpers\BuildImage::class,
         
