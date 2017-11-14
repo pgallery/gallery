@@ -21,5 +21,10 @@ Route::prefix('v1')->group(function () {
         'as'            => 'api', 
         'uses'          => 'ApiController@getPage',
     ]);
+
+    Route::get('/gallery', [
+        'as'            => 'api-gallery', 
+        'uses'          => 'GalleryController@getPage',
+    ]);
     
 });

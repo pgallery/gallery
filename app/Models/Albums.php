@@ -21,8 +21,8 @@ class Albums extends Model
 
     public function http() {
         return Cache::remember('albums.http_' . $this->id . '_cache', 100, function(){
-            return env('APP_URL') . "/images/original/" . $this->url;
-        });
+            return env('APP_URL') . "/" . $this->url;
+        });        
     }
     
     public function path() {
