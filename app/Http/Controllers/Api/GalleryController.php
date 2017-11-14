@@ -17,6 +17,15 @@ class GalleryController extends Controller
     
     public function getPage() {
         
+        if(!$this->albums->where('permission', 'All')->where('images_id', '!=', '0')->exists()) {
+            
+            $output['result']  = 'Failed';
+            $output['message'] = 'No albums available.';
+            $output['error']   = true;
+
+            return response()->json($output);
+        }
+        
         $data = [];
         $i = 0;
         $albums = $this->albums->where('permission', 'All')
