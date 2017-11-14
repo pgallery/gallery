@@ -30,6 +30,9 @@ class GalleryController extends Controller
         $this->images     = $images;       
     }
     
+    /*
+     * Вывод галереи
+     */
     public function getShow(Router $router) {
 
         if(Roles::is('admin')) {

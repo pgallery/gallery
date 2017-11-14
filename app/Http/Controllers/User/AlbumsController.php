@@ -91,6 +91,9 @@ class AlbumsController extends Controller
         
     }
     
+    /*
+     * Авторизация альбома доступного по паролю
+     */
     public function postAuth(Router $router, Request $request) {
         
         if($this->albums->where('password', $request->input('password'))->exists()){

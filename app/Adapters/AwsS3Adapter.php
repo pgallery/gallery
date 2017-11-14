@@ -185,14 +185,19 @@ class AwsS3Adapter extends AbstractAdapter implements CanOverwriteFiles
      */
     public function deleteDir($dirname)
     {
-        try {
-            $prefix = $this->applyPathPrefix($dirname) . '/';
-            $this->s3Client->deleteMatchingObjects($this->bucket, $prefix);
-        } catch (DeleteMultipleObjectsException $exception) {
-            return false;
-        }
+        $location = $this->applyPathPrefix($dirname) . "/";
 
-        return true;
+        $command = $this->s3Client->getCommand(
+            'deleteObject',
+            [
+                'Bucket' => $this->bucket,
+                'Key' => $location,
+            ]
+        );
+
+        $this->s3Client->execute($command);
+
+        return ! $this->has($dirname);        
     }
 
     /**
