@@ -153,9 +153,11 @@ class ViewerFacade
             
         }else {
             
-            $tags = Tags::whereHas('albums', function ($query) {
-                $query->where('permission', 'All')->where('images_id', '!=', '0');
-            })->get();
+            $tags = Cache::remember('getKeywords.tags', Setting::get('cache_ttl'), function() {
+                return Tags::whereHas('albums', function ($query) {
+                    $query->where('permission', 'All')->where('images_id', '!=', '0');
+                })->get();
+            });
             
             foreach ($tags as $tag) {
                 $return .= $tag->name . ", ";

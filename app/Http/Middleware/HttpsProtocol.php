@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Helpers\Setting;
+use Setting;
 
 class HttpsProtocol
 {
