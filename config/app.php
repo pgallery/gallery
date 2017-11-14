@@ -261,11 +261,11 @@ return [
         
         // User-Agent
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
-        
-//        'Roles' => App\Helpers\Roles::class,
+
         'Roles' => App\Facades\Roles::class,
         'Setting' => App\Facades\Setting::class,
         'Viewer' => App\Facades\Viewer::class,
+        
         'Transliterate' => App\Helpers\Transliterate::class,
         'BuildImage' => App\Helpers\BuildImage::class,
         

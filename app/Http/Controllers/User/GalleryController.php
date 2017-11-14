@@ -31,7 +31,7 @@ class GalleryController extends Controller
     }
     
     public function getShow(Router $router) {
-                
+
         if(Roles::is('admin')) {
         
             $countShowAlbums = Cache::remember('all.showadmin.albums', Setting::get('cache_ttl'), function() {

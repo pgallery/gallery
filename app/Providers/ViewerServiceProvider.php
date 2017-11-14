@@ -15,7 +15,7 @@ class ViewerServiceProvider extends ServiceProvider
     public function register()
     {
         App::bind('viewer', function() {
-            return new \App\Helpers\Viewer;
+            return new \App\Facades\ViewerFacade;
         });
     }
 }

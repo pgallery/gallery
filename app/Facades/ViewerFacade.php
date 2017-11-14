@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Facades;
 
 use App\Models\User;
 use App\Models\Categories;
 use App\Models\Albums;
+use App\Models\Tags;
 use App\Models\Images;
 
 use Auth;
@@ -13,7 +14,7 @@ use Setting;
 use Roles;
 use Route;
 
-class Viewer
+class ViewerFacade
 {
     protected $router;
     
@@ -81,35 +82,59 @@ class Viewer
 
     
     public function getTitle() {
-
+        
+        $return = Setting::get('gallery_name');
+        
         if(Route::is('gallery-show')) {
 
             $album = Albums::select('name')->where('url', $this->router->parameter("url"))->firstOrFail();
             
-            $return = Setting::get('gallery_name') . ": " . $album->name;
+            $return .= ": " . $album->name;
             
-        } else {
+        }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'category') {
             
-            $return = Setting::get('gallery_name');
+            $return .= ": " . urldecode($this->router->parameter("url"));
+        
+        }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'tag') {
             
-        }        
+            $return .= ": " . urldecode($this->router->parameter("url"));
+        
+        }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'year') {
+            
+            $return .= ": " . $this->router->parameter("url");
+        
+        }
         
         return $return;
     }
     
     public function getDescription() {
         
+        $return = Setting::get('gallery_name');
+        
         if(Route::is('gallery-show')) {
 
             $album = Albums::select('desc')->where('url', $this->router->parameter("url"))->firstOrFail();
             
-            $return = Setting::get('gallery_name') . ": " . $album->desc;
+            $return .= ": " . $album->desc;
             
-        } else {
+        }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'category') {
             
-            $return = Setting::get('gallery_name');
+            $return .= ": " . urldecode($this->router->parameter("url"));
             
-        }        
+        }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'tag') {
+            
+            $return .= ": " . urldecode($this->router->parameter("url"));
+        
+        }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'year') {
+            
+            $return .= ": " . $this->router->parameter("url");
+        
+        }else {
+            
+            $return .= ": " . Setting::get('gallery_description');
+            
+        }
         
         return $return;        
     }
@@ -126,9 +151,18 @@ class Viewer
                 $return .= $tag->name . ", ";
             }
             
-            $return = rtrim(rtrim($return), ",");
-        }     
+        }else {
+            
+            $tags = Tags::whereHas('albums', function ($query) {
+                $query->where('permission', 'All')->where('images_id', '!=', '0');
+            })->get();
+            
+            foreach ($tags as $tag) {
+                $return .= $tag->name . ", ";
+            }
+                       
+        }
         
-        return $return;        
+        return rtrim(rtrim($return), ",");        
     }    
 }

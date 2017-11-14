@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(baseRoles::class);
         $this->call(baseUsers::class);
         $this->call(newSettingsUploadVisibilityFiles::class);
+        $this->call(newSettingsGalleryDescription::class);
     }
 }

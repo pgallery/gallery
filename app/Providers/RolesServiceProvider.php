@@ -15,7 +15,7 @@ class RolesServiceProvider extends ServiceProvider
     public function register()
     {
         App::bind('roles', function() {
-            return new \App\Helpers\Roles;
+            return new \App\Facades\RolesFacade;
         });
     }
 }

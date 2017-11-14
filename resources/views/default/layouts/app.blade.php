@@ -1,4 +1,4 @@
-@inject('meta', 'App\Helpers\Viewer')
+@inject('meta', 'App\Facades\ViewerFacade')
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
   <head>
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="{{ $meta->getDescription() }}">
-    <meta name="keywords" content="{{ $meta->getKeywords() }}" />
+    <meta name="keywords" content="{{ $meta->getKeywords() }}">
 
     <title>{{ $meta->getTitle() }}</title>
 

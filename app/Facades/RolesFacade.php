@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Facades;
 
 use App\Models\User;
 
 use Auth;
 
-class Roles
+class RolesFacade
 {
 
     public static function is($roles){

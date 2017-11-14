@@ -15,7 +15,7 @@ class SettingServiceProvider extends ServiceProvider
     public function register()
     {
         App::bind('setting', function() {
-            return new \App\Helpers\Setting;
+            return new \App\Facades\SettingFacade;
         });
     }
 }
