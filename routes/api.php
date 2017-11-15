@@ -29,5 +29,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/album', [
         'as'            => 'api-album', 
         'uses'          => 'AlbumController@getPage',
-    ]);    
+    ]);
+    Route::get('/image', [
+        'as'            => 'api-image', 
+        'uses'          => 'ImageController@getPage',
+    ]);
 });
