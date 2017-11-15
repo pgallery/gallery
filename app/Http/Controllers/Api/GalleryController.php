@@ -26,7 +26,7 @@ class GalleryController extends Controller
             return response()->json($output);
         }
         
-        $data = [];
+        $list = [];
         $i = 0;
         $albums = $this->albums->where('permission', 'All')
                 ->where('images_id', '!=', '0')
@@ -35,18 +35,16 @@ class GalleryController extends Controller
                 ->get();
         
         foreach ($albums as $album) {
-            $data[$i]['name']  = $album->name;
-            $data[$i]['url']   = $album->http();
-            $data[$i]['thumb'] = $album->thumbs->http_thumb_path();
+            $list[$i]['name']  = $album->name;
+            $list[$i]['url']   = $album->http();
+            $list[$i]['thumb'] = $album->thumbs->http_thumb_path();
             
             $i++;
         }
-
         
         $output['result'] = 'Successful';
-        $output['data']   = $data;
+        $output['list']   = $list;
         $output['error']  = false;
-        
         
         return response()->json($output);
         

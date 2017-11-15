@@ -37,24 +37,28 @@ class AlbumController extends Controller
         
         $album = $this->albums->find($id);
         
-        $data = [];
+        $list = [];
         $i = 0;
         
+        $data = [
+            'name'  => $album->name,
+            'url'   => $album->http(),
+            'thumb' => $album->thumbs->http_thumb_path(),
+        ];
+        
         foreach ($album->images()->paginate($count) as $image) {
-            $data[$i]['name']  = $image->name;
-            $data[$i]['url']   = $image->http_path();
-            $data[$i]['thumb'] = $image->http_thumb_path();
+            $list[$i]['name']  = $image->name;
+            $list[$i]['url']   = $image->http_path();
+            $list[$i]['thumb'] = $image->http_thumb_path();
             
             $i++;
         }
         
-//        print_r($data);
-//        exit;
         $output['result'] = 'Successful';
         $output['data']   = $data;
+        $output['list']   = $list;
         $output['error']  = false;
-        
-        
+
         return response()->json($output);
         
     }
