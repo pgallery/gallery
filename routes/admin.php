@@ -36,11 +36,23 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
+
+// Теги
 Route::get('/tags/', [
     'as'            => 'tags', 
     'uses'          => 'TagsController@getTags',
     'middleware'    => 'role:admin'
 ]);
+Route::post('/tags/rename/', [
+    'as'            => 'rename-tag', 
+    'uses'          => 'TagsController@putRename',
+    'middleware'    => 'role:admin'
+]);
+Route::get('/tags/delete/{id}', [
+    'as'            => 'delete-tag', 
+    'uses'          => 'TagsController@deleteTag',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
 
 // Статистика
 Route::get('/statistics/', [

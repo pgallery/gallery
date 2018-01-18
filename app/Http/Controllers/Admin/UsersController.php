@@ -190,7 +190,7 @@ class UsersController extends Controller
      */
     public function deleteUser($id) {
         
-        $this->user->destroy($id);        
+        $this->user->destroy($id);
         Cache::flush();
 
     }

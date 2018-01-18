@@ -130,7 +130,7 @@
                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="newName" id="newName" value="">
                 </div>
-            </div>              
+            </div>
             
       </div>
       <div class="modal-footer">

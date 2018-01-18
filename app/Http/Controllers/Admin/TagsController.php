@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -26,6 +27,9 @@ class TagsController extends Controller
         $this->tags   = $tags;
     }    
     
+    /*
+     * Список тегов
+     */
     public function getTags() {
     
         $tags = Cache::remember('admin.show.tags', self::SHOWADMIN_CACHE_TTL, function() {
@@ -35,5 +39,31 @@ class TagsController extends Controller
         return Viewer::get('admin.tag.index', compact(
             'tags'
         ));        
+    }
+    
+    /*
+     * Переименовывание изображения
+     */
+    public function putRename(Request $request) {
+        
+        $tag = $this->tags->findOrFail($request->input('id'));
+        
+        $tag->update(['name' => $request->input('newName')]);
+        
+        Cache::flush();
+        
+        return back();
+    }
+    
+    /*
+     * Удаление выбранного тега
+     */
+    public function deleteTag(Router $router) {
+        
+        $this->tags->destroy($router->input('id'));
+        
+        Cache::flush();
+        
+        return back();
     }
 }
