@@ -171,19 +171,35 @@
           @if (Auth::check())
           
 
-          var albumtable = $('#album-table').DataTable();
+          var albumtable = $('#album-table').DataTable({
+            "lengthMenu": [ [25, 50, -1], [25, 50, "Все"] ],
+            "language": {
+              "search": "Фильтр:",
+              "sLengthMenu": "Отображать _MENU_ записей",
+            }
+          });
 
           albumtable
             .order( [ 0, 'desc' ] )
             .draw();
 
-          var tagtable = $('#tag-table').DataTable();
+          var tagtable = $('#tag-table').DataTable({
+            "language": {
+                    "search": "Фильтр:"
+                }
+          });
 
           tagtable
             .order( [ 1, 'asc' ] )
             .draw();
 
-          $('#group-table').DataTable();
+          $('#group-table').DataTable({
+            "lengthMenu": [ [25, 50, -1], [25, 50, "Все"] ],
+            "language": {
+              "search": "Фильтр:",
+              "sLengthMenu": "Отображать _MENU_ записей",
+            }
+          });
           
           $('[data-toggle=confirmation]').confirmation({
             rootSelector: '[data-toggle=confirmation]',
