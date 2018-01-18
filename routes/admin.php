@@ -36,11 +36,11 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
-//Route::get('/tags/', [
-//    'as'            => 'tags', 
-//    'uses'          => 'TagsController@getTags',
-//    'middleware'    => 'role:admin|moderator'
-//]);
+Route::get('/tags/', [
+    'as'            => 'tags', 
+    'uses'          => 'TagsController@getTags',
+    'middleware'    => 'role:admin'
+]);
 
 // Статистика
 Route::get('/statistics/', [

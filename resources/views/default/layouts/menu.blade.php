@@ -70,6 +70,7 @@
                     @if(Roles::is('admin'))
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
                         <li><a href="{{ route('settings') }}">Настройки</a></li>
+                        <li><a href="{{ route('tags') }}">Теги</a></li>
                     @endif
                     <li><a href="{{ route('statistics') }}">Статистика</a></li>
                     <li role="separator" class="divider"></li>

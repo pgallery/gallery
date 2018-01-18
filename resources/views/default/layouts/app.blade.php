@@ -171,12 +171,18 @@
           @if (Auth::check())
           
 
-          var table = $('#album-table').DataTable();
-          // Sort by column 1 and then re-draw
-          table
+          var albumtable = $('#album-table').DataTable();
+
+          albumtable
             .order( [ 0, 'desc' ] )
             .draw();
-          
+
+          var tagtable = $('#tag-table').DataTable();
+
+          tagtable
+            .order( [ 1, 'asc' ] )
+            .draw();
+
           $('#group-table').DataTable();
           
           $('[data-toggle=confirmation]').confirmation({
