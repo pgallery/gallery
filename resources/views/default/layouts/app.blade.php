@@ -176,6 +176,10 @@
             "language": {
               "search": "Фильтр:",
               "sLengthMenu": "Отображать _MENU_ записей",
+              "paginate": {
+                "previous": "Назад",
+                "next": "Дальше"
+              }
             }
           });
 
@@ -188,6 +192,10 @@
             "language": {
               "search": "Фильтр:",
               "sLengthMenu": "Отображать _MENU_ записей",
+              "paginate": {
+                "previous": "Назад",
+                "next": "Дальше"
+              }              
             }
           });
 
@@ -200,6 +208,10 @@
             "language": {
               "search": "Фильтр:",
               "sLengthMenu": "Отображать _MENU_ записей",
+              "paginate": {
+                "previous": "Назад",
+                "next": "Дальше"
+              }              
             }
           });
           
