@@ -57,6 +57,7 @@ class InterfaceController extends Controller
             });
         } else {
             $albums = Cache::remember('admin.show.albums', self::SHOWADMIN_CACHE_TTL, function() {
+//                return $this->albums->orderBy('id', 'DESC')->get();
                 return $this->albums->all();
             });
         }

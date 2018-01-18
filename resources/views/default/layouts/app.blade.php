@@ -170,7 +170,12 @@
           
           @if (Auth::check())
           
-          $('#album-table').DataTable();
+
+          var table = $('#album-table').DataTable();
+          // Sort by column 1 and then re-draw
+          table
+            .order( [ 0, 'desc' ] )
+            .draw();
           
           $('#group-table').DataTable();
           

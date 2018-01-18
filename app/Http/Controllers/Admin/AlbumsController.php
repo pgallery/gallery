@@ -114,7 +114,7 @@ class AlbumsController extends Controller {
         
         Cache::flush();
 
-        return back();
+        return redirect()->route('uploads-album', ['id' => $album->id]);
     }
 
     /*
