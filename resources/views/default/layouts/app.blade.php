@@ -172,7 +172,7 @@
           
 
           var albumtable = $('#album-table').DataTable({
-            "lengthMenu": [ [25, 50, -1], [25, 50, "Все"] ],
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
             "language": {
               "search": "Фильтр:",
               "sLengthMenu": "Отображать _MENU_ записей",
@@ -184,9 +184,11 @@
             .draw();
 
           var tagtable = $('#tag-table').DataTable({
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
             "language": {
-                    "search": "Фильтр:"
-                }
+              "search": "Фильтр:",
+              "sLengthMenu": "Отображать _MENU_ записей",
+            }
           });
 
           tagtable
@@ -194,7 +196,7 @@
             .draw();
 
           $('#group-table').DataTable({
-            "lengthMenu": [ [25, 50, -1], [25, 50, "Все"] ],
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
             "language": {
               "search": "Фильтр:",
               "sLengthMenu": "Отображать _MENU_ записей",
