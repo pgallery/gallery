@@ -55,7 +55,7 @@ class ImagesController extends Controller
             
             $path = $album->mobile_path() . '/' . $router->input('name');
             $img = Storage::get($path);
-            
+
         } else {
             
             $path = $album->path() . '/' . $router->input('name');

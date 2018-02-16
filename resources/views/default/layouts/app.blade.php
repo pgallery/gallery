@@ -127,7 +127,7 @@
     <script type="text/javascript"> 
         
         @yield('js-top')
-        
+              
         
         @if (Roles::is('admin'))
             
