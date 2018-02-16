@@ -16,7 +16,7 @@
                 <p>
                     <a href="{{ route('gallery-show', ['url' => $album->url]) }}"><img src="{{ $album->thumbs->http_thumb_path() }}"  width="{{ $thumbs_width  }}"/></a>
                 </p>
-                <p>{{ $album->name }}...</p>
+                <p>{{ mb_substr($album->name, 0, 22) }}...</p>
             </div>
 
     @endforeach
