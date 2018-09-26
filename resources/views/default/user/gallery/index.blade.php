@@ -11,6 +11,8 @@
                     <center><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> {{ $album->year }}
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> {{ $album->imagesCount() }}
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> {{ $album->imagesSumSize() }}</center>
+                    <hr>
+                    Создан: {{ date('d M Y - H:i:s', strtotime($album->created_at)) }}
                 '>
                 
                 <p>

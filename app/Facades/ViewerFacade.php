@@ -38,9 +38,9 @@ class ViewerFacade
         } else {
             
             if(Roles::is('admin'))
-                $year_list = Albums::select('year')->groupBy('year')->get();
+                $year_list = Albums::select('year')->orderBy('year', 'DESC')->groupBy('year')->get();
             else
-                $year_list = Albums::select('year')->where('permission', 'All')->groupBy('year')->get();            
+                $year_list = Albums::select('year')->where('permission', 'All')->orderBy('year', 'DESC')->groupBy('year')->get();            
             
             $static = [
                 'categories_count' => Categories::All()->count(),

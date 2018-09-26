@@ -335,6 +335,8 @@
             var space = '-';
             var translit = {
                 
+                <?php echo $transliterateMap; ?>
+            
                 ' ': space, '_': space, '`': space, '~': space, '!': space, '@': space, '#': space, '$': space,
                 '%': space, '^': space, '&': space, '*': space, '(': space, ')': space, '-': space, '\=': space,
                 '+': space, '[': space, ']': space, '\\': space, '|': space, '/': space, '.': space, ',': space,
