@@ -11,6 +11,11 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
+            @if(Setting::get('main_site') != 'null')
+                
+                <li><a href="{{ Setting::get('main_site') }}" target="_blank">Основной сайт</a></li>
+            
+            @endif
             <li><a href="{{ route('home') }}">Галерея</a></li>
             
             @if($categories_count > 0)
