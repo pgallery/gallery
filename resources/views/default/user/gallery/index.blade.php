@@ -12,7 +12,7 @@
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> {{ $album->imagesCount() }}
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> {{ $album->imagesSumSize() }}
                     <hr>
-                    <small>Создан: {{ date('d M Y', strtotime($album->created_at)) }}</small></center>
+                    <small>Создан: {{ Date::parse($album->created_at)->format('j F Y') }}</small></center>
                 '>
                 
                 <p>

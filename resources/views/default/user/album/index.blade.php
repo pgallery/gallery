@@ -20,7 +20,8 @@
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#albumComments">Комментарии</button>
       @endif
   </h2>
-  <small>{{ $thisAlbum->desc }}</small>
+  <small>{{ $thisAlbum->desc }}</small><br>
+  <small><i>Альбом создан: {{ Date::parse($thisAlbum->created_at)->format('j F Y') }}</i></small>
     <br>
     @foreach($thisAlbum->tags as $tag)
         <a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($tag->name)]) }}" class="btn btn-default btn-xs" role="button">{{ $tag->name }}</a>

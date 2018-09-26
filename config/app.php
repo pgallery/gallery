@@ -204,6 +204,7 @@ return [
         
         // Mail.ru AWS S3 Filesystem Driver
         App\Providers\BizmrgServiceProvider::class,
+
     ],
 
     /*
@@ -278,6 +279,10 @@ return [
         
         // Zipper
         'Zipper' => Chumper\Zipper\Zipper::class,
+        
+        // Date multi-language
+        'Date' => Jenssegers\Date\Date::class,
+        
     ],
 
 ];
