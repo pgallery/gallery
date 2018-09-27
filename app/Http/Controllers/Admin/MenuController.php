@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -50,4 +51,30 @@ class MenuController extends Controller
         
         return redirect()->route('menu');
     }
+    
+    /*
+     * Переименовывание изображения
+     */
+    public function putMenu(Request $request) {
+        
+        $menu = $this->menu->findOrFail($request->input('id'));
+        
+        $menu->update(['name' => $request->input('newName')]);
+        
+        Cache::flush();
+        
+        return back();
+    }    
+    
+    /*
+     * Удаление выбранного меню
+     */
+    public function deleteMenu(Router $router) {
+        
+        $this->menu->destroy($router->input('id'));
+        
+        Cache::flush();
+        
+        return back();
+    }    
 }

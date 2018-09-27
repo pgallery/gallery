@@ -65,7 +65,16 @@ Route::post('/menu/create/', [
     'uses'          => 'MenuController@postCreateMenu',
     'middleware'    => 'role:admin'
 ]);
-
+Route::get('/menu/delete/{id}', [
+    'as'            => 'delete-menu', 
+    'uses'          => 'MenuController@deleteMenu',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
+Route::post('/menu/rename/', [
+    'as'            => 'rename-menu', 
+    'uses'          => 'MenuController@putMenu',
+    'middleware'    => 'role:admin'
+]);
 
 // Статистика
 Route::get('/statistics/', [
