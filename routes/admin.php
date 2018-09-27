@@ -54,6 +54,19 @@ Route::get('/tags/delete/{id}', [
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
 
+// Меню
+Route::get('/menu/', [
+    'as'            => 'menu', 
+    'uses'          => 'MenuController@getMenu',
+    'middleware'    => 'role:admin'
+]);
+Route::post('/menu/create/', [
+    'as'            => 'create-menu', 
+    'uses'          => 'MenuController@postCreateMenu',
+    'middleware'    => 'role:admin'
+]);
+
+
 // Статистика
 Route::get('/statistics/', [
     'as'            => 'statistics', 

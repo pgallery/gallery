@@ -49,12 +49,24 @@
                   <ul class="dropdown-menu">
                     @foreach($year_list as $year)
 
-                            <li><a href="{{ route('album-showBy', ['option' => 'year', 'url' => $year['year']]) }}">{{ $year['year'] }}</a></li>
+                            <li><a href="{{ route('album-showBy', ['option' => 'year', 'url' => $year->year]) }}">{{ $year->year }}</a></li>
 
                     @endforeach
                   </ul>
                 </li>   
                 
+                @foreach($custom_menu as $menu)
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $menu->name }} <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    
+                      @foreach($menu->tags as $mtag)
+                        <li><a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($mtag->name)]) }}">{{ $mtag->name }} </a></li>                
+                      @endforeach
+                  </ul>
+                </li>                
+                @endforeach
+                                
             @endif  
             
           </ul>
@@ -74,6 +86,7 @@
                   <ul class="dropdown-menu">
                     @if(Roles::is('admin'))
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
+                        <li><a href="{{ route('menu') }}">Меню</a></li>
                         <li><a href="{{ route('settings') }}">Настройки</a></li>
                         <li><a href="{{ route('tags') }}">Теги</a></li>
                     @endif

@@ -12,7 +12,9 @@
     </div>
 @endif
 
-<h3>Теги </h3>
+    <div class="page-header">
+      <h2>Теги </h2>
+    </div>
 
 <table id="tag-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>

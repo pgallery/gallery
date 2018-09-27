@@ -7,6 +7,7 @@ use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Tags;
 use App\Models\Images;
+use App\Models\Menu;
 
 use Auth;
 use Cache;
@@ -47,6 +48,7 @@ class ViewerFacade
                 'categories'       => Categories::orderBy('name')->get(),
                 'year_list'        => $year_list, 
                 'gallery_name'     => Setting::get('gallery_name'),
+                'custom_menu'      => Menu::All(),
             ];
             
             if(Roles::is(['admin', 'moderator'])) {
