@@ -21,6 +21,7 @@
         <tr>
             <th>id</th>
             <th>Тег</th>
+            <th>Кол-во</th>
             <th>Альбомы</th>
         </tr>
     </thead>
@@ -28,6 +29,7 @@
         <tr>
             <th>id</th>
             <th>Тег</th>
+            <th>Кол-во</th>
             <th>Альбомы</th>
         </tr>
 
@@ -53,6 +55,11 @@
 
                  {{ $tag->name }}
 
+            </td>
+            <td>
+                
+                {{ $tag->albumsCount() }}
+                
             </td>
             <td>
                 @foreach($tag->albums as $album)
