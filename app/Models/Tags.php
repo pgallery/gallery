@@ -19,9 +19,9 @@ class Tags extends Model
     
     public function albums()
     {
-        return Cache::remember('tags.albums_' . $this->id . '_cache', 100, function(){
+//        return Cache::remember('tags.albums_' . $this->id . '_cache', 100, function(){
             return $this->belongsToMany('App\Models\Albums', 'tags_albums')->orderBy('year', 'DESC')->orderBy('created_at', 'DESC');
-        }); 
+//        }); 
         
         
 //        return $this->belongsToMany('App\Models\Albums', 'tags_albums')->orderBy('year', 'DESC')->orderBy('created_at', 'DESC');
@@ -29,8 +29,8 @@ class Tags extends Model
     
     public function albumsCount()
     {
-        return Cache::remember('tags.albumsCount_' . $this->id . '_cache', 100, function(){
+//        return Cache::remember('tags.albumsCount_' . $this->id . '_cache', 100, function(){
             return $this->belongsToMany('App\Models\Albums', 'tags_albums')->where('albums.permission', 'All')->count();
-        });
+//        });
     }    
 }
