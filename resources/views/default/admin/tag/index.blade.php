@@ -58,7 +58,7 @@
             </td>
             <td>
                 
-                {{ $tag->albumsCount() }}
+                {{ $tag->albumsCountRelation() }}
                 
             </td>
             <td>

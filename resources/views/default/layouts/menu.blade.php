@@ -61,7 +61,7 @@
                   <ul class="dropdown-menu">
                     
                       @foreach($menu->tags as $mtag)
-                        <li><a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($mtag->name)]) }}">{{ $mtag->name }} ({{ $mtag->albumsCount() }})</a></li>                
+                        <li><a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($mtag->name)]) }}">{{ $mtag->name }} ({{ $mtag->albumsCountRelation() }})</a></li>                
                       @endforeach
                   </ul>
                 </li>                
