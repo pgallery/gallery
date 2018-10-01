@@ -13,6 +13,9 @@ class Albums extends Model
     
     use SoftDeletes;    
     
+    // 10080 минут - 1 неделя
+    const MODEL_CACHE_TTL = 10080;    
+    
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
@@ -20,50 +23,50 @@ class Albums extends Model
     ];
 
     public function http() {
-        return Cache::remember('albums.http_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.http_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return env('APP_URL') . "/" . $this->url;
         });        
     }
     
     public function path() {
-        return Cache::remember('albums.path_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return \Setting::get('upload_dir') . "/" .  $this->directory;
         });
     }
 
     public function http_path() {
-        return Cache::remember('albums.http_path_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.http_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return env('APP_URL') . "/images/original/" . $this->url;
         });
     }    
     
     public function thumb_path() {
-        return Cache::remember('albums.thumb_path_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.thumb_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return \Setting::get('thumbs_dir') . "/" .  $this->directory;
         });
     }
 
     public function http_thumb_path() {
-        return Cache::remember('albums.http_thumb_path_' . $this->id . '_cache', 100, function() {
+        return Cache::remember('albums.http_thumb_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function() {
             return env('APP_URL') . "/images/thumb/" . $this->url;
         });
     }
     
     public function mobile_path() {
-        return Cache::remember('albums.mobile_path_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.mobile_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return \Setting::get('mobile_upload_dir') . "/" .  $this->directory;
         });
     }
 
     public function http_mobile_path() {
-        return Cache::remember('albums.http_mobile_path_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.http_mobile_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return env('APP_URL') . "/images/mobile/" . $this->url;
         });
     }
     
     public function category()
     {
-        return Cache::remember('albums.category_' . $this->categories_id . '_cache', 100, function(){
+        return Cache::remember('albums.category_' . $this->categories_id . '_cache', self::MODEL_CACHE_TTL, function(){
             return $this->hasOne('App\Models\Categories', 'id', 'categories_id')->select('name')->first();
         });
     }
@@ -75,21 +78,21 @@ class Albums extends Model
     
     public function imagesCount()
     {
-        return Cache::remember('albums.imagesCount_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.imagesCount_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return $this->hasMany('App\Models\Images')->count();
         });
     }
     
     public function imagesSumSize()
     {
-        return Cache::remember('albums.imagesSumSize_' . $this->id . '_cache', 100, function(){
+        return Cache::remember('albums.imagesSumSize_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
             return \App\Helpers\Format::Bytes($this->hasMany('App\Models\Images')->sum('size'));
         });
     }
     
     public function owner()
     {
-        return Cache::remember('albums.owner_' . $this->users_id . '_cache', 100, function(){
+        return Cache::remember('albums.owner_' . $this->users_id . '_cache', self::MODEL_CACHE_TTL, function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id', 'name')->first();           
         });
     }

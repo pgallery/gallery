@@ -13,6 +13,9 @@ class Images extends Model
     
     use SoftDeletes;
     
+    // 10080 минут - 1 неделя
+    const MODEL_CACHE_TTL = 10080;     
+    
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
@@ -48,7 +51,7 @@ class Images extends Model
     } 
     
     public function owner() {
-        return Cache::remember('images.owner_' . $this->users_id . '_cache', 100, function(){
+        return Cache::remember('images.owner_' . $this->users_id . '_cache', self::MODEL_CACHE_TTL, function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id', 'name')->first();           
         });
     }
