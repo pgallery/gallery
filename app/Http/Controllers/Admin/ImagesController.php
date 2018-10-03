@@ -59,9 +59,8 @@ class ImagesController extends Controller
                 'is_rebuild'    => 1,
             ]);
             
-            if(Setting::get('use_queue') == 'yes') {
+            if(Setting::get('use_queue') == 'yes')
                 BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
-            }
             
             Cache::flush();
         }

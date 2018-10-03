@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 
 use App\Models\Images;
 use App\Jobs\BuildImagesJob;
+
 use Setting;
 
 class rebuildAllImages extends Command

@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
         Commands\usercreate::class,
         Commands\setVisibilityFiles::class,
         Commands\rebuildAllImages::class,
+        Commands\AlbumsURLRename::class,
+        Commands\ImageRename::class,
     ];
 
     /**

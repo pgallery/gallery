@@ -57,7 +57,7 @@ class setVisibilityFiles extends Command
         if(Setting::get('saveinpublic_thumbs') != 'yes' and Setting::get('saveinpublic_mobiles') != 'yes'){
             echo "\n\033[0;31mFunctionality is disabled in the settings\033[0m\n\n";
             exit;
-        }        
+        }
         
         if($this->option('clear')) {
             if(File::isDirectory(public_path("images")))

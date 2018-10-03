@@ -21,13 +21,13 @@ class BuildImage
             Storage::delete($image->thumb_path());
         
         if(Storage::has($image->mobile_path()))
-            Storage::delete($image->mobile_path());        
+            Storage::delete($image->mobile_path());
         
         if(!Storage::has($image->album->thumb_path()))
             Storage::makeDirectory($image->album->thumb_path(), 0755, true);
         
         if(!Storage::has($image->album->mobile_path()))
-            Storage::makeDirectory($image->album->mobile_path(), 0755, true);           
+            Storage::makeDirectory($image->album->mobile_path(), 0755, true);
         
         $OriginalImage = Image::make(Storage::get($image->path()));
 
@@ -56,7 +56,29 @@ class BuildImage
             'modile_size'   => Storage::size($image->mobile_path()),
             'is_rebuild'    => 0,
         ]);
+        
+        if(Setting::get('saveinpublic_thumbs') == 'yes'){
+            
+            $web_album_path = public_path("images/thumb/" . $image->album->url);
 
+            if (!File::isDirectory($web_album_path))
+                File::makeDirectory($web_album_path, 0755, true);
+            
+            File::put($web_album_path . "/" . $image->name, Storage::get($image->thumb_path()));
+            
+        }
+
+        if(Setting::get('saveinpublic_mobiles') == 'yes'){
+            
+            $web_album_path = public_path("images/mobile/" . $image->album->url);
+
+            if (!File::isDirectory($web_album_path))
+                File::makeDirectory($web_album_path, 0755, true);
+            
+            File::put($web_album_path . "/" . $image->name, Storage::get($image->mobile_path()));
+            
+        }
+        
     }
     
 }
