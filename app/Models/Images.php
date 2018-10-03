@@ -31,23 +31,33 @@ class Images extends Model
     }
 
     public function http_path() {
-        return $this->album->http_path() . '/' . $this->name;
+        return Cache::remember('images.http_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+            return $this->album->http_path() . '/' . $this->name;
+        });
     }
     
     public function thumb_path() {
-        return $this->album->thumb_path() . '/' . $this->name;
+        return Cache::remember('images.thumb_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+            return $this->album->thumb_path() . '/' . $this->name;
+        });
     }
 
     public function http_thumb_path() {
-        return $this->album->http_thumb_path() . '/' . $this->name;
+        return Cache::remember('images.http_thumb_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+            return $this->album->http_thumb_path() . '/' . $this->name;
+        });
     }
     
     public function mobile_path() {
-        return $this->album->mobile_path() . '/' . $this->name;
+        return Cache::remember('images.mobile_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+            return $this->album->mobile_path() . '/' . $this->name;
+        });
     }
 
     public function http_mobile_path() {
-        return $this->album->http_mobile_path() . '/' . $this->name;
+        return Cache::remember('images.http_mobile_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+            return $this->album->http_mobile_path() . '/' . $this->name;
+        });
     } 
     
     public function owner() {

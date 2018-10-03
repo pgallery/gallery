@@ -93,7 +93,7 @@ class Albums extends Model
     public function owner()
     {
         return Cache::remember('albums.owner_' . $this->users_id . '_cache', self::MODEL_CACHE_TTL, function(){
-            return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id', 'name')->first();           
+            return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id', 'name')->first();   
         });
     }
     
