@@ -31,7 +31,7 @@ class Tags extends Model
     }   
     
     public function albumsCountRelation() {
-        return Cache::remember('tagsCountRelation.albums_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
+        return Cache::remember('tags.albumsCount_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
             return $this->albumsCount();
         });
     }

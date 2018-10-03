@@ -88,7 +88,7 @@ class UploadsController extends Controller
         Storage::makeDirectory($album->path());
 
         $img = Image::make($upload_file->getRealPath());
-        $img->encode();
+        $img->encode('jpg', 100);
         
         if(!Storage::put($album->path() . "/" . $upload_file_name, (string) $img))
             return true;

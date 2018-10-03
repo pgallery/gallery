@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         Commands\usermod::class,
         Commands\usercreate::class,
         Commands\setVisibilityFiles::class,
+        Commands\rebuildAllImages::class,
     ];
 
     /**

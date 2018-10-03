@@ -44,7 +44,7 @@ class setVisibilityFiles extends Command
         parent::__construct();
         
         $this->albums = $albums;
-        $this->images = $images;        
+        $this->images = $images;
     }
 
     /**
