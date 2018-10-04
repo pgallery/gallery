@@ -23,7 +23,7 @@
   <small>{{ $thisAlbum->desc }}</small><br>
   <small><i>Альбом создан: {{ Date::parse($thisAlbum->created_at)->format('j F Y') }}</i></small>
     <br>
-    @foreach($thisAlbum->tags as $tag)
+    @foreach($thisAlbum->tagsRelation() as $tag)
         <a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($tag->name)]) }}" class="btn btn-default btn-xs" role="button">{{ $tag->name }}</a>
     @endforeach
 </div>

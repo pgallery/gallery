@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Cache;
+
 class Menu extends Model
 {
     
     use SoftDeletes;       
+    
+    // 10080 минут - 1 неделя
+    const MODEL_CACHE_TTL = 10080;      
     
     protected $table = 'menu';
     
@@ -19,7 +24,13 @@ class Menu extends Model
     ];
     
     public function tags() {
-        return $this->belongsToMany('App\Models\Tags', 'tags_menu')->orderBy('name');
+        return $this->belongsToMany('App\Models\Tags', 'tags_menu')->orderBy('name')->get();
     }
 
+    public function tagsRelation() {
+        return Cache::remember('menu.tags_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
+            return $this->tags();
+        });
+    }    
+    
 }

@@ -60,7 +60,7 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $menu->name }} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     
-                      @foreach($menu->tags as $mtag)
+                      @foreach($menu->tagsRelation() as $mtag)
                         <li><a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($mtag->name)]) }}">{{ $mtag->name }} ({{ $mtag->albumsCountRelation() }})</a></li>                
                       @endforeach
                   </ul>

@@ -101,8 +101,21 @@ class Albums extends Model
         return $this->hasOne('App\Models\Images', 'id', 'images_id');
     }
 
+    public function thumbs_http_path() {
+        return Cache::remember('albums.thumbs_http_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+            return $this->http_thumb_path() . '/' . $this->thumbs->name;
+        });
+    }    
+    
     public function tags() {
-        return $this->belongsToMany('App\Models\Tags', 'tags_albums');
+        return $this->belongsToMany('App\Models\Tags', 'tags_albums')->select('name')->get();
+    }
+
+    public function tagsRelation() {
+        return Cache::remember('albums.tags_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
+//            return $this->belongsToMany('App\Models\Tags', 'tags_albums')->select('name')->get();
+            return $this->tags();
+        });
     }
     
     public static function deleteWithImages($id) {

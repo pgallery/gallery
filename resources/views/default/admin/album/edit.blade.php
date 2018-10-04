@@ -22,7 +22,6 @@
         'class'     => 'form-horizontal',
     ]) !!} 
 
-
     {!! Form::hidden('id', $album->id) !!}
     
 <ul class="nav nav-tabs">

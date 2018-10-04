@@ -146,11 +146,11 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('delete-album', ['id' => $album->id]) }}" data-toggle="confirmation" data-title="Удалить альбом и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
-                    </div>                    
+                    </div>
                     
                      {{ $album->name }}
                      <br>
-                     @foreach($album->tags as $tag)
+                     @foreach($album->tagsRelation() as $tag)
                         <a href="#" class="btn btn-default btn-xs disabled" role="button">{{ $tag->name }}</a>
                      @endforeach
                      
@@ -164,8 +164,8 @@
                 </td>
                 <td>
                     @if($album->images_id != 0)
-                        <a href="{{ $album->thumbs->http_thumb_path() }}" data-fancybox="images"> 
-                            <img  src="{{ $album->thumbs->http_thumb_path() }}" width="75"/> 
+                        <a href="{{ $album->thumbs_http_path() }}" data-fancybox="images"> 
+                            <img  src="{{ $album->thumbs_http_path() }}" width="75"/> 
                         </a>
                     @endif
                 </td>

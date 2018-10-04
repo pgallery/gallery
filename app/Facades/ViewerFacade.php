@@ -147,9 +147,9 @@ class ViewerFacade
         
         if(Route::is('gallery-show')) {
 
-            $album = Albums::where('url', $this->router->parameter("url"))->firstOrFail();
+            $album = Albums::select('id')->where('url', $this->router->parameter("url"))->firstOrFail();
             
-            foreach ($album->tags as $tag) {
+            foreach ($album->tagsRelation() as $tag) {
                 $return .= $tag->name . ", ";
             }
             

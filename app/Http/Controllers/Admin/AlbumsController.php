@@ -70,7 +70,7 @@ class AlbumsController extends Controller {
         $album = $this->albums->findOrFail($router->input('id'));
         
         $tags = '';
-        foreach ($album->tags as $tag) {
+        foreach ($album->tagsRelation() as $tag) {
             $tags .= $tag->name . ", ";
         }
         $tags = rtrim(rtrim($tags), ',');
