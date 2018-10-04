@@ -22,9 +22,7 @@
 
     @if (Auth::check())    
         
-        
         <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
-
         <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
         <link href="/css/dropzone.css" rel="stylesheet">
     

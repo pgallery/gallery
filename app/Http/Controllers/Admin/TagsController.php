@@ -65,21 +65,5 @@ class TagsController extends Controller
         
         return back();
     }
-    
-    /*
-     * Вывод списка тегов в JSON формате
-     */
-    public function getJSON() {
-        
-        \Debugbar::disable();
-        
-        $return = [];
-        
-        foreach ($this->tags->all() as $tag) {
-            $return[] = $tag->name;
-        }
-        
-        return \Response::json($return);
-        
-    }
+
 }

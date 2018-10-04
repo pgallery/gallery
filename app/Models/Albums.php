@@ -106,7 +106,7 @@ class Albums extends Model
 
     public function tagsRelation() {
         return Cache::remember('albums.tags_' . $this->id . '_cache', Setting::get('cache_ttl'), function () {
-            return $this->tags()->select('name')->get();
+            return $this->tags()->select('name')->orderBy('name')->get();
         });
     }
     

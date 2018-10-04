@@ -45,6 +45,7 @@ Route::get('/by/{option}/{url}', [
 
 Route::post('/ulogin', 'User\UloginController@login');
 
+// Вывод списка тегов в JSON формате
 Route::get('/tags.json', [
     'as'            => 'json-tags', 
     'uses'          => 'User\TagsController@getJSON',
