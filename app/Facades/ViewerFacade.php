@@ -88,9 +88,19 @@ class ViewerFacade
         $return = Setting::get('gallery_name');
         
         if(Route::is('gallery-show')) {
-
-            $album = Albums::select('name')->where('url', $this->router->parameter("url"))->firstOrFail();
             
+            if (Cache::has('Cache.App.Helpers.Viewer' . $this->router->parameter("url"))) {
+                
+                $album = Cache::get('Cache.App.Helpers.Viewer' . $this->router->parameter("url"));
+                
+            } else {
+                
+                $album = Albums::select('id', 'name', 'desc')->where('url', $this->router->parameter("url"))->firstOrFail();
+                
+                Cache::add('Cache.App.Helpers.Viewer' . $this->router->parameter("url"), $album, Setting::get('cache_ttl'));
+                
+            }
+
             $return .= ": " . $album->name;
             
         }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'category') {
@@ -116,8 +126,18 @@ class ViewerFacade
         
         if(Route::is('gallery-show')) {
 
-            $album = Albums::select('desc')->where('url', $this->router->parameter("url"))->firstOrFail();
-            
+            if (Cache::has('Cache.App.Helpers.Viewer' . $this->router->parameter("url"))) {
+                
+                $album = Cache::get('Cache.App.Helpers.Viewer' . $this->router->parameter("url"));
+                
+            } else {
+                
+                $album = Albums::select('id', 'name', 'desc')->where('url', $this->router->parameter("url"))->firstOrFail();
+                
+                Cache::add('Cache.App.Helpers.Viewer' . $this->router->parameter("url"), $album, Setting::get('cache_ttl'));
+                
+            }            
+
             $return .= ": " . $album->desc;
             
         }elseif (Route::is('album-showBy') and $this->router->parameter("option") == 'category') {
@@ -147,8 +167,18 @@ class ViewerFacade
         
         if(Route::is('gallery-show')) {
 
-            $album = Albums::select('id')->where('url', $this->router->parameter("url"))->firstOrFail();
-            
+            if (Cache::has('Cache.App.Helpers.Viewer' . $this->router->parameter("url"))) {
+                
+                $album = Cache::get('Cache.App.Helpers.Viewer' . $this->router->parameter("url"));
+                
+            } else {
+                
+                $album = Albums::select('id', 'name', 'desc')->where('url', $this->router->parameter("url"))->firstOrFail();
+                
+                Cache::add('Cache.App.Helpers.Viewer' . $this->router->parameter("url"), $album, Setting::get('cache_ttl'));
+                
+            }            
+
             foreach ($album->tagsRelation() as $tag) {
                 $return .= $tag->name . ", ";
             }
