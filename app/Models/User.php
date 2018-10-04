@@ -84,7 +84,6 @@ class User extends Authenticatable
     }
     
     public function createWithRoles($input) {
-        
         if(empty($input['method'])) $input['method']   = 'thisSite';
         
         $input['password'] = \Hash::make($input['password']);
@@ -108,9 +107,7 @@ class User extends Authenticatable
     }
     
     public function destroyUser($id){
-        
         $user = $this->withTrashed()->findOrFail($id);
         $user->forceDelete();
-        
     }
 }

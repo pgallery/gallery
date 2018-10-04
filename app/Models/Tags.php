@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Setting;
 use Cache;
 
 class Tags extends Model
 {
     use SoftDeletes;    
-    
-    // 10080 минут - 1 неделя
-    const MODEL_CACHE_TTL = 10080;
     
     protected $dates = ['deleted_at'];    
     
@@ -20,19 +18,16 @@ class Tags extends Model
         'name'
     ];
     
-    public function albums()
-    {
+    public function albums() {
         return $this->belongsToMany('App\Models\Albums', 'tags_albums')->orderBy('year', 'DESC')->orderBy('created_at', 'DESC');
     }
     
-    public function albumsCount()
-    {
+    public function albumsCount() {
         return $this->belongsToMany('App\Models\Albums', 'tags_albums')->where('albums.permission', 'All')->count();
     }   
     
-    public function albumsCountRelation()
-    {
-        return Cache::remember('tags.albumsCount_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
+    public function albumsCountRelation() {
+        return Cache::remember('tags.albumsCount_' . $this->id . '_cache', Setting::get('cache_ttl'), function () {
             return $this->albumsCount();
         });
     }

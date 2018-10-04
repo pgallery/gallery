@@ -25,9 +25,6 @@ use App\Jobs\BuildImagesJob;
 
 class AlbumsController extends Controller {
 
-    // 10080 минут - 1 неделя
-    const SHOWADMIN_CACHE_TTL = 10080;
-
     protected $users;
     protected $categories;
     protected $albums;
@@ -59,11 +56,11 @@ class AlbumsController extends Controller {
      */
     public function getEditAlbum(Router $router) {
 
-        $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
+        $categoriesArray = Cache::remember('admin.show.categoriesArray', Setting::get('cache_ttl'), function() {
             return $this->categories->orderBy('name')->pluck('name','id');
         });
 
-        $usersArray = Cache::remember('admin.show.usersArray', self::SHOWADMIN_CACHE_TTL, function() {
+        $usersArray = Cache::remember('admin.show.usersArray', Setting::get('cache_ttl'), function() {
             return $this->users->pluck('name','id');
         });
         
@@ -136,13 +133,13 @@ class AlbumsController extends Controller {
             $type        = 'thisAlbum';
             $album_id    = $thisAlbum->id;
             
-            $usersArray = Cache::remember('admin.show.usersArray', self::SHOWADMIN_CACHE_TTL, function() {
+            $usersArray = Cache::remember('admin.show.usersArray', Setting::get('cache_ttl'), function() {
                 return $this->users->pluck('name','id');
             });
-            $albumsArray = Cache::remember('admin.show.albumsArray', self::SHOWADMIN_CACHE_TTL, function() {
+            $albumsArray = Cache::remember('admin.show.albumsArray', Setting::get('cache_ttl'), function() {
                 return $this->albums->pluck('name', 'id');
             });
-            $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {
+            $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, Setting::get('cache_ttl'), function() use ($thisAlbum) {
                 return $thisAlbum->images()->paginate(Setting::get('count_images'));
             });
         }

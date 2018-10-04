@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Setting;
 use Cache;
 use Storage;
 
@@ -12,10 +13,7 @@ class Images extends Model
 {
     
     use SoftDeletes;
-    
-    // 10080 минут - 1 неделя
-    const MODEL_CACHE_TTL = 10080;     
-    
+     
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
@@ -31,43 +29,42 @@ class Images extends Model
     }
 
     public function http_path() {
-        return Cache::remember('images.http_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+        return Cache::remember('images.http_path_' . $this->id . '_cache', Setting::get('cache_ttl'), function(){
             return $this->album->http_path() . '/' . $this->name;
         });
     }
     
     public function thumb_path() {
-        return Cache::remember('images.thumb_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+        return Cache::remember('images.thumb_path_' . $this->id . '_cache', Setting::get('cache_ttl'), function(){
             return $this->album->thumb_path() . '/' . $this->name;
         });
     }
 
     public function http_thumb_path() {
-        return Cache::remember('images.http_thumb_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+        return Cache::remember('images.http_thumb_path_' . $this->id . '_cache', Setting::get('cache_ttl'), function(){
             return $this->album->http_thumb_path() . '/' . $this->name;
         });
     }
     
     public function mobile_path() {
-        return Cache::remember('images.mobile_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+        return Cache::remember('images.mobile_path_' . $this->id . '_cache', Setting::get('cache_ttl'), function(){
             return $this->album->mobile_path() . '/' . $this->name;
         });
     }
 
     public function http_mobile_path() {
-        return Cache::remember('images.http_mobile_path_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function(){
+        return Cache::remember('images.http_mobile_path_' . $this->id . '_cache', Setting::get('cache_ttl'), function(){
             return $this->album->http_mobile_path() . '/' . $this->name;
         });
     } 
     
     public function owner() {
-        return Cache::remember('images.owner_' . $this->users_id . '_cache', self::MODEL_CACHE_TTL, function(){
+        return Cache::remember('images.owner_' . $this->users_id . '_cache', Setting::get('cache_ttl'), function(){
             return $this->hasOne('App\Models\User', 'id', 'users_id')->select('id', 'name')->first();           
         });
     }
     
     public function deleteCheckAlbumPreview($id) {
-        
         $album_id = $this->find($id)->album->id;
         $this->destroy($id);
         
@@ -81,11 +78,9 @@ class Images extends Model
         }
         
         Cache::flush();
-        
     }
     
-    public function destroyImage($id){
-        
+    public function destroyImage($id) {
         $image = $this->withTrashed()->findOrFail($id);
         
         if(Storage::has($image->thumb_path()))
@@ -98,6 +93,5 @@ class Images extends Model
             Storage::delete($image->path());  
         
         $image->forceDelete();
-        
     }
 }

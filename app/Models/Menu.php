@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Setting;
 use Cache;
 
 class Menu extends Model
@@ -28,7 +29,7 @@ class Menu extends Model
     }
 
     public function tagsRelation() {
-        return Cache::remember('menu.tags_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
+        return Cache::remember('menu.tags_' . $this->id . '_cache', Setting::get('cache_ttl'), function () {
             return $this->tags()->orderBy('name')->get();
         });
     }    
