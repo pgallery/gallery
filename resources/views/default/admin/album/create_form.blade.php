@@ -109,7 +109,7 @@
                 <label class="col-sm-2 control-label">Теги:</label>
                 <div class="col-sm-10">
                     
-                    {!! Form::text('tags', null, array('class' => 'form-control', 'id' => 'album_tags')) !!}
+                    {!! Form::text('tags', null, array('class' => 'form-control', 'id' => 'album_tags', 'data-role' => 'tagsinput')) !!}
                     
                     <p class="help-block">Теги разделяются запятыми.</p>
                 </div>

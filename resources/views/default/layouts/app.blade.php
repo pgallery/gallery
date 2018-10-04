@@ -21,7 +21,10 @@
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
 
     @if (Auth::check())    
-    
+        
+        
+        <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
+
         <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
         <link href="/css/dropzone.css" rel="stylesheet">
     
@@ -149,6 +152,8 @@
     
     @if (Auth::check())
     
+    <script src="/js/typeahead.bundle.js"></script>
+    <script src="/js/bootstrap-tagsinput.min.js"></script>
     <script src="/js/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables.bootstrap.min.js"></script>
     <script src="/js/bootstrap-confirmation.js"></script>

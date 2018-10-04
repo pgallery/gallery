@@ -131,7 +131,7 @@
                 <label class="col-sm-2 control-label">Теги:</label>
                 <div class="col-sm-10">
 
-                    {!! Form::text('tags', $tags, array('class' => 'form-control', 'id' => 'album_tags')) !!}
+                    {!! Form::text('tags', $tags, array('class' => 'form-control', 'id' => 'album_tags', 'data-role' => 'tagsinput')) !!}
                     
                     <p class="help-block">Теги разделяются запятыми.</p>
                 </div>
@@ -174,6 +174,30 @@
 @endsection
 
 @section('js-top')
+
+        var tags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+            prefetch: {
+                url: '/tags.json',
+                filter: function(list) {
+                  return $.map(list, function(tags) {
+                    return { name: tags }; });
+                }
+            }
+        });
+        tags.initialize();
+
+        $('#album_tags').tagsinput({
+          typeaheadjs: {
+            name: 'tags',
+            displayKey: 'name',
+            valueKey: 'name',
+            source: tags.ttAdapter()
+          }
+        });
+
 
     function random_pass() {
             var result       = '';

@@ -254,6 +254,29 @@
 
 @section('js-top')
 
+        var tags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+            prefetch: {
+                url: '/tags.json',
+                filter: function(list) {
+                  return $.map(list, function(tags) {
+                    return { name: tags }; });
+                }
+            }
+        });
+        tags.initialize();
+
+        $('#album_tags').tagsinput({
+          typeaheadjs: {
+            name: 'tags',
+            displayKey: 'name',
+            valueKey: 'name',
+            source: tags.ttAdapter()
+          }
+        });
+
         function show_pass(id){
             $('#get_password[data-id="' + id + '"] span.glyphicon-eye-open').toggleClass('glyphicon-eye-close');
             $('#show_password[data-id="' + id + '"]').toggle();

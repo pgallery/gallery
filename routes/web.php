@@ -45,6 +45,11 @@ Route::get('/by/{option}/{url}', [
 
 Route::post('/ulogin', 'User\UloginController@login');
 
+Route::get('/tags.json', [
+    'as'            => 'json-tags', 
+    'uses'          => 'User\TagsController@getJSON',
+]);
+
 // Маршруты авторизованных пользователей
 Route::group(['middleware' => 'auth'], function () {
     

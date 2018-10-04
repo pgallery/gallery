@@ -84,7 +84,7 @@ class AlbumsController extends Controller {
      * Создание нового альбома
      */
     public function postCreateAlbum(AlbumsRequest $request) {
-
+        
         $album                = new Albums();
         $album->name          = $request->input('name');
         $album->url           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));

@@ -36,7 +36,6 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
-
 // Теги
 Route::get('/tags/', [
     'as'            => 'tags', 
