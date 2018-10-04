@@ -30,7 +30,8 @@ class Tags extends Model
         return $this->belongsToMany('App\Models\Albums', 'tags_albums')->where('albums.permission', 'All')->count();
     }   
     
-    public function albumsCountRelation() {
+    public function albumsCountRelation()
+    {
         return Cache::remember('tags.albumsCount_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
             return $this->albumsCount();
         });

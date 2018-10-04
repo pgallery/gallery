@@ -30,7 +30,7 @@
     <p>
         @foreach($tags as $tag)
 
-        <a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($tag->name)]) }}" class="btn btn-default btn-xs" role="button">{{ $tag->name }}</a>
+        <a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($tag->name)]) }}" class="btn btn-default btn-xs" role="button">{{ $tag->name }} ({{ $tag->albumsCountRelation() }})</a>
 
         @endforeach
     </p>

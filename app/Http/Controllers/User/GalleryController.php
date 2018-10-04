@@ -115,11 +115,11 @@ class GalleryController extends Controller
             if(Roles::is('admin'))
                 $tags = $this->tags->whereHas('albums', function ($query) {
                     $query->where('images_id', '!=', '0');
-                })->get();
+                })->orderBy('name')->get();
             else
                 $tags = $this->tags->whereHas('albums', function ($query) {
                     $query->where('permission', 'All')->where('images_id', '!=', '0');
-                })->get();
+                })->orderBy('name')->get();
             
             $resultData = compact(
                 'albums', 
