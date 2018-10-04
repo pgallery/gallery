@@ -108,13 +108,12 @@ class Albums extends Model
     }    
     
     public function tags() {
-        return $this->belongsToMany('App\Models\Tags', 'tags_albums')->select('name')->get();
+        return $this->belongsToMany('App\Models\Tags', 'tags_albums');
     }
 
     public function tagsRelation() {
         return Cache::remember('albums.tags_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
-//            return $this->belongsToMany('App\Models\Tags', 'tags_albums')->select('name')->get();
-            return $this->tags();
+            return $this->tags()->select('name')->get();
         });
     }
     

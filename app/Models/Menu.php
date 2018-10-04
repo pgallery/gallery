@@ -24,12 +24,12 @@ class Menu extends Model
     ];
     
     public function tags() {
-        return $this->belongsToMany('App\Models\Tags', 'tags_menu')->orderBy('name')->get();
+        return $this->belongsToMany('App\Models\Tags', 'tags_menu');
     }
 
     public function tagsRelation() {
         return Cache::remember('menu.tags_' . $this->id . '_cache', self::MODEL_CACHE_TTL, function () {
-            return $this->tags();
+            return $this->tags()->orderBy('name')->get();
         });
     }    
     
