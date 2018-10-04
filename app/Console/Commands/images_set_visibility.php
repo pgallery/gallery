@@ -12,14 +12,14 @@ use Setting;
 
 use App\Jobs\BuildImagesJob;
 
-class setVisibilityFiles extends Command
+class images_set_visibility extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'setVisibilityFiles {--force} {--clear}';
+    protected $signature = 'images:set_visibility {--force} {--clear}';
 
     /**
      * The console command description.

@@ -7,14 +7,14 @@ use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\Roles;
 
-class usercreate extends Command
+class user_add extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'usercreate {--name=} {--email=} {--password=} {--role=}';
+    protected $signature = 'user:add {--name=} {--email=} {--password=} {--role=}';
 
     /**
      * The console command description.

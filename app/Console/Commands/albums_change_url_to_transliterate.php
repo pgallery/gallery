@@ -9,14 +9,14 @@ use App\Models\Albums;
 use Transliterate;
 use Cache;
 
-class AlbumsURLRename extends Command
+class albums_change_url_to_transliterate extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'album:change_url_to_transliterate';
+    protected $signature = 'albums:change_url_to_transliterate';
 
     /**
      * The console command description.

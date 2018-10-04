@@ -14,14 +14,14 @@ use Setting;
 
 use App\Jobs\BuildImagesJob;
 
-class ImageRename extends Command
+class images_rebuild extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'image:rename_to_transliterate {--album-id=} {--all}';
+    protected $signature = 'images:rename_to_transliterate {--album-id=} {--all}';
 
     /**
      * The console command description.
