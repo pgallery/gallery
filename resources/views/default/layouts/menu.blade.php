@@ -11,7 +11,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            @if(Setting::get('main_site') != 'null')
+            @if(filter_var(Setting::get('main_site'), FILTER_VALIDATE_URL))
                 
                 <li><a href="{{ Setting::get('main_site') }}" target="_blank">Основной сайт</a></li>
             
