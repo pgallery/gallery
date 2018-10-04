@@ -56,7 +56,7 @@
 
             </td>
             <td>
-                @foreach($menu->tags as $tags)
+                @foreach($menu->tagsRelation() as $tags)
                     
                     <a href="#" class="btn btn-default btn-xs disabled" role="button">{{ $tags->name }}</a>
                 
