@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         // albums
         Commands\albums_change_url_to_transliterate::class,
+        Commands\albums_clear::class,
         
         // images
         Commands\images_rename_to_transliterate::class,
