@@ -36,6 +36,13 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
+// Вывод функции PHP phpinfo()
+Route::get('/phpinfo/', [
+    'as'            => 'phpinfo', 
+    'uses'          => 'StatusController@getPHPInfo',
+    'middleware'    => 'role:admin'
+]);
+
 // Теги
 Route::get('/tags/', [
     'as'            => 'tags', 

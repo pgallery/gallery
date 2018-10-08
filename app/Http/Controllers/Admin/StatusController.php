@@ -40,4 +40,11 @@ class StatusController extends Controller
         if(!$error)
             return \Response::json($output);
     }
+    
+    public function getPHPInfo(){
+        
+        phpinfo();
+        
+    }
+    
 }
