@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(baseUsers::class);
         $this->call(newSettingsUploadVisibilityFiles::class);
         $this->call(newSettingsGalleryDescription::class);
+        $this->call(newSettingsMainSite::class);
+        $this->call(newSettingsYandexMetrika::class);
+        
     }
 }
