@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Models\SettingsGroups;
+use App\Models\Settings;
+
 class newSettingsMainSite extends Seeder
 {
     /**
