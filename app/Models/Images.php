@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Setting;
 use Cache;
 use Storage;
+use File;
 
 class Images extends Model
 {
@@ -87,10 +88,20 @@ class Images extends Model
             Storage::delete($image->thumb_path());
         
         if(Storage::has($image->mobile_path()))
-            Storage::delete($image->mobile_path());        
+            Storage::delete($image->mobile_path());
 
         if(Storage::has($image->path()))
-            Storage::delete($image->path());  
+            Storage::delete($image->path());
+        
+        if(Setting::get('saveinpublic_thumbs') == 'yes'){
+            if(File::exists(public_path("images/thumb/" . $image->album->url . "/" . $image->name)))
+                File::delete(public_path("images/thumb/" . $image->album->url . "/" . $image->name));
+        }
+        
+        if(Setting::get('saveinpublic_mobiles') == 'yes'){
+            if(File::exists(public_path("images/mobile/" . $image->album->url . "/" . $image->name)))
+                File::delete(public_path("images/mobile/" . $image->album->url . "/" . $image->name));
+        }
         
         $image->forceDelete();
     }
