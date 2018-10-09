@@ -2,14 +2,25 @@
 
 @section('content')
 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <h3>Категории <small>
         @if(Roles::is('admin'))<a href="" data-toggle="modal" data-target="#newCategoriesModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small>@endif</h3> 
 
         <div class="form-group">
             <center>
-                <a class="btn btn-success btn-sm" role="button" data-toggle="collapse" 
-                   href="#collapseShowCategories" aria-expanded="false" aria-controls="collapseAlbumForm">
+                <a class="btn btn-success btn-sm" role="button" data-toggle="collapse"
+                   href="#collapseShowCategories" aria-expanded="false" aria-controls="collapseShowCategories">
                   Отобразить список категорий
+                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                 </a>
             </center>
         </div>
@@ -135,11 +146,11 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('delete-album', ['id' => $album->id]) }}" data-toggle="confirmation" data-title="Удалить альбом и все фотографии?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
-                    </div>                    
+                    </div>
                     
                      {{ $album->name }}
                      <br>
-                     @foreach($album->tags as $tag)
+                     @foreach($album->tagsRelation() as $tag)
                         <a href="#" class="btn btn-default btn-xs disabled" role="button">{{ $tag->name }}</a>
                      @endforeach
                      
@@ -153,8 +164,8 @@
                 </td>
                 <td>
                     @if($album->images_id != 0)
-                        <a href="/{{ $thumbs_dir }}/{{ $album->directory }}/{{ $album->thumbs()->name  }}" data-fancybox="images"> 
-                            <img  src="/{{ $thumbs_dir }}/{{ $album->directory }}/{{ $album->thumbs()->name  }}" width="75"/> 
+                        <a href="{{ $album->thumbs_http_path() }}" data-fancybox="images"> 
+                            <img  src="{{ $album->thumbs_http_path() }}" width="75"/> 
                         </a>
                     @endif
                 </td>
@@ -162,7 +173,33 @@
                 <td>{{ $album->imagesSumSize() }}</td>
                 <td>{{ $album->category()->name }}</td>
                 <td>{{ $album->year }}</td>
-                <td>{{ ($album->permission == 'All' ? "Всем" : "По ссылке") }}</td>
+                <td>
+                    
+                    @php
+                    
+                        $perm_array = [
+                            'All'  => 'Всем',
+                            'Url'  => 'По ссылке',
+                            'Pass' => 'По паролю'
+                        ];
+                    
+                        echo $perm_array[$album->permission];
+                        
+                    @endphp
+                    
+                    @if($album->permission == 'Pass')
+                        
+                        <button onclick="show_pass({{ $album->id }})" type="button" class="btn btn-danger btn-xs" id="get_password" data-id="{{ $album->id }}">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        </button>
+                        
+                        <div id="show_password" style="display: none;" data-id="{{ $album->id }}">
+                            <p class="text-primary">{{ $album->password }}</p>
+                        </div>
+                    
+                    @endif
+                    
+                </td>
                 <td>{{ $album->owner()->name }}</td>
             </tr>
 
@@ -217,6 +254,65 @@
 
 @section('js-top')
 
+        var tags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+            prefetch: {
+                url: '/tags.json',
+                filter: function(list) {
+                  return $.map(list, function(tags) {
+                    return { name: tags }; });
+                }
+            }
+        });
+        tags.initialize();
+
+        $('#album_tags').tagsinput({
+          typeaheadjs: {
+            name: 'tags',
+            displayKey: 'name',
+            valueKey: 'name',
+            source: tags.ttAdapter()
+          }
+        });
+
+        function show_pass(id){
+            $('#get_password[data-id="' + id + '"] span.glyphicon-eye-open').toggleClass('glyphicon-eye-close');
+            $('#show_password[data-id="' + id + '"]').toggle();
+        }
+        
+        $('a[aria-controls="collapseShowCategories"]').click(function(){
+            $('a[aria-controls="collapseShowCategories"] span').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+        });
+        
+        $('a[aria-controls="collapseAlbumForm"]').click(function(){
+            $('a[aria-controls="collapseAlbumForm"] span').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+        });        
+        
+        function random_pass() {
+                var result       = '';
+                var words        = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+                var max_position = words.length - 1;
+                        for( i = 0; i < 12; ++i ) {
+                                position = Math.floor ( Math.random() * max_position );
+                                result = result + words.substring(position, position + 1);
+                        }
+                return result;
+        }
+
+        $('#generate_password').click(function() {
+            $('#album_password').attr('value', random_pass());
+        });
+
+        $("#album_permission").change(function(){
+            if ($(this).val()=="Pass" ){
+                $('#collapse_pass').collapse('show');
+            }else{
+                $('#collapse_pass').collapse('hide');
+            }
+        }).change();
+
         $('a.clickChangeOwnerAlbum').click(function(e){
             $('#ChangeOwnerAlbumID').val(this.getAttribute('data-id'));
             $('#ChangeOwnerAlbumNew').val(this.getAttribute('data-owner'));
@@ -262,6 +358,8 @@
             var space = '-';
             var translit = {
                 
+                <?php echo $transliterateMap; ?>
+            
                 ' ': space, '_': space, '`': space, '~': space, '!': space, '@': space, '#': space, '$': space,
                 '%': space, '^': space, '&': space, '*': space, '(': space, ')': space, '-': space, '\=': space,
                 '+': space, '[': space, ']': space, '\\': space, '|': space, '/': space, '.': space, ',': space,

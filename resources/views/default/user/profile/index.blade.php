@@ -59,13 +59,13 @@
         <div class="form-group">
             <label class="col-sm-4 control-label">Новый пароль:</label>
             <div class="col-sm-4">
-                {!! Form::password('newPassword', ['class' => 'form-control']) !!}
+                {!! Form::password('newpassword', ['class' => 'form-control']) !!}
             </div>
         </div> 
         <div class="form-group">
             <label class="col-sm-4 control-label">Повторить пароль:</label>
             <div class="col-sm-4">
-                {!! Form::password('confirmPassword', ['class' => 'form-control']) !!}
+                {!! Form::password('newpassword_confirmation', ['class' => 'form-control']) !!}
             </div>
         </div>
         <hr>

@@ -61,17 +61,17 @@
                         <li><a href="{{ route('delete-image', ['id' => $image->id]) }}" data-toggle="confirmation" data-title="Удалить фотографию?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                       </ul>
                     </div>
-                    <a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" data-fancybox="images"> 
-                        <img  src="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" width="75"/> 
+                    <a href="{{ $image->http_path() }}" data-fancybox="images"> 
+                        <img  src="{{ $image->http_thumb_path() }}" width="75"/> 
                     </a>
                         @if($thisAlbum->images_id == $image->id) 
                             Миниатюра альбома 
                         @endif
                 </td>
-                <td><a href="/{{ $upload_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">{{ $image->name }}</a>
-                    <br><a href="/{{ $thumbs_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Миниатюра</a> 
+                <td><a href="{{ $image->http_path() }}" target="_blank">{{ $image->name }}</a>
+                    <br><a href="{{ $image->http_thumb_path() }}" target="_blank">Миниатюра</a> 
                     | 
-                    <a href="/{{ $mobile_dir }}/{{ $thisAlbum->directory }}/{{ $image->name }}" target="_blank">Мобильная</a> </td>
+                    <a href="{{ $image->http_mobile_path() }}" target="_blank">Мобильная</a> </td>
                 <td>{{ \App\Helpers\Format::Bytes($image->size)  }}</td>
                 <td>{{ $image->width }}х{{ $image->height }}</td>
                 <td>{{ $image->owner()->name }}</td>
@@ -130,7 +130,7 @@
                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="newName" id="newName" value="">
                 </div>
-            </div>              
+            </div>
             
       </div>
       <div class="modal-footer">

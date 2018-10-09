@@ -34,7 +34,7 @@ class ProfileController extends Controller
     
     /*
      * Сохранение изменений профиля
-     */    
+     */
     public function putProfile(ProfileRequest $request) {
         
         $user = Auth::user();
@@ -47,9 +47,9 @@ class ProfileController extends Controller
                 'google2fa_enabled' => ($request->input('go2fa') == 'enable') ? '1' : '0',                
             ]);
             
-            if($request->input('newPassword') && $request->input('newPassword') == $request->input('confirmPassword'))
+            if($request->input('newpassword') && $request->input('newpassword') == $request->input('newpassword_confirmation'))
                 $user->update([
-                    'password' => Hash::make($request->input('newPassword')),
+                    'password' => Hash::make($request->input('newpassword')),
                 ]);
             
         } elseif($user->method != 'thisSite') {

@@ -46,9 +46,27 @@
                 
                 {!! Form::select('permission', [
                     'All'  => 'Всем',
-                    'Url'  => 'По ссылке'
-                ], null, array('class' => 'form-control')) !!}    
+                    'Url'  => 'По ссылке',
+                    'Pass' => 'По паролю'
+                ], null, array('class' => 'form-control', 'id' => 'album_permission')) !!}    
                 
+            </div>
+        </div>
+
+        <div class="collapse" id="collapse_pass">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    
+                </div>
+                <label class="col-sm-3 control-label text-danger">Пароль:</label>
+                <div class="col-sm-4">
+                    {!! Form::text('password', null, array('class' => 'form-control', 'id' => 'album_password')) !!}
+                </div>
+                <div class="col-sm-1">
+                    <a class="btn btn-success btn-default" role="button" id="generate_password">
+                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -66,6 +84,7 @@
                 <a class="btn btn-success btn-sm" role="button" data-toggle="collapse" 
                    href="#collapseAlbumForm" aria-expanded="false" aria-controls="collapseAlbumForm">
                   Продвинутые настройки (не обязательны)
+                  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                 </a>
             </center>
         </div>
@@ -90,7 +109,7 @@
                 <label class="col-sm-2 control-label">Теги:</label>
                 <div class="col-sm-10">
                     
-                    {!! Form::text('tags', null, array('class' => 'form-control', 'id' => 'album_tags')) !!}
+                    {!! Form::text('tags', null, array('class' => 'form-control', 'id' => 'album_tags', 'data-role' => 'tagsinput')) !!}
                     
                     <p class="help-block">Теги разделяются запятыми.</p>
                 </div>

@@ -19,8 +19,6 @@ use Cache;
 
 class InterfaceController extends Controller
 {
-    // 10080 минут - 1 неделя
-    const SHOWADMIN_CACHE_TTL = 10080;
     
     protected $users;
     protected $categories;
@@ -39,29 +37,29 @@ class InterfaceController extends Controller
      */
     public function getPage(Router $router){
         
-        $categories = Cache::remember('admin.show.categories', self::SHOWADMIN_CACHE_TTL, function() {
+        $categories = Cache::remember('admin.show.categories', Setting::get('cache_ttl'), function() {
             return $this->categories->all();
         });
         
         if($categories->count() == 0)
             return redirect()->route('wizard', ['id' => 1]);
 
-        $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
+        $categoriesArray = Cache::remember('admin.show.categoriesArray', Setting::get('cache_ttl'), function() {
             return $this->categories->orderBy('name')->pluck('name','id');
         });
         
         if($router->input('option') == 'byCategory' and is_numeric($router->input('id'))) {
             $byCategoryId = $router->input('id');
-            $albums = Cache::remember('admin.show.albums.byCategory.' . $byCategoryId, self::SHOWADMIN_CACHE_TTL, function() use ($byCategoryId) {
+            $albums = Cache::remember('admin.show.albums.byCategory.' . $byCategoryId, Setting::get('cache_ttl'), function() use ($byCategoryId) {
                 return $this->albums->where('categories_id', $byCategoryId)->get();
             });
         } else {
-            $albums = Cache::remember('admin.show.albums', self::SHOWADMIN_CACHE_TTL, function() {
+            $albums = Cache::remember('admin.show.albums', Setting::get('cache_ttl'), function() {
                 return $this->albums->all();
             });
         }
         
-        $usersArray = Cache::remember('admin.show.usersArray', self::SHOWADMIN_CACHE_TTL, function() {
+        $usersArray = Cache::remember('admin.show.usersArray', Setting::get('cache_ttl'), function() {
             return $this->users->pluck('name','id');
         });
         

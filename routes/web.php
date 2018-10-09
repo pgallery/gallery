@@ -22,7 +22,7 @@ Auth::routes();
 // Публичные страницы, доступные без авторизации
 Route::get('/', [
     'as'    => 'home', 
-    'uses'  => 'User\AlbumsController@getShow'
+    'uses'  => 'User\GalleryController@getShow'
 ]);
 
 Route::get('/no_access', [
@@ -30,12 +30,26 @@ Route::get('/no_access', [
     'uses'  => 'User\AccessController@getNoAccess'
 ]);
 
+Route::get('/images/{option}/{url}/{name}', [
+    'as'    => 'show-image', 
+    'uses'  => 'User\ImagesController@getImage'
+]);
+Route::post('/auth-album/{url}/', [
+    'as'    => 'auth-album', 
+    'uses'  => 'User\AlbumsController@postAuth'
+]);
 Route::get('/by/{option}/{url}', [
     'as'    => 'album-showBy', 
-    'uses'  => 'User\AlbumsController@getShow'    
+    'uses'  => 'User\GalleryController@getShow'    
 ])->where(['option', '[A-Za-z0-9]+', 'id' => '[А-Яа-яA-Za-z0-9_-]+']);
 
 Route::post('/ulogin', 'User\UloginController@login');
+
+// Вывод списка тегов в JSON формате
+Route::get('/tags.json', [
+    'as'            => 'json-tags', 
+    'uses'          => 'User\TagsController@getJSON',
+]);
 
 // Маршруты авторизованных пользователей
 Route::group(['middleware' => 'auth'], function () {
@@ -72,7 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
     ]);
     
     // Скачивание архива альбома
-    Route::get('/downloads/{url}', [
+    Route::get('/downloads/{url}.zip', [
         'as'            => 'zip-album',
         'uses'          => 'User\ArchivesController@getZip',
     ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');
@@ -80,5 +94,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/{url}', [
     'as'    => 'gallery-show', 
-    'uses'  => 'User\ImagesController@getPage'    
+    'uses'  => 'User\AlbumsController@getPage'    
 ])->where('url', '[А-Яа-яA-Za-z0-9_-]+');

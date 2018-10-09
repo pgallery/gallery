@@ -29,4 +29,22 @@ class UserRequest extends FormRequest
             'password'  => 'required|confirmed',
         ];
     }
+    
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required'         => __('request_user.name.required'),
+            'name.string'           => __('request_user.name.string'),
+            'email.required'        => __('request_user.email.required'),
+            'email.email'           => __('request_user.email.email'),
+            'email.unique'          => __('request_user.email.unique'),
+            'password.required'     => __('request_user.password.required'),
+            'password.confirmed'    => __('request_user.password.confirmed'),
+        ];
+    }
 }

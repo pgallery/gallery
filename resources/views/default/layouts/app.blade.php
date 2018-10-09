@@ -1,14 +1,15 @@
+@inject('meta', 'App\Facades\ViewerFacade')
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ app()->getLocale() }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="{{ $meta->getDescription() }}">
+    <meta name="keywords" content="{{ $meta->getKeywords() }}">
 
-    <title>{{ $gallery_name }}</title>
+    <title>{{ $meta->getTitle() }}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +21,8 @@
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
 
     @if (Auth::check())    
-    
+        
+        <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
         <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
         <link href="/css/dropzone.css" rel="stylesheet">
     
@@ -73,7 +75,41 @@
         @yield('css')
         
               
-    </style>     
+    </style>    
+    
+    @if(Setting::get('use_yandexmetrika') == 'yes')
+
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript" >
+            (function (d, w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter{{ Setting::get('yandexmetrika_id') }} = new Ya.Metrika2({
+                            id:{{ Setting::get('yandexmetrika_id') }},
+                            clickmap:true,
+                            trackLinks:true,
+                            accurateTrackBounce:true
+                        });
+                    } catch(e) { }
+                });
+
+                var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () { n.parentNode.insertBefore(s, n); };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else { f(); }
+            })(document, window, "yandex_metrika_callbacks2");
+        </script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/{{ Setting::get('yandexmetrika_id') }}" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->   
+
+    @endif    
+    
   </head>
 
   <body>
@@ -114,6 +150,8 @@
     
     @if (Auth::check())
     
+    <script src="/js/typeahead.bundle.js"></script>
+    <script src="/js/bootstrap-tagsinput.min.js"></script>
     <script src="/js/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables.bootstrap.min.js"></script>
     <script src="/js/bootstrap-confirmation.js"></script>
@@ -126,7 +164,7 @@
     <script type="text/javascript"> 
         
         @yield('js-top')
-        
+              
         
         @if (Roles::is('admin'))
             
@@ -169,9 +207,50 @@
           
           @if (Auth::check())
           
-          $('#album-table').DataTable();
-          
-          $('#group-table').DataTable();
+
+          var albumtable = $('#album-table').DataTable({
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
+            "language": {
+              "search": "Фильтр:",
+              "sLengthMenu": "Отображать _MENU_ записей",
+              "paginate": {
+                "previous": "Назад",
+                "next": "Дальше"
+              }
+            }
+          });
+
+          albumtable
+            .order( [ 0, 'desc' ] )
+            .draw();
+
+          var tagtable = $('#tag-table').DataTable({
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
+            "language": {
+              "search": "Фильтр:",
+              "sLengthMenu": "Отображать _MENU_ записей",
+              "paginate": {
+                "previous": "Назад",
+                "next": "Дальше"
+              }              
+            }
+          });
+
+          tagtable
+            .order( [ 1, 'asc' ] )
+            .draw();
+
+          $('#group-table').DataTable({
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
+            "language": {
+              "search": "Фильтр:",
+              "sLengthMenu": "Отображать _MENU_ записей",
+              "paginate": {
+                "previous": "Назад",
+                "next": "Дальше"
+              }              
+            }
+          });
           
           $('[data-toggle=confirmation]').confirmation({
             rootSelector: '[data-toggle=confirmation]',

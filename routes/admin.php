@@ -36,11 +36,51 @@ Route::get('/status/', [
     'middleware'    => 'role:admin'
 ]);
 
-//Route::get('/tags/', [
-//    'as'            => 'tags', 
-//    'uses'          => 'TagsController@getTags',
-//    'middleware'    => 'role:admin|moderator'
-//]);
+// Вывод функции PHP phpinfo()
+Route::get('/phpinfo/', [
+    'as'            => 'phpinfo', 
+    'uses'          => 'StatusController@getPHPInfo',
+    'middleware'    => 'role:admin'
+]);
+
+// Теги
+Route::get('/tags/', [
+    'as'            => 'tags', 
+    'uses'          => 'TagsController@getTags',
+    'middleware'    => 'role:admin'
+]);
+Route::post('/tags/rename/', [
+    'as'            => 'rename-tag', 
+    'uses'          => 'TagsController@putRename',
+    'middleware'    => 'role:admin'
+]);
+Route::get('/tags/delete/{id}', [
+    'as'            => 'delete-tag', 
+    'uses'          => 'TagsController@deleteTag',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
+
+// Меню
+Route::get('/menu/', [
+    'as'            => 'menu', 
+    'uses'          => 'MenuController@getMenu',
+    'middleware'    => 'role:admin'
+]);
+Route::post('/menu/create/', [
+    'as'            => 'create-menu', 
+    'uses'          => 'MenuController@postCreateMenu',
+    'middleware'    => 'role:admin'
+]);
+Route::get('/menu/delete/{id}', [
+    'as'            => 'delete-menu', 
+    'uses'          => 'MenuController@deleteMenu',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
+Route::post('/menu/rename/', [
+    'as'            => 'rename-menu', 
+    'uses'          => 'MenuController@putMenu',
+    'middleware'    => 'role:admin'
+]);
 
 // Статистика
 Route::get('/statistics/', [
@@ -128,11 +168,11 @@ Route::get('/category/edit/{id}', [
     'uses'          => 'CategoriesController@getEditСategory',
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
-Route::post('/category/save/{id}', [
+Route::post('/category/save/', [
     'as'            => 'save-category',
     'uses'          => 'CategoriesController@putSaveСategory',
     'middleware'    => 'role:admin'
-])->where(['id' => '[0-9]+']);
+]);
 Route::get('/category/delete/{id}', [
     'as'            => 'delete-category',
     'uses'          => 'CategoriesController@deleteСategory',

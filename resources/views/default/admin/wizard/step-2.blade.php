@@ -58,6 +58,31 @@
 
 @section('js-top')
 
+        function random_pass() {
+                var result       = '';
+                var words        = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+                var max_position = words.length - 1;
+                        for( i = 0; i < 12; ++i ) {
+                                position = Math.floor ( Math.random() * max_position );
+                                result = result + words.substring(position, position + 1);
+                        }
+                return result;
+        }
+
+        $('#generate_password').click(function() {
+            $('#album_password').attr('value', random_pass());
+        });
+
+        $("#album_permission").change(function(){
+            if ($(this).val()=="Pass" ){
+                console.log('show');
+                $('#collapse_pass').collapse('show');
+            }else{
+                console.log('hide');
+                $('#collapse_pass').collapse('hide');
+            }
+        }).change();
+
         function Transliterate(input)
         {
             var result = '';

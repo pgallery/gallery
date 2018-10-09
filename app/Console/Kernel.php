@@ -20,9 +20,24 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        // albums
+        Commands\albums_change_url_to_transliterate::class,
+        Commands\albums_clear::class,
+        
+        // images
+        Commands\images_rename_to_transliterate::class,
+        Commands\images_rebuild::class,
+        Commands\images_set_visibility::class,
+        
+        // users
+        Commands\user_mod::class,
+        Commands\user_add::class,
+        
+        // settings
+        
+        // old
         Commands\queues::class,
-        Commands\usermod::class,
-        Commands\usercreate::class,
+
     ];
 
     /**

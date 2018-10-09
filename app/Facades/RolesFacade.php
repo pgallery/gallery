@@ -1,31 +1,33 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Facades;
 
 use App\Models\User;
 
 use Auth;
+use Cache;
 
-class Roles
+class RolesFacade
 {
 
-    public static function is($roles){
+    public function is($roles){
         
         if(!Auth::check())
             return false;
         
-        $user_roles = User::find(Auth::user()->id)->roles;
+        $id = Auth::user()->id;
         
-        if(is_array($roles))
-        {
+        $user_roles = Cache::remember('user.roles.byId.' . $id, Setting::get('cache_ttl'), function() use($id) {
+            return User::find($id)->roles;
+        });
+                
+        if(is_array($roles)) {
             foreach($roles as $role_name){
-                $hasRole = self::is($role_name);
+                $hasRole = $this->is($role_name);
                 if($hasRole)
                     return true;
             }
-        }
-        else
-        {    
+        } else {    
             foreach($user_roles as $user_role){
                 if($user_role['name'] == $roles)
                     return true;

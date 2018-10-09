@@ -1,9 +1,13 @@
 /node_modules
 /public/hot
 /public/gallery
-/public/archives/
+/public/archives
 /public/storage
+/public/images
+/public/32779c721995.html
+/public/adminer-4.6.3.php
 /storage/*.key
+/storage/gallery
 /vendor
 /.idea
 /.vagrant
@@ -14,5 +18,4 @@ package.json
 webpack.mix.js
 yarn.lock
 composer.lock
-/public/32779c721995.html
 /nbproject/

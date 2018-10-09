@@ -11,12 +11,17 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="{{ route('home') }}">Галерея</a></li>
+            @if(filter_var(Setting::get('main_site'), FILTER_VALIDATE_URL))
+                
+                <li><a href="{{ Setting::get('main_site') }}" target="_blank">{{ __('views_layouts_menu.main_site_page') }}</a></li>
+            
+            @endif
+            <li><a href="{{ route('home') }}">{{ __('views_layouts_menu.home_page') }}</a></li>
             
             @if($categories_count > 0)
             
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">По категориям <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ __('views_layouts_menu.by_categories_page') }} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     
                       @if(Roles::is('admin'))
@@ -40,16 +45,28 @@
                   </ul>
                 </li>  
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">По годам <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ __('views_layouts_menu.by_years_page') }} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     @foreach($year_list as $year)
 
-                            <li><a href="{{ route('album-showBy', ['option' => 'year', 'url' => $year['year']]) }}">{{ $year['year'] }}</a></li>
+                            <li><a href="{{ route('album-showBy', ['option' => 'year', 'url' => $year->year]) }}">{{ $year->year }}</a></li>
 
                     @endforeach
                   </ul>
                 </li>   
                 
+                @foreach($custom_menu as $menu)
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $menu->name }} <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    
+                      @foreach($menu->tagsRelation() as $mtag)
+                        <li><a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($mtag->name)]) }}">{{ $mtag->name }} ({{ $mtag->albumsCountRelation() }})</a></li>                
+                      @endforeach
+                  </ul>
+                </li>                
+                @endforeach
+                                
             @endif  
             
           </ul>
@@ -69,13 +86,15 @@
                   <ul class="dropdown-menu">
                     @if(Roles::is('admin'))
                         <li><a href="{{ route('users') }}">Пользователи</a></li>
+                        <li><a href="{{ route('menu') }}">Меню</a></li>
                         <li><a href="{{ route('settings') }}">Настройки</a></li>
+                        <li><a href="{{ route('tags') }}">Теги</a></li>
                     @endif
                     <li><a href="{{ route('statistics') }}">Статистика</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="{{ route('flush-cache') }}">Сбросить кэш</a></li>
                   </ul>
-                </li>                
+                </li>
                 
                 @if(Roles::is(['admin', 'moderator']))
                 <li class="dropdown">
@@ -99,9 +118,9 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="{{ route('edit-profile') }}">Редактировать профиль</a></li>
+                    <li><a href="{{ route('edit-profile') }}">{{ __('views_layouts_menu.edit_profile_page') }}</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Выход</a></li>
+                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('views_layouts_menu.logout_page') }}</a></li>
                   </ul>
                 </li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
@@ -111,9 +130,9 @@
                     <li><div style="margin-top: 18px" id="uLogin_{{ Setting::get('ulogin_id') }}" data-uloginid="{{ Setting::get('ulogin_id') }}"></div></li>
                 @endif
                 @if( Setting::get('registration') == 'yes' )
-                    <li><a href="{{ route('register') }}">Регистрация</a></li>
+                    <li><a href="{{ route('register') }}">{{ __('views_layouts_menu.register_page') }}</a></li>
                 @endif
-                <li><a href="{{ route('login') }}">Вход</a></li>
+                <li><a href="{{ route('login') }}">{{ __('views_layouts_menu.login_page') }}</a></li>
         @endif
 
           </ul> 

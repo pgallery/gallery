@@ -11,6 +11,7 @@ use App\Models\Images;
 
 use Image;
 use File;
+use Storage;
 use Auth;
 use Setting;
 use Transliterate;
@@ -39,7 +40,7 @@ class UploadsController extends Controller
     public function postUploads(Router $router, Request $request) {
         
         if($router->input('option') == 'dropzone') {
-            
+
             if($this->createImage($request->file('file'), $request->input('album_id')))
                 return \Response::json([
                     'error' => false,
@@ -82,22 +83,24 @@ class UploadsController extends Controller
         
         $album = $this->albums->find($album_id);
         
-        $upload_path        = $album->path();
         $upload_file_name   = Transliterate::get($upload_file->getClientOriginalName());
         
-        if(!File::isDirectory($upload_path))
-            File::makeDirectory($upload_path, 0755, true);
+        Storage::makeDirectory($album->path());
+
+        $img = Image::make($upload_file->getRealPath());
+        $img->encode('jpg', 100);
         
-        Image::make($upload_file)->save($upload_path . "/" . $upload_file_name);
+        if(!Storage::put($album->path() . "/" . $upload_file_name, (string) $img))
+            return true;
         
-        if($this->images->where('albums_id', $album->id)->where('name', $upload_file_name)->first()) {
+        if($this->images->where('albums_id', $album->id)->where('name', $upload_file_name)->exists()) {
             
             $image = $this->images
-                    ->where('albums_id', $album->id)
-                    ->where('name', $upload_file_name)
-                    ->update([
-                        'is_rebuild' => 1,
-                    ]);
+                ->where('albums_id', $album->id)
+                ->where('name', $upload_file_name)
+                ->update([
+                    'is_rebuild' => 1,
+                ]);
             
         }else{
             

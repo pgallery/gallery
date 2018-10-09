@@ -22,7 +22,6 @@
         'class'     => 'form-horizontal',
     ]) !!} 
 
-
     {!! Form::hidden('id', $album->id) !!}
     
 <ul class="nav nav-tabs">
@@ -74,11 +73,29 @@
             <div class="col-sm-4">
                 {!! Form::select('permission', [
                     'All'  => 'Всем',
-                    'Url'  => 'По ссылке'
-                ], null, array('class' => 'form-control')) !!}                
+                    'Url'  => 'По ссылке',
+                    'Pass' => 'По паролю'
+                ], null, array('class' => 'form-control', 'id' => 'album_permission')) !!}                
             </div>
         </div>
 
+        <div class="collapse" id="collapse_pass">
+            <div class="form-group">
+                <div class="col-sm-6">
+                    
+                </div>
+                <label class="col-sm-3 control-label text-danger">Пароль альбома:</label>
+                <div class="col-sm-2">
+                    {!! Form::text('password', null, array('class' => 'form-control', 'id' => 'album_password')) !!}
+                </div>
+                <div class="col-sm-1">
+                    <a class="btn btn-success btn-default" role="button" id="generate_password">
+                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        </div>        
+        
         <div class="form-group">
             <label class="col-sm-2 control-label">Описание:</label>
             <div class="col-sm-10">
@@ -114,7 +131,7 @@
                 <label class="col-sm-2 control-label">Теги:</label>
                 <div class="col-sm-10">
 
-                    {!! Form::text('tags', $tags, array('class' => 'form-control', 'id' => 'album_tags')) !!}
+                    {!! Form::text('tags', $tags, array('class' => 'form-control', 'id' => 'album_tags', 'data-role' => 'tagsinput')) !!}
                     
                     <p class="help-block">Теги разделяются запятыми.</p>
                 </div>
@@ -143,8 +160,6 @@
     
 </div>
 
-
-     
     <hr>
     <center>
         {!! Form::submit('Сохранить изменения', 
@@ -159,6 +174,55 @@
 @endsection
 
 @section('js-top')
+
+        var tags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+            prefetch: {
+                url: '/tags.json',
+                filter: function(list) {
+                  return $.map(list, function(tags) {
+                    return { name: tags }; });
+                }
+            }
+        });
+        tags.initialize();
+
+        $('#album_tags').tagsinput({
+          typeaheadjs: {
+            name: 'tags',
+            displayKey: 'name',
+            valueKey: 'name',
+            source: tags.ttAdapter()
+          }
+        });
+
+
+    function random_pass() {
+            var result       = '';
+            var words        = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+            var max_position = words.length - 1;
+                    for( i = 0; i < 12; ++i ) {
+                            position = Math.floor ( Math.random() * max_position );
+                            result = result + words.substring(position, position + 1);
+                    }
+            return result;
+    }
+    
+    $('#generate_password').click(function() {
+        $('#album_password').attr('value', random_pass());
+    });
+    
+    $("#album_permission").change(function(){
+        if ($(this).val()=="Pass" ){
+            console.log('show');
+            $('#collapse_pass').collapse('show');
+        }else{
+            console.log('hide');
+            $('#collapse_pass').collapse('hide');
+        }
+    }).change();
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()

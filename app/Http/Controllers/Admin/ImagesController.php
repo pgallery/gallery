@@ -11,6 +11,7 @@ use App\Models\Images;
 
 use Image;
 use File;
+use Storage;
 use Auth;
 use Setting;
 use Transliterate;
@@ -38,30 +39,28 @@ class ImagesController extends Controller
      */
     public function putRename(Request $request) {
         
-        $image = $this->images->find($request->input('id'));
+        $image = $this->images->findOrFail($request->input('id'));
         
-        $new_name     = Transliterate::get($request->input('newName'));
+        $new_name = Transliterate::get($request->input('newName'));
         
-        $mobile_image = $image->mobile_path();
-        $thumb_image  = $image->thumb_path();
-        $upload_dir   = $image->album->path();
+        if(Storage::has($image->album->path() . "/" . $new_name))
+            return back();
         
-        if(File::move($upload_dir . "/" . $image->name, $upload_dir . "/" . $new_name)) {
+        if(Storage::move($image->path(), $image->album->path() . "/" . $new_name)) {
             
-            if (File::exists($mobile_image))
-                File::delete($mobile_image);
+            if(Storage::has($image->thumb_path()))
+                Storage::delete($image->thumb_path());
 
-            if (File::exists($thumb_image))
-                File::delete($thumb_image);            
+            if(Storage::has($image->mobile_path()))
+                Storage::delete($image->mobile_path());
             
             $image->update([
                 'name'          => $new_name,
                 'is_rebuild'    => 1,
             ]);
             
-            if(Setting::get('use_queue') == 'yes') {
+            if(Setting::get('use_queue') == 'yes')
                 BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
-            }
             
             Cache::flush();
         }
@@ -75,7 +74,7 @@ class ImagesController extends Controller
      */
     public function getRebuild(Router $router) {
 
-        $image = $this->images->find($router->input('id'));
+        $image = $this->images->findOrFail($router->input('id'));
         $image->is_rebuild = 1;
         $image->save();
 
@@ -91,9 +90,9 @@ class ImagesController extends Controller
      */
     public function getRotate(Router $router) {
         
-        $image = $this->images->find($router->input('id'));
+        $image = $this->images->findOrFail($router->input('id'));
         
-        $file = $image->path();
+//        $file = $image->path();
         
         if($router->input('option') == 'left')
             $rotate = 90;
@@ -102,9 +101,10 @@ class ImagesController extends Controller
         else
             $rotate = -90;
         
-        Image::make($file)
-            ->rotate($rotate)
-            ->save($file);
+        $rotate = Image::make(Storage::get($image->path()))
+            ->rotate($rotate);
+        
+        Storage::put($image->path(), (string) $rotate->encode());
         
         $image->is_rebuild = 1;
         $image->save();
@@ -132,8 +132,8 @@ class ImagesController extends Controller
      */
     public function putInstallImage(Router $router) {
         
-        $album_id = $this->images->find($router->input('id'))->album->id;
-        $this->albums->find($album_id)->update(['images_id' => $router->input('id')]);
+        $album_id = $this->images->findOrFail($router->input('id'))->album->id;
+        $this->albums->findOrFail($album_id)->update(['images_id' => $router->input('id')]);
         
         Cache::flush();
         
@@ -146,7 +146,7 @@ class ImagesController extends Controller
      */
     public function putChangeOwnerImage(Request $request) {
         
-        $image = $this->images->find($request->input('id'));
+        $image = $this->images->findOrFail($request->input('id'));
         $image->users_id = $request->input('ChangeOwnerNew');
         $image->save();
         
@@ -161,31 +161,40 @@ class ImagesController extends Controller
      */
     public function putMoveToAlbum(Request $request) {
         
-        $this_image     = $this->images->find($request->input('id'));
-        $new_album      = $this->albums->find($request->input('MoveToAlbumNew'));
-        
-        $old_path       = $this_image->path();
-        $new_path       = $new_album->path() . "/" . $this_image->name;
-        $delete_thumb   = $this_image->thumb_path();
-        $delete_mobile  = $this_image->mobile_path();
-        
-        if(File::move($old_path, $new_path) and $this_image->albums_id != $request->input('MoveToAlbumNew')) {
+        $this_image = $this->images->findOrFail($request->input('id'));
+        $new_album  = $this->albums->findOrFail($request->input('MoveToAlbumNew'));
+                
+        if($this_image->albums_id != $request->input('MoveToAlbumNew') and Storage::move($this_image->path(), $new_album->path() . "/" . $this_image->name)) {
             
-            if (File::exists($delete_thumb))
-                File::delete($delete_thumb);
-            
-            if (File::exists($delete_mobile))
-                File::delete($delete_mobile);            
+            if(Storage::has($this_image->thumb_path()))
+                Storage::delete($this_image->thumb_path());
+
+            if(Storage::has($this_image->mobile_path()))
+                Storage::delete($this_image->mobile_path());
             
             $this->images->where('id', $this_image->id)->update([
                 'albums_id'  => $new_album->id,
                 'is_rebuild' => 1,
             ]);
             
+            if(Setting::get('use_queue') == 'yes') {
+                BuildImagesJob::dispatch($this_image->id)->onQueue('BuildImage');
+            }
+            
+            // Проверяем, не переносим ли мы миниатюру альбома
+            // Если да, устанавливаем новую
             if($this_image->album->images_id == $this_image->id) {
                 
                 $Images = $this->images->where('albums_id', $this_image->albums_id)->first();
-                $this->albums->find($this_image->albums_id)->update(['images_id' => $Images->id]);
+                $this->albums->findOrFail($this_image->albums_id)->update(['images_id' => $Images->id]);
+                
+            }
+            // Проверяем, есть ли миниатюра у альбома приемника
+            // Если нет, устанавливаем переносимую фотограцию как миниатюру
+            if($new_album->images_id == 0) {
+                
+                $new_album->images_id = $this_image->id;
+                $new_album->save();
                 
             }
             

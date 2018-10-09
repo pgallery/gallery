@@ -18,14 +18,12 @@ use Setting;
 use Viewer;
 use Transliterate;
 use File;
+use Storage;
 use Cache;
 
 use App\Jobs\BuildImagesJob;
 
 class AlbumsController extends Controller {
-
-    // 10080 минут - 1 неделя
-    const SHOWADMIN_CACHE_TTL = 10080;
 
     protected $users;
     protected $categories;
@@ -58,18 +56,18 @@ class AlbumsController extends Controller {
      */
     public function getEditAlbum(Router $router) {
 
-        $categoriesArray = Cache::remember('admin.show.categoriesArray', self::SHOWADMIN_CACHE_TTL, function() {
+        $categoriesArray = Cache::remember('admin.show.categoriesArray', Setting::get('cache_ttl'), function() {
             return $this->categories->orderBy('name')->pluck('name','id');
         });
 
-        $usersArray = Cache::remember('admin.show.usersArray', self::SHOWADMIN_CACHE_TTL, function() {
+        $usersArray = Cache::remember('admin.show.usersArray', Setting::get('cache_ttl'), function() {
             return $this->users->pluck('name','id');
         });
         
-        $album = $this->albums->find($router->input('id'));
+        $album = $this->albums->findOrFail($router->input('id'));
         
         $tags = '';
-        foreach ($album->tags as $tag) {
+        foreach ($album->tagsRelation() as $tag) {
             $tags .= $tag->name . ", ";
         }
         $tags = rtrim(rtrim($tags), ',');
@@ -86,7 +84,7 @@ class AlbumsController extends Controller {
      * Создание нового альбома
      */
     public function postCreateAlbum(AlbumsRequest $request) {
-
+        
         $album                = new Albums();
         $album->name          = $request->input('name');
         $album->url           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
@@ -94,6 +92,14 @@ class AlbumsController extends Controller {
         $album->year          = $request->input('year');
         $album->desc          = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
         $album->permission    = $request->input('permission');
+        
+        if($request->input('permission') == 'Pass' and empty($request->input('password')))
+            $album->password = rand(1000000, 9999999);
+        elseif($request->input('permission') == 'Pass' and !empty($request->input('password')))
+            $album->password = $request->input('password');
+        else
+            $album->password = null;
+
         $album->categories_id = $request->input('categories_id');
         $album->users_id      = Auth::user()->id;
         $album->save();
@@ -101,12 +107,11 @@ class AlbumsController extends Controller {
         if(!empty($request->input('tags')))
             $album->tags()->sync($this->_tags_to_array($request->input('tags')));
         
-        if (!File::isDirectory($album->path()))
-            File::makeDirectory($album->path(), 0755, true);
-
+        Storage::makeDirectory($album->path());
+        
         Cache::flush();
 
-        return back();
+        return redirect()->route('uploads-album', ['id' => $album->id]);
     }
 
     /*
@@ -114,7 +119,7 @@ class AlbumsController extends Controller {
      */
     public function getShowAlbum(Router $router, Request $request) {
 
-        $thisAlbum = $this->albums->find($router->input('id'));
+        $thisAlbum = $this->albums->findOrFail($router->input('id'));
 
         if ($thisAlbum->imagesCount() == 0) {
             $images = [];
@@ -128,13 +133,13 @@ class AlbumsController extends Controller {
             $type        = 'thisAlbum';
             $album_id    = $thisAlbum->id;
             
-            $usersArray = Cache::remember('admin.show.usersArray', self::SHOWADMIN_CACHE_TTL, function() {
+            $usersArray = Cache::remember('admin.show.usersArray', Setting::get('cache_ttl'), function() {
                 return $this->users->pluck('name','id');
             });
-            $albumsArray = Cache::remember('admin.show.albumsArray', self::SHOWADMIN_CACHE_TTL, function() {
+            $albumsArray = Cache::remember('admin.show.albumsArray', Setting::get('cache_ttl'), function() {
                 return $this->albums->pluck('name', 'id');
             });
-            $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, self::SHOWADMIN_CACHE_TTL, function() use ($thisAlbum) {
+            $listImages = Cache::remember('admin.show.albumImages.' . $thisAlbum->id . '.' . $thisPage, Setting::get('cache_ttl'), function() use ($thisAlbum) {
                 return $thisAlbum->images()->paginate(Setting::get('count_images'));
             });
         }
@@ -157,7 +162,7 @@ class AlbumsController extends Controller {
      */
     public function putSaveAlbum(AlbumsRequest $request) {
         
-        $album = $this->albums->find($request->input('id'));
+        $album = $this->albums->findOrFail($request->input('id'));
         
         // Если изменена директория, переносим файлы
         if($album->directory != $request->input('directory'))
@@ -175,6 +180,14 @@ class AlbumsController extends Controller {
         $input['year']          = $request->input('year');
         $input['categories_id'] = $request->input('categories_id');
         $input['permission']    = $request->input('permission');
+        
+        if($request->input('permission') == 'Pass' and empty($request->input('password')))
+            $input['password'] = rand(1000000, 9999999);
+        elseif($request->input('permission') == 'Pass' and !empty($request->input('password')))
+            $input['password'] = $request->input('password');
+        else
+            $input['password'] = null;
+        
         $input['desc']          = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
         $input['url']           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
         
@@ -197,17 +210,18 @@ class AlbumsController extends Controller {
             'image/bmp',
         ];
 
-        $album = $this->albums->find($router->input('id'));
-        $images = File::Files($album->path());
-
+        $album = $this->albums->findOrFail($router->input('id'));
+        $images = Storage::files($album->path());
+        
         foreach ($images as $image) {
 
             $base_filename = basename($image);
-            $mimeType = File::mimeType($image);
-
+            $mimeType = Storage::getMimetype($album->path() . "/" . $base_filename);
+            
             if (in_array($mimeType, $accessType)) {
-                if ($this->images->where('name', $base_filename)->where('albums_id', $album->id)->count() == 0) {
-
+                
+                if (!$this->images->where('name', $base_filename)->where('albums_id', $album->id)->exists()) {
+                    
                     $image              = new Images();
                     $image->name        = $base_filename;
                     $image->albums_id   = $album->id;
@@ -217,6 +231,7 @@ class AlbumsController extends Controller {
 
                     if (Setting::get('use_queue') == 'yes')
                         BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
+                    
                 }
             }
         }
@@ -225,11 +240,12 @@ class AlbumsController extends Controller {
         if ($album->images_id == 0) {
             $thumb = $this->images->where('albums_id', $album->id)->first();
             $this->albums
-                    ->find($album->id)
+                    ->findOrFail($album->id)
                     ->update([
                         'images_id' => $thumb->id,
                     ]);
         }
+        
         Cache::flush();
 
         return redirect()->route('admin');
@@ -245,7 +261,7 @@ class AlbumsController extends Controller {
         ]);
 
         if (Setting::get('use_queue') == 'yes') {
-            $album = $this->albums->find($router->input('id'));
+            $album = $this->albums->findOrFail($router->input('id'));
             $album_images = $album->images;
 
             foreach ($album_images as $image) {
@@ -261,7 +277,7 @@ class AlbumsController extends Controller {
      */
     public function getUploads(Router $router) {
 
-        $album = $this->albums->find($router->input('id'));
+        $album = $this->albums->findOrFail($router->input('id'));
 
         return Viewer::get('admin.album.uploads', [
             'type'       => 'thisAlbum',
@@ -275,20 +291,17 @@ class AlbumsController extends Controller {
      */
     private function _rename_dir($id, $directory) {
         
-        $album = $this->albums->find($id);
+        $album = $this->albums->findOrFail($id);
 
-        $upload_path = $album->path();
-        $mobile_path = $album->mobile_path();
-        $thumb_path  = $album->thumb_path();
         $directory   = Transliterate::get($directory);
         
-        if (File::move($upload_path, public_path(Setting::get('upload_dir') . "/" . $directory))) {
+        if (Storage::move($album->path(), Setting::get('upload_dir') . "/" . $directory)) {
 
-            if (\File::isDirectory($mobile_path))
-                \File::deleteDirectory($mobile_path);
+            if(Storage::has($album->mobile_path()))
+                Storage::deleteDirectory($album->mobile_path());
 
-            if (\File::isDirectory($thumb_path))
-                \File::deleteDirectory($thumb_path);
+            if(Storage::has($album->thumb_path()))
+                Storage::deleteDirectory($album->thumb_path());
 
             $album->update([
                 'directory' => $directory,
@@ -313,7 +326,7 @@ class AlbumsController extends Controller {
      */
     private function _change_owner($id, $users_id, $recursion = false) {
 
-        $this->albums->find($id)->update([
+        $this->albums->findOrFail($id)->update([
             'users_id' => $users_id,
         ]);
 

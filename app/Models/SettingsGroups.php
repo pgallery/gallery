@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SettingsGroups extends Model
 {
-    public function settings()
-    {
+    public function settings() {
         return $this->hasMany('App\Models\Settings', 'set_group', 'id')->get();
     }
     
-    public function settingsCount()
-    {
+    public function settingsCount() {
         return $this->hasMany('App\Models\Settings', 'set_group', 'id')->count();
     }    
 }

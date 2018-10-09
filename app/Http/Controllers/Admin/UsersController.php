@@ -41,13 +41,10 @@ class UsersController extends Controller
      */
     public function getPage() {
         
-        $users    = $this->user->all();
-        $allRoles = $this->roles->pluck('display_name','id');
-
-        return Viewer::get('admin.user.index', compact(
-                'users',
-                'allRoles'
-        ));
+        return Viewer::get('admin.user.index', [
+            'users'    => $this->user->all(),
+            'allRoles' => $this->roles->pluck('display_name','id')
+        ]);
     }
     
     /*
@@ -56,14 +53,12 @@ class UsersController extends Controller
     public function getEdit(Router $router) {
         
         $user       = $this->user->find($router->input('id'));
-        $roles      = $this->roles->pluck('display_name','id');
-        $userRole   = $user->roles->pluck('id','id')->toArray();
 
-        return Viewer::get('admin.user.edit', compact(
-                'user',
-                'roles',
-                'userRole'
-        ));
+        return Viewer::get('admin.user.edit', [
+            'user'      => $user,
+            'roles'     => $this->roles->pluck('display_name','id'),
+            'userRole'  => $user->roles->pluck('id','id')->toArray()
+        ]);
     }
     
     /*
@@ -195,7 +190,7 @@ class UsersController extends Controller
      */
     public function deleteUser($id) {
         
-        $this->user->destroy($id);        
+        $this->user->destroy($id);
         Cache::flush();
 
     }

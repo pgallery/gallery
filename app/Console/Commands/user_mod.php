@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 
 use App\Models\User;
 
-class usermod extends Command
+class user_mod extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'usermod {user} {--email=} {--password=} {--google2fa=}';
+    protected $signature = 'user:mod {user} {--email=} {--password=} {--google2fa=}';
 
     /**
      * The console command description.

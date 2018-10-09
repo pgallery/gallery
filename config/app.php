@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'ru'),
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -177,6 +177,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
+        // Setting
+        App\Providers\SettingServiceProvider::class,
+        // Viewer
+        App\Providers\ViewerServiceProvider::class,
+        // Roles
+        App\Providers\RolesServiceProvider::class,
+        
         // Debug
         Barryvdh\Debugbar\ServiceProvider::class,
         
@@ -194,6 +201,10 @@ return [
 
         // Zipper
         Chumper\Zipper\ZipperServiceProvider::class,
+        
+        // Mail.ru AWS S3 Filesystem Driver
+        App\Providers\BizmrgServiceProvider::class,
+
     ],
 
     /*
@@ -251,10 +262,11 @@ return [
         
         // User-Agent
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
+
+        'Roles' => App\Facades\Roles::class,
+        'Setting' => App\Facades\Setting::class,
+        'Viewer' => App\Facades\Viewer::class,
         
-        'Roles' => App\Helpers\Roles::class,
-        'Setting' => App\Helpers\Setting::class,
-        'Viewer' => App\Helpers\Viewer::class,
         'Transliterate' => App\Helpers\Transliterate::class,
         'BuildImage' => App\Helpers\BuildImage::class,
         
@@ -267,6 +279,10 @@ return [
         
         // Zipper
         'Zipper' => Chumper\Zipper\Zipper::class,
+        
+        // Date multi-language
+        'Date' => Jenssegers\Date\Date::class,
+        
     ],
 
 ];

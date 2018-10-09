@@ -8,6 +8,9 @@ class Transliterate
 {
     public static function get($string) {
         
+        $symbolmap = self::symbolmap();
+        $string = str_replace(array_keys($symbolmap), array_values($symbolmap), $string);
+        
         if(Setting::get('use_transliterate') != 'yes')
             return $string;
         
@@ -20,6 +23,14 @@ class Transliterate
     
     public static function getMap() {
         return self::map();
+    }
+    
+    private static function symbolmap() {
+        
+        return [
+            ' ' => '_', ',' => '_',
+        ];
+        
     }
     
     private static function map() {

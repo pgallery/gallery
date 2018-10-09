@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
-use App\Models\Groups;
+use App\Models\Categories;
 use App\Models\Albums;
 use App\Models\Images;
 
@@ -19,18 +19,18 @@ use Cache;
 class TrashController extends Controller
 {
     protected $user;    
-    protected $groups;
+    protected $categories;
     protected $albums;
     protected $images;
 
-    public function __construct(User $user, Groups $groups, Albums $albums, Images $images) {
+    public function __construct(User $user, Categories $categories, Albums $albums, Images $images) {
         
         $this->middleware('g2fa');
         
-        $this->user    = $user;        
-        $this->groups  = $groups;
-        $this->albums  = $albums;
-        $this->images  = $images;
+        $this->user       = $user;
+        $this->categories = $categories;
+        $this->albums     = $albums;
+        $this->images     = $images;
     }
     
     public function deleteTrash() {
@@ -47,10 +47,10 @@ class TrashController extends Controller
             $this->albums->destroyAlbum($album->id);
         }
         
-        $groups = $this->groups->onlyTrashed()->get();
+        $categories = $this->categories->onlyTrashed()->get();
         
-        foreach ($groups as $group){
-            $this->groups->destroyGroup($group->id);
+        foreach ($categories as $category){
+            $this->categories->destroyCategorie($category->id);
         }
 
         $users = $this->user->onlyTrashed()->get();

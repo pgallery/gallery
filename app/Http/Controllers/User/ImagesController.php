@@ -7,74 +7,68 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Albums;
+use App\Models\Images;
 
-use Auth;
-use Agent;
 use Roles;
+use Storage;
+use Image;
 use Setting;
-use Viewer;
-use Cache;
 
 class ImagesController extends Controller
 {
     protected $albums;
+    protected $images;
 
-    public function __construct(Albums $albums) {
-        $this->albums  = $albums;
+    public function __construct(Albums $albums, Images $images) {
+        
+        $this->albums = $albums;
+        $this->images = $images;
+        
     }
     
-    public function getPage(Router $router, Request $request) {
+    /*
+     * Вывод фотографии
+     */
+    public function getImage(Router $router, Request $request) {
         
-        $url = $router->input('url');
+        $album = $this->albums->where('url', $router->input('url'))->firstOrFail();
         
-        $thisAlbum = Cache::remember('albums.show.' . $url, Setting::get('cache_ttl'), function() use ($url){
-            return $this->albums->where('url', $url)->first();
-        });
-        
-        if(!$thisAlbum)
-            return Viewer::get('errors.404');
-        
-        if (Agent::isMobile() and !Auth::check())
-            $CacheKey = $url . '.Mobile' . $request->input('page');
-        elseif(Agent::isMobile() and Roles::is('admin'))
-            $CacheKey = $url . '.AdminMobile' . $request->input('page');
-        elseif(!Agent::isMobile() and Roles::is('admin'))
-            $CacheKey = $url . '.Admin' . $request->input('page');        
-        else
-            $CacheKey = $url . $request->input('page');
-        
-        if (Cache::has($CacheKey)) {
-            $resultData = Cache::get($CacheKey);
-        } else {
-        
-            $thumbs_width  = Setting::get('thumbs_width');
-            $thumbs_height = Setting::get('thumbs_height');
-            $thumbs_dir    = Setting::get('thumbs_dir');
-            
-            if(!Agent::isMobile() and Roles::is('admin'))
-                $show_admin_panel = 1;
-            else
-                $show_admin_panel = 0;             
-            
-            $listImages = $thisAlbum
-                    ->images()
-                    ->paginate(Setting::get('count_images'));
-
-            $resultData = compact(
-                'thumbs_width',
-                'thumbs_height',
-                'show_admin_panel',
-                'thisAlbum',
-                'listImages'
-            );
-            
-            Cache::add($CacheKey, $resultData, Setting::get('cache_ttl'));
+        if($album->permission == 'Pass' and !Roles::is('admin') and !$request->session()->has("password_album_$album->id"))
+        {
+            if($request->session()->get("password_album_$album->id")['access'] != 'yes'
+                or $request->session()->get("password_album_$album->id")['key'] != md5($request->ip() . $request->header('User-Agent'))
+            )
+            return redirect()->route('gallery-show', ['url' => $router->input('url')]);
         }
         
-        if($request->ajax())
-            return Viewer::get('user.image.page', $resultData);
+        if(!$this->images->where('name', $router->input('name'))->where('albums_id', $album->id)->exists())
+            abort(404);
         
-        return Viewer::get('user.image.index', $resultData);
+        if($router->input('option') == 'thumb') {
+            
+            $path = $album->thumb_path() . '/' . $router->input('name');
+            $img = Image::cache(function($image) use ($path) {
+                return $image->make(Storage::get($path));
+            }, (Setting::get('cache_ttl') / 60));
+            
+        } elseif($router->input('option') == 'mobile') {
+            
+            $path = $album->mobile_path() . '/' . $router->input('name');
+            $img = Storage::get($path);
+
+        } else {
+            
+            $path = $album->path() . '/' . $router->input('name');
+            $img = Storage::get($path);
+            
+        }
         
+        $mimeType = Storage::getMimetype($path);
+        
+        if(!$mimeType)
+            $mimeType = 'image/jpeg';
+        
+        return response($img, 200)->header('Content-Type', $mimeType);
+
     }
 }

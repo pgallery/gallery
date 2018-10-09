@@ -7,6 +7,7 @@ use App\Models\Images;
 
 use Setting;
 use File;
+use Storage;
 use Image;
 
 class BuildImage
@@ -16,53 +17,67 @@ class BuildImage
 
         $image = Images::find($id);
         
-        $file_path   = $image->path();
-        $thumbs_path = $image->album->thumb_path();
-        $thumbs_file = $image->thumb_path();
-        $modile_path = $image->album->mobile_path();
-        $modile_file = $image->mobile_path();
+        if(Storage::has($image->thumb_path()))
+            Storage::delete($image->thumb_path());
         
-        if (File::exists($thumbs_file))
-            File::delete($thumbs_file);
+        if(Storage::has($image->mobile_path()))
+            Storage::delete($image->mobile_path());
         
-        if (File::exists($modile_file))
-            File::delete($modile_file);        
+        if(!Storage::has($image->album->thumb_path()))
+            Storage::makeDirectory($image->album->thumb_path(), 0755, true);
         
-        if(!File::isDirectory($thumbs_path))
-            File::makeDirectory($thumbs_path, 0755, true);
+        if(!Storage::has($image->album->mobile_path()))
+            Storage::makeDirectory($image->album->mobile_path(), 0755, true);
         
-        if(!File::isDirectory($modile_path))
-            File::makeDirectory($modile_path, 0755, true);           
-        
-        $OriginalImage = Image::make($file_path);
-        
-        $imgSize         = $OriginalImage->filesize();
+        $OriginalImage = Image::make(Storage::get($image->path()));
+
         $imgHeight       = $OriginalImage->height();
-        $imgWidth        = $OriginalImage->width();        
+        $imgWidth        = $OriginalImage->width();
         
         // Делаем версию изображения для мобильных устройств
         $OriginalImage->resize(Setting::get('mobile_width'), null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save($modile_file);         
+            });         
         
-        $MobileSizeImage = $OriginalImage->filesize();    
+        Storage::put($image->mobile_path(), (string) $OriginalImage->encode());    
         
         // Делаем превью
-        $OriginalImage->fit(Setting::get('thumbs_width'), Setting::get('thumbs_height'))
-            ->save($thumbs_file);
-
-        $ThumbsSizeImage = $OriginalImage->filesize(); 
-
+        $OriginalImage->fit(Setting::get('thumbs_width'), Setting::get('thumbs_height'));
+        
+        Storage::put($image->thumb_path(), (string) $OriginalImage->encode());  
+        
+        $OriginalImage->destroy();
+        
         $image->update([
-            'size'          => $imgSize,
+            'size'          => Storage::size($image->path()),
             'height'        => $imgHeight,
             'width'         => $imgWidth,
-            'thumbs_size'   => $ThumbsSizeImage,
-            'modile_size'   => $MobileSizeImage,
+            'thumbs_size'   => Storage::size($image->thumb_path()),
+            'modile_size'   => Storage::size($image->mobile_path()),
             'is_rebuild'    => 0,
-            'is_thumbs'     => 1,
-            'is_modile'     => 1,
         ]);
+        
+        if(Setting::get('saveinpublic_thumbs') == 'yes'){
+            
+            $web_album_path = public_path("images/thumb/" . $image->album->url);
+
+            if (!File::isDirectory($web_album_path))
+                File::makeDirectory($web_album_path, 0755, true);
+            
+            File::put($web_album_path . "/" . $image->name, Storage::get($image->thumb_path()));
+            
+        }
+
+        if(Setting::get('saveinpublic_mobiles') == 'yes'){
+            
+            $web_album_path = public_path("images/mobile/" . $image->album->url);
+
+            if (!File::isDirectory($web_album_path))
+                File::makeDirectory($web_album_path, 0755, true);
+            
+            File::put($web_album_path . "/" . $image->name, Storage::get($image->mobile_path()));
+            
+        }
         
     }
     
