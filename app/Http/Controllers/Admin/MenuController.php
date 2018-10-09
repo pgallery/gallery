@@ -32,7 +32,7 @@ class MenuController extends Controller
     
         return Viewer::get('admin.menu.index', [
             'menus'   => $this->menu->all(),
-            'allTags' => $this->tags->pluck('name','id')
+            'allTags' => $this->tags->orderBy('name')->pluck('name','id')
         ]);
         
     }

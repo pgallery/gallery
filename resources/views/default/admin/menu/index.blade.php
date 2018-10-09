@@ -58,7 +58,7 @@
             <td>
                 @foreach($menu->tagsRelation() as $tags)
                     
-                    <a href="#" class="btn btn-default btn-xs disabled" role="button">{{ $tags->name }}</a>
+                    <a href="#" class="btn btn-primary btn-xs disabled" role="button">{{ $tags->name }}</a><br>
                 
                 @endforeach
             </td>
@@ -93,8 +93,8 @@
                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="newName" id="newName" value="">
                 </div>
-            </div>              
-            
+            </div>
+
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-default" data-dismiss="modal">Отмена</button>
@@ -127,7 +127,7 @@
          
         <div class="form-group">
             <label class="col-sm-2 control-label">Название:</label>
-            <div class="col-sm-4">
+            <div class="col-sm-10">
                 {!! Form::text('name', null, array('class' => 'form-control', 'required')) !!}
             </div>
         </div>
@@ -135,8 +135,8 @@
   
           
         <div class="form-group">
-            <label class="col-sm-4 control-label">Теги:</label>
-            <div class="col-sm-6">
+            <label class="col-sm-2 control-label">Теги:</label>
+            <div class="col-sm-10">
                 {!! Form::select('tags[]', $allTags, null, array('class' => 'form-control', 'multiple', 'required')) !!}
             </div>
         </div>
