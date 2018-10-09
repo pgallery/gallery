@@ -12,10 +12,7 @@ class Menu extends Model
 {
     
     use SoftDeletes;       
-    
-    // 10080 минут - 1 неделя
-    const MODEL_CACHE_TTL = 10080;      
-    
+
     protected $table = 'menu';
     
     protected $dates = ['deleted_at'];

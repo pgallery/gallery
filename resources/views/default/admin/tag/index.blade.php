@@ -62,7 +62,7 @@
                 
             </td>
             <td>
-                @foreach($tag->albums as $album)
+                @foreach($tag->albumsRelation() as $album)
                     
                     <a href="#" class="btn btn-primary btn-xs disabled" role="button">{{ $album->name }}</a><br>
                 
