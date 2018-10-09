@@ -37,7 +37,7 @@ class TagsController extends Controller
         
         return Viewer::get('admin.tag.index', compact(
             'tags'
-        ));        
+        ));
     }
     
     /*

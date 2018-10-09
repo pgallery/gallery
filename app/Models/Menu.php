@@ -29,6 +29,6 @@ class Menu extends Model
         return Cache::remember('menu.tags_' . $this->id . '_cache', Setting::get('cache_ttl'), function () {
             return $this->tags()->orderBy('name')->get();
         });
-    }    
+    }
     
 }

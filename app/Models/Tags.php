@@ -24,7 +24,7 @@ class Tags extends Model
     
     public function albumsRelation() {
         return Cache::remember('tags.albums_' . $this->id . '_cache', Setting::get('cache_ttl'), function () {
-            return $this->albums()->select('name')->orderBy('name', 'DESC')->get();
+            return $this->albums()->select('name')->orderBy('name')->get();
         });
     }
     
