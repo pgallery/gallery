@@ -8,6 +8,9 @@ use App\Models\Images;
 use App\Models\Albums;
 use App\Jobs\BuildImagesJob;
 
+use Storage;
+use Transliterate;
+use Cache;
 use Setting;
 
 class images_rename_to_transliterate extends Command

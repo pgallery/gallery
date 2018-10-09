@@ -6,13 +6,9 @@ use Illuminate\Console\Command;
 
 use App\Models\Albums;
 use App\Models\Images;
-
-use Storage;
-use Transliterate;
-use Cache;
-use Setting;
-
 use App\Jobs\BuildImagesJob;
+
+use Setting;
 
 class images_rebuild extends Command
 {
