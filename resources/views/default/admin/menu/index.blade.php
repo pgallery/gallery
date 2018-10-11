@@ -67,9 +67,12 @@
                         <li><a href="{{ route('show-menu', ['option' => 'enable', 'id' => $menu->id]) }}"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Включить меню</a></li>
                     @endif
                     
-                    <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickRename" data-id="{{ $menu->id }}" data-name="{{ $menu_name }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
+                    <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickRename" data-id="{{ $menu->id }}" data-name="{{ $menu_name }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Переименовать</a></li>
+                    @if($menu->type == 'tags')
+                    <li><a href="{{ route('edit-menu', ['id' => $menu->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="{{ route('delete-menu', ['id' => $menu->id]) }}" data-toggle="confirmation" data-title="Удалить данное меню?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
+                    @endif
                   </ul>
                 </div>
                 {{ $menu_name }}

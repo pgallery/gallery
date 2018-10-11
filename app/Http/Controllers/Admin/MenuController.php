@@ -68,7 +68,14 @@ class MenuController extends Controller
         Cache::flush();
         
         return back();
-    }    
+    }
+    
+    /*
+     * Редактирование меню с типом 'tags'
+     */
+    public function getEditMenu(Router $router) {
+        echo $router->input('id');
+    }
     
     /*
      * Включение/отключение отображения меню
@@ -87,11 +94,14 @@ class MenuController extends Controller
     }
     
     /*
-     * Удаление выбранного меню
+     * Удаление выбранного меню с типом 'tags'
      */
     public function deleteMenu(Router $router) {
         
-        $this->menu->destroy($router->input('id'));
+        $menu = $this->menu->findOrFail($router->input('id'));
+        
+        if($menu->type == 'tags')
+            $menu->destroy($router->input('id'));
         
         Cache::flush();
         

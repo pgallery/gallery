@@ -86,6 +86,11 @@ Route::get('/menu/show/{option}/{id}', [
     'uses'          => 'MenuController@showMenu',
     'middleware'    => 'role:admin'
 ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
+Route::get('/menu/edit/{id}', [
+    'as'            => 'edit-menu', 
+    'uses'          => 'MenuController@getEditMenu',
+    'middleware'    => 'role:admin'
+])->where(['id' => '[0-9]+']);
 
 // Статистика
 Route::get('/statistics/', [
