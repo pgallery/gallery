@@ -41,8 +41,12 @@ class MenuController extends Controller
      * Создание нового меню
      */    
     public function postCreateMenu(Request $request) {
+        
+        $sort = $this->menu->select('sort')->max('sort');
+
         $menu = new Menu();
         $menu->name = $request->input('name');
+        $menu->sort = $sort + 1;
         $menu->save();
         
         $menu->tags()->sync($request->input('tags'));
@@ -65,6 +69,22 @@ class MenuController extends Controller
         
         return back();
     }    
+    
+    /*
+     * Включение/отключение отображения меню
+     */
+    public function showMenu(Router $router) {
+        
+        $menu = $this->menu->findOrFail($router->input('id'));
+        
+        $menu->update([
+            'show' => ($router->input('option') == 'enable') ? 'Y' : 'N'
+        ]);
+        
+        Cache::flush();
+        
+        return back();
+    }
     
     /*
      * Удаление выбранного меню

@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call(baseConfig::class);
+        $this->call(baseMenu::class);
         $this->call(baseRoles::class);
         $this->call(baseUsers::class);
         $this->call(newSettingsUploadVisibilityFiles::class);

@@ -48,7 +48,7 @@ class ViewerFacade
                 'categories'       => Categories::orderBy('name')->get(),
                 'year_list'        => $year_list, 
                 'gallery_name'     => Setting::get('gallery_name'),
-                'custom_menu'      => Menu::All(),
+                'custom_menu'      => Menu::where('show', 'Y')->orderBy('sort')->get(),
             ];
             
             if(Roles::is(['admin', 'moderator'])) {

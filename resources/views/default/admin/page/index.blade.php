@@ -254,6 +254,34 @@
 
 @section('js-top')
 
+        var albumtable = $('#album-table').DataTable({
+          "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
+          "language": {
+            "search": "Фильтр:",
+            "sLengthMenu": "Отображать _MENU_ записей",
+            "paginate": {
+              "previous": "Назад",
+              "next": "Дальше"
+            }
+          }
+        });
+
+        albumtable
+          .order( [ 0, 'desc' ] )
+          .draw();
+
+        $('#group-table').DataTable({
+          "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
+          "language": {
+            "search": "Фильтр:",
+            "sLengthMenu": "Отображать _MENU_ записей",
+            "paginate": {
+              "previous": "Назад",
+              "next": "Дальше"
+            }              
+          }
+        });
+
         var tags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,

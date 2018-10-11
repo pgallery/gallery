@@ -205,62 +205,15 @@
             
           @endif
           
-          @if (Auth::check())
           
-
-          var albumtable = $('#album-table').DataTable({
-            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
-            "language": {
-              "search": "Фильтр:",
-              "sLengthMenu": "Отображать _MENU_ записей",
-              "paginate": {
-                "previous": "Назад",
-                "next": "Дальше"
-              }
-            }
-          });
-
-          albumtable
-            .order( [ 0, 'desc' ] )
-            .draw();
-
-          var tagtable = $('#tag-table').DataTable({
-            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
-            "language": {
-              "search": "Фильтр:",
-              "sLengthMenu": "Отображать _MENU_ записей",
-              "paginate": {
-                "previous": "Назад",
-                "next": "Дальше"
-              }              
-            }
-          });
-
-          tagtable
-            .order( [ 1, 'asc' ] )
-            .draw();
-
-          $('#group-table').DataTable({
-            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
-            "language": {
-              "search": "Фильтр:",
-              "sLengthMenu": "Отображать _MENU_ записей",
-              "paginate": {
-                "previous": "Назад",
-                "next": "Дальше"
-              }              
-            }
-          });
-          
-          $('[data-toggle=confirmation]').confirmation({
-            rootSelector: '[data-toggle=confirmation]',
-            btnOkLabel: 'Да',
-            btnOkIcon: 'Нет',
-          });          
-          
-          @endif
-          
+        @if (Auth::check())
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]',
+                btnOkLabel: 'Да',
+                btnOkIcon: 'Нет',
+            });
+        @endif
         }); 
-    </script>     
+    </script>
   </body>
 </html>

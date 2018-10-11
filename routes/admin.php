@@ -81,6 +81,11 @@ Route::post('/menu/rename/', [
     'uses'          => 'MenuController@putMenu',
     'middleware'    => 'role:admin'
 ]);
+Route::get('/menu/show/{option}/{id}', [
+    'as'            => 'show-menu', 
+    'uses'          => 'MenuController@showMenu',
+    'middleware'    => 'role:admin'
+])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
 
 // Статистика
 Route::get('/statistics/', [

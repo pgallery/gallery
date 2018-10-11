@@ -19,52 +19,76 @@
             <li><a href="{{ route('home') }}">{{ __('views_layouts_menu.home_page') }}</a></li>
             
             @if($categories_count > 0)
-            
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ __('views_layouts_menu.by_categories_page') }} <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    
-                      @if(Roles::is('admin'))
-                    
-                        @foreach($categories as $category)
-                            @if( $category->albumCount() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumActiveCount() }})</a></li>
-                            @endif
-                        @endforeach                      
-                      
-                      @else
-                      
-                        @foreach($categories as $category)
-                            @if( $category->albumCountPublic() != 0)
-                                <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumActiveCountPublic() }})</a></li>
-                            @endif
-                        @endforeach                      
-                      
-                      @endif
-                      
-                  </ul>
-                </li>  
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ __('views_layouts_menu.by_years_page') }} <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    @foreach($year_list as $year)
 
-                            <li><a href="{{ route('album-showBy', ['option' => 'year', 'url' => $year->year]) }}">{{ $year->year }}</a></li>
-
-                    @endforeach
-                  </ul>
-                </li>   
-                
                 @foreach($custom_menu as $menu)
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $menu->name }} <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
+                
+                    @if($menu->type == 'categories')
+                        
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                              @if($menu->name == 'Categories')
+                                {{ __('views_layouts_menu.by_categories_page') }}
+                              @else
+                                {{ $menu->name }}
+                              @endif
+                              <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+
+                              @if(Roles::is('admin'))
+
+                                @foreach($categories as $category)
+                                    @if( $category->albumCount() != 0)
+                                        <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumActiveCount() }})</a></li>
+                                    @endif
+                                @endforeach                      
+
+                              @else
+
+                                @foreach($categories as $category)
+                                    @if( $category->albumCountPublic() != 0)
+                                        <li><a href="{{ route('album-showBy', ['option' => 'category', 'url' => urlencode($category->name)]) }}">{{ $category->name }} ({{ $category->albumActiveCountPublic() }})</a></li>
+                                    @endif
+                                @endforeach                      
+
+                              @endif
+
+                          </ul>
+                        </li>
                     
-                      @foreach($menu->tagsRelation() as $mtag)
-                        <li><a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($mtag->name)]) }}">{{ $mtag->name }} ({{ $mtag->albumsCountRelation() }})</a></li>                
-                      @endforeach
-                  </ul>
-                </li>                
+                    @elseif($menu->type == 'year')
+
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                              @if($menu->name == 'Year')
+                                {{ __('views_layouts_menu.by_years_page') }}
+                              @else
+                                {{ $menu->name }}
+                              @endif
+                              <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            @foreach($year_list as $year)
+
+                                    <li><a href="{{ route('album-showBy', ['option' => 'year', 'url' => $year->year]) }}">{{ $year->year }}</a></li>
+
+                            @endforeach
+                          </ul>
+                        </li>
+                    
+                    @else
+
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $menu->name }} <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+
+                              @foreach($menu->tagsRelation() as $mtag)
+                                <li><a href="{{ route('album-showBy', ['option' => 'tag','url' => urlencode($mtag->name)]) }}">{{ $mtag->name }} ({{ $mtag->albumsCountRelation() }})</a></li>                
+                              @endforeach
+                          </ul>
+                        </li>
+                        
+                    @endif
+                
+            
                 @endforeach
                                 
             @endif  

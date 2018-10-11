@@ -117,6 +117,23 @@
 
 @section('js-top')
 
+          var tagtable = $('#tag-table').DataTable({
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
+            "language": {
+              "search": "Фильтр:",
+              "sLengthMenu": "Отображать _MENU_ записей",
+              "paginate": {
+                "previous": "Назад",
+                "next": "Дальше"
+              }              
+            }
+          });
+
+          tagtable
+            .order( [ 1, 'asc' ] )
+            .draw();
+
+
         $('a.clickRename').click(function(e){
             $('#id').val(this.getAttribute('data-id'));
             $('#newName').val(this.getAttribute('data-name'));

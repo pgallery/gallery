@@ -16,11 +16,14 @@
       <h2>Меню <a href="" data-toggle="modal" data-target="#newMenuModal" class="btn btn-success btn-xs"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span></a></small></h2>
     </div>
 
-<table id="tag-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+<table id="menu-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>id</th>
             <th>Меню</th>
+            <th>Порядок</th>
+            <th>Включено</th>
+            <th>Тип</th>
             <th>Теги</th>
         </tr>
     </thead>
@@ -28,6 +31,9 @@
         <tr>
             <th>id</th>
             <th>Меню</th>
+            <th>Порядок</th>
+            <th>Включено</th>
+            <th>Тип</th>
             <th>Теги</th>
         </tr>
 
@@ -35,7 +41,16 @@
     <tbody>
         
 @foreach($menus as $menu)
+        @php
         
+        if($menu->type == 'categories' and $menu->name == 'Categories')
+            $menu_name = __('views_layouts_menu.by_categories_page');
+        elseif($menu->type == 'year' and $menu->name == 'Year')
+            $menu_name = __('views_layouts_menu.by_years_page');
+        else
+            $menu_name = $menu->name;
+        
+        @endphp
         <tr>
             <td>{{ $menu->id }}</td>
             <td> 
@@ -46,14 +61,27 @@
                   </button>
                   <ul class="dropdown-menu">
                     
-                    <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickRename" data-id="{{ $menu->id }}" data-name="{{ $menu->name }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
+                    @if($menu->show == 'Y')
+                        <li><a href="{{ route('show-menu', ['option' => 'disable', 'id' => $menu->id]) }}"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Выключить меню</a></li>
+                    @else
+                        <li><a href="{{ route('show-menu', ['option' => 'enable', 'id' => $menu->id]) }}"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Включить меню</a></li>
+                    @endif
+                    
+                    <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickRename" data-id="{{ $menu->id }}" data-name="{{ $menu_name }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Переименовать</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="{{ route('delete-menu', ['id' => $menu->id]) }}" data-toggle="confirmation" data-title="Удалить данное меню?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить</a></li>
                   </ul>
                 </div>
-
-                 {{ $menu->name }}
-
+                {{ $menu_name }}
+            </td>
+            <td>
+                {{ $menu->sort }}
+            </td>
+            <td>
+                {{ $menu->show === "Y" ? "Да" : "Нет" }}
+            </td>            
+            <td>
+                {{ $menu->type }}
             </td>
             <td>
                 @foreach($menu->tagsRelation() as $tags)
@@ -160,6 +188,22 @@
 
 
 @section('js-top')
+
+        var tagtable = $('#menu-table').DataTable({
+          "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
+          "language": {
+            "search": "Фильтр:",
+            "sLengthMenu": "Отображать _MENU_ записей",
+            "paginate": {
+              "previous": "Назад",
+              "next": "Дальше"
+            }              
+          }
+        });
+
+        tagtable
+          .order( [ 2, 'asc' ] )
+          .draw();
 
         $('a.clickRename').click(function(e){
             $('#id').val(this.getAttribute('data-id'));

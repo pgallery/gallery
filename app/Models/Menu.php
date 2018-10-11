@@ -18,7 +18,7 @@ class Menu extends Model
     protected $dates = ['deleted_at'];
     
     protected $fillable = [
-        'name'
+        'name', 'type', 'show', 'sort'
     ];
     
     public function tags() {
