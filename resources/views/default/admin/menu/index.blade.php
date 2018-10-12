@@ -81,15 +81,19 @@
                 {{ $menu->sort }}
             </td>
             <td>
-                {{ $menu->show === "Y" ? "Да" : "Нет" }}
+                @if($menu->show === "Y")
+                    <label class="label label-success">Да</label>
+                @else
+                    <label class="label label-danger">Нет</label>
+                @endif
             </td>            
             <td>
                 {{ $menu->type }}
             </td>
             <td>
                 @foreach($menu->tagsRelation() as $tags)
-                    
-                    <a href="#" class="btn btn-primary btn-xs disabled" role="button">{{ $tags->name }}</a><br>
+
+                    <label class="label label-info">{{ $tags->name }}</label><br>
                 
                 @endforeach
             </td>

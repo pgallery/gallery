@@ -151,7 +151,9 @@
                      {{ $album->name }}
                      <br>
                      @foreach($album->tagsRelation() as $tag)
-                        <a href="#" class="btn btn-default btn-xs disabled" role="button">{{ $tag->name }}</a>
+
+                        <label class="label label-info">{{ $tag->name }}</label>
+                        
                      @endforeach
                      
                 </td>
