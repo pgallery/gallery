@@ -75,11 +75,6 @@ class GalleryController extends Controller
             
                 $albums = $albums->where('images_id', '!=', '0');
                 
-//                print_r($albums);
-//                exit;
-                
-//                $albums = $albums->get();
-                
             } elseif ($router->input('option') == "category" and !empty($router->input('url'))) {
                 
                 $category = $this->categories->select('id')->where('name', urldecode($router->input('url')))->firstOrFail();
