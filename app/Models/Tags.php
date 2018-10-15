@@ -19,7 +19,7 @@ class Tags extends Model
     ];
     
     public function albums() {
-        return $this->belongsToMany('App\Models\Albums', 'tags_albums');
+        return $this->belongsToMany('App\Models\Albums', 'tags_albums')->orderBy('created_at', 'DESC');
     }
     
     public function albumsRelation() {

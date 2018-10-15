@@ -73,7 +73,12 @@ class GalleryController extends Controller
                 if(!Roles::is('admin'))
                     $albums = $albums->where('permission', 'All');
             
-                $albums = $albums->where('images_id', '!=', '0');                
+                $albums = $albums->where('images_id', '!=', '0');
+                
+//                print_r($albums);
+//                exit;
+                
+//                $albums = $albums->get();
                 
             } elseif ($router->input('option') == "category" and !empty($router->input('url'))) {
                 
