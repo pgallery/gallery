@@ -13,17 +13,22 @@ class baseMenu extends Seeder
      */
     public function run()
     {
-        Menu::create([
-            'name' => 'Categories',
-            'type' => 'categories',
-            'show' => 'Y',
-            'sort' => '1'
-        ]);
-        Menu::create([
-            'name' => 'Year',
-            'type' => 'year',
-            'show' => 'Y',
-            'sort' => '2'
-        ]);
+        if(!Menu::where('type', 'categories')->exists()){
+            Menu::create([
+                'name' => 'Categories',
+                'type' => 'categories',
+                'show' => 'Y',
+                'sort' => '1'
+            ]);
+        }
+        
+        if(!Menu::where('type', 'year')->exists()){
+            Menu::create([
+                'name' => 'Year',
+                'type' => 'year',
+                'show' => 'Y',
+                'sort' => '2'
+            ]);
+        }
     }
 }

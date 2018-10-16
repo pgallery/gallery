@@ -221,7 +221,9 @@
           "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"] ],
           "language": {
             "search": "Фильтр:",
+            "zeroRecords": "Нет данных для отображения",
             "sLengthMenu": "Отображать _MENU_ записей",
+            "info": "Показаны записи _START_ - _END_, всего _TOTAL_ записей",
             "paginate": {
               "previous": "Назад",
               "next": "Дальше"
