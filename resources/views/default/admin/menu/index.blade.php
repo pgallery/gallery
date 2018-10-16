@@ -24,7 +24,7 @@
             <th>Порядок</th>
             <th>Включено</th>
             <th>Тип</th>
-            <th>Теги</th>
+            <th>Содержимое</th>
         </tr>
     </thead>
     <tfoot>
@@ -34,7 +34,7 @@
             <th>Порядок</th>
             <th>Включено</th>
             <th>Тип</th>
-            <th>Теги</th>
+            <th>Содержимое</th>
         </tr>
 
     </tfoot>
@@ -91,11 +91,32 @@
                 {{ $menu->type }}
             </td>
             <td>
-                @foreach($menu->tagsRelation() as $tags)
-
-                    <label class="label label-info">{{ $tags->name }}</label><br>
                 
-                @endforeach
+                @if($menu->type == 'categories')
+                    
+                    @foreach($categories as $category)
+                    
+                        <label class="label label-info">{{ $category->name }} ({{ $category->albumActiveCountPublic() }})</label><br>
+                        
+                    @endforeach
+                
+                @elseif($menu->type == 'year')
+                
+                    @foreach($year_list as $year)
+
+                        <label class="label label-info">{{ $year->year }}</label><br>
+
+                    @endforeach
+                    
+                @else
+                
+                    @foreach($menu->tagsRelation() as $tags)
+
+                        <label class="label label-info">{{ $tags->name }} ({{ $tags->albumsCountRelation() }})</label><br>
+
+                    @endforeach
+                
+                @endif
             </td>
 
         </tr>        

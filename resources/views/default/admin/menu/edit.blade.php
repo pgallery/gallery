@@ -49,7 +49,6 @@
                 {!! Form::select('tags[]', $tags, $menuTags, array('class' => 'form-control', 'multiple', 'required')) !!}
             </div>
         </div>
-
     
     <hr>
     <center>
