@@ -91,6 +91,11 @@ Route::get('/menu/edit/{id}', [
     'uses'          => 'MenuController@getEditMenu',
     'middleware'    => 'role:admin'
 ])->where(['id' => '[0-9]+']);
+Route::post('/menu/edit/', [
+    'as'            => 'save-menu', 
+    'uses'          => 'MenuController@putEditMenu',
+    'middleware'    => 'role:admin'
+]);
 
 // Статистика
 Route::get('/statistics/', [

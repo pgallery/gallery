@@ -20,7 +20,7 @@
         'method'    => 'POST',
         'route'     => 'save-album',
         'class'     => 'form-horizontal',
-    ]) !!} 
+    ]) !!}
 
     {!! Form::hidden('id', $album->id) !!}
     

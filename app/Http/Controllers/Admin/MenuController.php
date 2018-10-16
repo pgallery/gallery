@@ -29,7 +29,7 @@ class MenuController extends Controller
      * Вывод страницы редактирования меню
      */
     public function getMenu() {
-    
+        
         return Viewer::get('admin.menu.index', [
             'menus'   => $this->menu->all(),
             'allTags' => $this->tags->orderBy('name')->pluck('name','id')
@@ -71,10 +71,47 @@ class MenuController extends Controller
     }
     
     /*
-     * Редактирование меню с типом 'tags'
+     * Отображение формы редактирование меню с типом 'tags'
      */
     public function getEditMenu(Router $router) {
-        echo $router->input('id');
+        
+        $menu = $this->menu->findOrFail($router->input('id'));
+        
+        $tags = $this->tags->orderBy('name')->pluck('name','id');
+        $menuTags = $menu->tags->pluck('id','id')->toArray();
+        
+        if($menu->type != 'tags')
+           return back();
+        
+        return Viewer::get('admin.menu.edit', compact([
+            'menu',
+            'tags',
+            'menuTags'
+        ]));
+    }
+    
+    /*
+     * Редактирование меню с типом 'tags'
+     */
+    public function putEditMenu(Request $request) {
+        print_r($request->all());
+        
+        $menu = $this->menu->find($request->input('id'));
+        
+        $input['name']  = $request->input('name');
+        $input['sort']  = $request->input('sort');
+        
+        if($request->input('show') == 'yes')
+            $input['show'] = 'Y';
+        else
+            $input['show'] = 'N';
+        
+        $menu->update($input);
+        $menu->tags()->sync($request->input('tags'));
+        
+        Cache::flush();
+        
+        return redirect()->route('menu');
     }
     
     /*
