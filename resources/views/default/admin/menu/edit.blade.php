@@ -39,7 +39,7 @@
             </div>
             <label class="col-sm-1 control-label">Порядок:</label>
             <div class="col-sm-1">
-                {!! Form::text('sort', null, array('class' => 'form-control', 'required')) !!}
+                {!! Form::number('sort', null, array('class' => 'form-control', 'required', 'min' => '1', 'max' => '19')) !!}
             </div>
         </div>
     
