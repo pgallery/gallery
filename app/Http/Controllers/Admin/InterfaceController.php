@@ -36,7 +36,7 @@ class InterfaceController extends Controller
      * Отображение общего списка групп/альбомов на странице администратора
      */
     public function getPage(Router $router){
-        
+
         $categories = Cache::remember('admin.show.categories', Setting::get('cache_ttl'), function() {
             return $this->categories->all();
         });

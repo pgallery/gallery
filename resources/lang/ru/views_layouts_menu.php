@@ -11,7 +11,8 @@ return [
     'login_page'            => 'Вход',
     
     // admin sections
-    'admin_home_page'       => 'Альбомы',
+    'admin_home_page'       => 'Администрирование',
+    'admin_menu_name'       => 'Управление',
     'admin_users_page'      => 'Пользователи',
     'admin_settings_page'   => 'Настройки',
     'admin_menu_page'       => 'Меню',

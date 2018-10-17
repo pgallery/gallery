@@ -14,6 +14,7 @@ use Cache;
 use Setting;
 use Roles;
 use Route;
+use Request;
 
 class ViewerFacade
 {
@@ -24,7 +25,7 @@ class ViewerFacade
     }
 
     public function get($page, $data = false) {
-        
+
         if(Roles::is('admin'))
             $CacheKey = 'Admin.';
         else
@@ -68,15 +69,19 @@ class ViewerFacade
                 
                 $static = array_merge($TrashedMenu, $static); 
                 
-            }     
+            }
             
             Cache::add($CacheKey, $static, Setting::get('cache_ttl'));
         }
 
+        $noCache = [
+            'getPrefix' => Request::route()->getPrefix(),
+        ];
+        
         if(!$data)
-            $result = $static;
+            $result = array_merge($static, $noCache);
         else
-            $result = array_merge($data, $static);
+            $result = array_merge($data, $static, $noCache);
         
         return view('default/' . $page, $result);
         

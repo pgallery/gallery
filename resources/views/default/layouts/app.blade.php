@@ -76,8 +76,8 @@
         
               
     </style>    
-    
-    @if(Setting::get('use_yandexmetrika') == 'yes')
+    <!-- 11 {{ $getPrefix }} -->
+    @if(Setting::get('use_yandexmetrika') == 'yes' and $getPrefix != 'admin')
 
         <!-- Yandex.Metrika counter -->
         <script type="text/javascript" >
@@ -114,7 +114,11 @@
 
   <body>
 
-@include('default.layouts.menu')
+@if($getPrefix == 'admin' and Roles::is(['admin', 'moderator', 'operator']))
+    @include('default.layouts.menu_admin')
+@else
+    @include('default.layouts.menu')
+@endif
 
     <div class="container">
 

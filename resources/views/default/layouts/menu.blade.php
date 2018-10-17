@@ -104,39 +104,7 @@
             @if(Roles::is(['admin', 'moderator', 'operator']))
             
                 <li><a href="{{ route('admin') }}">{{ __('views_layouts_menu.admin_home_page') }}</a></li>
-                
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Администрирование <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    @if(Roles::is('admin'))
-                        <li><a href="{{ route('users') }}">{{ __('views_layouts_menu.admin_users_page') }}</a></li>
-                        <li><a href="{{ route('settings') }}">{{ __('views_layouts_menu.admin_settings_page') }}</a></li>
-                        <li><a href="{{ route('menu') }}">{{ __('views_layouts_menu.admin_menu_page') }}</a></li>
-                        <li><a href="{{ route('tags') }}">{{ __('views_layouts_menu.admin_tags_page') }}</a></li>
-                    @endif
-                    <li><a href="{{ route('statistics') }}">{{ __('views_layouts_menu.admin_statistics_page') }}</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="{{ route('flush-cache') }}">{{ __('views_layouts_menu.admin_flushcache_page') }}</a></li>
-                  </ul>
-                </li>
-                
-                @if(Roles::is(['admin', 'moderator']))
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> ({{ $summary_trashed }}) <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    @if(Roles::is('admin'))
-                        <li><a href="{{ route('show-trash', ['option' => 'users']) }}">{{ __('views_layouts_menu.admin_users_page') }} ({{ $users_trashed }})</a></li>
-                        <li><a href="{{ route('show-trash', ['option' => 'categories']) }}">{{ __('views_layouts_menu.admin_categories_page') }} ({{ $categories_trashed }})</a></li>
-                    @endif
-                    <li><a href="{{ route('show-trash', ['option' => 'albums']) }}">{{ __('views_layouts_menu.admin_albums_page') }} ({{ $albums_trashed }})</a></li>
-                    <li><a href="{{ route('show-trash', ['option' => 'images']) }}">{{ __('views_layouts_menu.admin_images_page') }} ({{ $images_trashed }})</a></li>
-                    @if(Roles::is('admin'))
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{{ route('empty-trash') }}">{{ __('views_layouts_menu.admin_emptytrash_page') }}</a></li>
-                    @endif
-                  </ul>
-                </li>
-                @endif
+
             @endif
                 
                 <li class="dropdown">
