@@ -164,6 +164,10 @@ class AlbumsController extends Controller {
         
         $album = $this->albums->findOrFail($request->input('id'));
         
+        // Если изменяется URL
+        if($album->url != $request->input('url'))
+            $this->_rename_url($request->input('id'), $request->input('url'));
+
         // Если изменена директория, переносим файлы
         if($album->directory != $request->input('directory'))
             $this->_rename_dir($request->input('id'), $request->input('directory'));
@@ -189,8 +193,7 @@ class AlbumsController extends Controller {
             $input['password'] = null;
         
         $input['desc']          = ($request->input('desc')) ? $request->input('desc') : $request->input('name');
-        $input['url']           = ($request->input('url')) ? $request->input('url') : md5($request->input('name'));
-        
+
         $album->update($input);
 
         Cache::flush();
@@ -303,6 +306,12 @@ class AlbumsController extends Controller {
             if(Storage::has($album->thumb_path()))
                 Storage::deleteDirectory($album->thumb_path());
 
+            if (File::isDirectory(public_path("images/thumb/" . $album->url)))
+                File::deleteDirectory(public_path("images/thumb/" . $album->url));
+
+            if (File::isDirectory(public_path("images/mobile/" . $album->url)))
+                File::deleteDirectory(public_path("images/mobile/" . $album->url));
+            
             $album->update([
                 'directory' => $directory,
             ]);
@@ -312,14 +321,44 @@ class AlbumsController extends Controller {
             ]);
             
             if (Setting::get('use_queue') == 'yes') {
-                $album_images = $album->images;
-
-                foreach ($album_images as $image) {
+                foreach ($album->images as $image) {
                     BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
                 }
             }
         }
-    }    
+    }
+    
+    /*
+     * Переименование
+     */
+    private function _rename_url($id, $url) {
+        
+        $album = $this->albums->findOrFail($id);
+        
+        if(Setting::get('saveinpublic_thumbs') == 'yes' or Setting::get('saveinpublic_mobiles') == 'yes'){
+            
+            if (File::isDirectory(public_path("images/thumb/" . $album->url)))
+                File::deleteDirectory(public_path("images/thumb/" . $album->url));
+
+            if (File::isDirectory(public_path("images/mobile/" . $album->url)))
+                File::deleteDirectory(public_path("images/mobile/" . $album->url));            
+            
+            $this->images->where('albums_id', $album->id)->update([
+                'is_rebuild' => 1,
+            ]);
+            
+            if (Setting::get('use_queue') == 'yes') {
+                foreach ($album->images as $image) {
+                    BuildImagesJob::dispatch($image->id)->onQueue('BuildImage');
+                }
+            }
+            
+        }
+        
+        $album->update([
+            'url' => $url,
+        ]);
+    }
     
     /*
      * Изменение владельца альбома
