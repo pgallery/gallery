@@ -83,7 +83,7 @@ Route::post('/menu/rename/', [
 ]);
 Route::get('/menu/show/{option}/{id}', [
     'as'            => 'show-menu', 
-    'uses'          => 'MenuController@showMenu',
+    'uses'          => 'MenuController@getShowMenu',
     'middleware'    => 'role:admin'
 ])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
 Route::get('/menu/edit/{id}', [
@@ -96,6 +96,11 @@ Route::post('/menu/edit/', [
     'uses'          => 'MenuController@putEditMenu',
     'middleware'    => 'role:admin'
 ]);
+Route::get('/menu/sort/{option}/{id}', [
+    'as'            => 'sort-menu', 
+    'uses'          => 'MenuController@getSortMenu',
+    'middleware'    => 'role:admin'
+])->where(['option' => '[a-z]+', 'id' => '[0-9]+']);
 
 // Статистика
 Route::get('/statistics/', [

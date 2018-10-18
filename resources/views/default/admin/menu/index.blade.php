@@ -67,6 +67,14 @@
                         <li><a href="{{ route('show-menu', ['option' => 'enable', 'id' => $menu->id]) }}"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Включить меню</a></li>
                     @endif
                     
+                    @if($menu->sort != $min_sort)
+                        <li><a href="{{ route('sort-menu', ['option' => 'up', 'id' => $menu->id]) }}"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Поднять выше</a></li>
+                    @endif
+                    
+                    @if($menu->sort != $max_sort)
+                        <li><a href="{{ route('sort-menu', ['option' => 'down', 'id' => $menu->id]) }}"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> Опустить ниже</a></li>
+                    @endif
+                    
                     <li><a href="" data-toggle="modal" data-target="#RenameModal" class="clickRename" data-id="{{ $menu->id }}" data-name="{{ $menu_name }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Переименовать</a></li>
                     @if($menu->type == 'tags')
                     <li><a href="{{ route('edit-menu', ['id' => $menu->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Редактировать</a></li>
@@ -88,7 +96,19 @@
                 @endif
             </td>            
             <td>
-                {{ $menu->type }}
+                @if($menu->type == 'categories')
+                
+                Категории альбомов
+                
+                @elseif($menu->type == 'year')
+                
+                Годы добавления
+                
+                @else
+                
+                Теги
+                
+                @endif
             </td>
             <td>
                 

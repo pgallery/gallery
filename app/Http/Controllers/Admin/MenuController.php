@@ -31,8 +31,10 @@ class MenuController extends Controller
     public function getMenu() {
         
         return Viewer::get('admin.menu.index', [
-            'menus'   => $this->menu->all(),
-            'allTags' => $this->tags->orderBy('name')->pluck('name','id')
+            'menus'    => $this->menu->all(),
+            'allTags'  => $this->tags->orderBy('name')->pluck('name','id'),
+            'min_sort' => $this->menu->min('sort'),
+            'max_sort' => $this->menu->max('sort'),
         ]);
         
     }
@@ -61,9 +63,7 @@ class MenuController extends Controller
      */
     public function putMenu(Request $request) {
         
-        $menu = $this->menu->findOrFail($request->input('id'));
-        
-        $menu->update(['name' => $request->input('newName')]);
+        $this->menu->findOrFail($request->input('id'))->update(['name' => $request->input('newName')]);
         
         Cache::flush();
         
@@ -117,14 +117,36 @@ class MenuController extends Controller
     /*
      * Включение/отключение отображения меню
      */
-    public function showMenu(Router $router) {
+    public function getShowMenu(Router $router) {
         
-        $menu = $this->menu->findOrFail($router->input('id'));
-        
-        $menu->update([
+        $this->menu->findOrFail($router->input('id'))->update([
             'show' => ($router->input('option') == 'enable') ? 'Y' : 'N'
         ]);
         
+        Cache::flush();
+        
+        return back();
+    }
+    
+    /*
+     * Изменение сортировки меню
+     */
+    public function getSortMenu(Router $router) {
+
+        $menu = $this->menu->findOrFail($router->input('id'));
+
+        $old_menu = $this->menu
+                ->where('sort', ($router->input('option') == 'up') ? '<' : '>', $menu->sort)
+                ->orderBy('sort', ($router->input('option') == 'up') ? 'asc' : 'desc')
+                ->get()
+                ->last();
+
+        $old_sort = $menu->sort;
+        $new_sort = $old_menu->sort;
+        
+        $old_menu->update(['sort' => $old_sort]);
+        $menu->update(['sort' => $new_sort]);
+
         Cache::flush();
         
         return back();
