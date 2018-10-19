@@ -44,8 +44,8 @@ class ArchivesController extends Controller
                 or $request->session()->get("password_album_$album->id")['key'] != md5($request->ip() . $request->header('User-Agent'))
             )
             return redirect()->route('gallery-show', ['url' => $router->input('url')]);
-        }        
-        
+        }
+
         $archive = $this->_create($album->id);
         
         if(Setting::get('use_queue') == 'yes')
@@ -66,12 +66,12 @@ class ArchivesController extends Controller
             
             if(env('DISK_DRIVER') == 'local') {
             
-                $files = glob($album->path() . '/*');
+                $files = glob(storage_path("app/" . $album->path()) . '/*');
                 Zipper::make($archive_name)->add($files)->close();
                 
             }else{
-                
-                $tmp_dir = storage_path(Setting::get('archive_dir') . "/__" . sha1(Carbon::now() . $album->directory . "_tmp"));
+
+                $tmp_dir = storage_path(Setting::get('archive_dir') . "/tmp_" . sha1(Carbon::now() . $album->directory));
                 
                 if (!File::isDirectory($tmp_dir))
                     File::makeDirectory($tmp_dir, 0755, true);

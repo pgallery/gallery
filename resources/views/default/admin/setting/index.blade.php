@@ -67,6 +67,10 @@
                             json_decode($setting['set_variations'])
                         , $setting['set_value'], array('class' => 'form-control')) !!}
                     
+                    @elseif($setting->set_type == 'numeric')
+                        
+                        {!! Form::number("newSetting[$setting->set_name]", $setting->set_value, array('class' => 'form-control', 'required')) !!}
+                    
                     @else
                     
                         {!! Form::text("newSetting[$setting->set_name]", $setting->set_value, array('class' => 'form-control', 'required')) !!}
