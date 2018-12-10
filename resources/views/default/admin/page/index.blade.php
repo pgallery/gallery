@@ -155,7 +155,8 @@
                         <label class="label label-info">{{ $tag->name }}</label>
                         
                      @endforeach
-                     
+                     <br>
+                     <small>Создан: {{ Date::parse($album->created_at)->format('j F Y') }}</small>
                 </td>
                 <td>
                     

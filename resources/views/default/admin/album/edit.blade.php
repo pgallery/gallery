@@ -99,7 +99,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Описание:</label>
             <div class="col-sm-10">
-                {!! Form::text('desc', null, array('class' => 'form-control')) !!}
+                {!! Form::textarea('desc', null, array('class' => 'form-control', 'rows' => 4)) !!}
             </div>
         </div>  
     </div>
