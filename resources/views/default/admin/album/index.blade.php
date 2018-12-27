@@ -67,6 +67,10 @@
                         @if($thisAlbum->images_id == $image->id) 
                             Миниатюра альбома 
                         @endif
+                        
+                        @if($image->is_rebuild == 1)
+                            (В очереди на обработку)
+                        @endif
                 </td>
                 <td><a href="{{ $image->http_path() }}" target="_blank">{{ $image->name }}</a>
                     <br><a href="{{ $image->http_thumb_path() }}" target="_blank">Миниатюра</a> 

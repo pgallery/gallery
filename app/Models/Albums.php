@@ -77,6 +77,12 @@ class Albums extends Model
             return $this->hasMany('App\Models\Images')->count();
         });
     }
+
+    public function imagesRebuildCount() {
+        return Cache::remember('albums.imagesRebuildCount_' . $this->id . '_cache', Setting::get('cache_ttl'), function(){
+            return $this->hasMany('App\Models\Images')->where('is_rebuild', 1)->count();
+        });
+    }
     
     public function imagesSumSize() {
         return Cache::remember('albums.imagesSumSize_' . $this->id . '_cache', Setting::get('cache_ttl'), function(){

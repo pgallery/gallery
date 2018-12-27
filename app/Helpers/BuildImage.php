@@ -9,6 +9,7 @@ use Setting;
 use File;
 use Storage;
 use Image;
+use Cache;
 
 class BuildImage
 {
@@ -78,6 +79,8 @@ class BuildImage
             File::put($web_album_path . "/" . $image->name, Storage::get($image->mobile_path()));
             
         }
+        
+        Cache::forget('albums.imagesRebuildCount_' . $image->albums_id . '_cache');
         
     }
     

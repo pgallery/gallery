@@ -172,7 +172,7 @@
                         </a>
                     @endif
                 </td>
-                <td>{{ $album->imagesCount() }}</td>
+                <td>{{ $album->imagesCount() }}@if($album->imagesRebuildCount() != 0)/{{ $album->imagesRebuildCount() }}@endif</td>
                 <td>{{ $album->imagesSumSize() }}</td>
                 <td>{{ $album->category()->name }}</td>
                 <td>{{ $album->year }}</td>
